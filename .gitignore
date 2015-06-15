@@ -4,13 +4,12 @@
 node_modules/
 platforms/
 plugins/
-notes/
 
-# Object file
-*.o
+# development notes
+notes/
 
 # emacs backup
 *~
 
-# misc. text files
-*.t
+# other backup
+#*#
