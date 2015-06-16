@@ -2,7 +2,7 @@
 
 angular.module('app', ['ionic'])
 
-.config(function ($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
     .state('tabs', {
@@ -50,6 +50,18 @@ angular.module('app', ['ionic'])
   $urlRouterProvider.otherwise('/tabs/decks');
 })
 
+.controller('DecksController', function($scope) {
+})
+
+.controller('StudyController', function($scope) {
+})
+
+.controller('SettingsController', function($scope) {
+})
+
+.controller('FilterController', function($scope) {
+})
+
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -62,3 +74,5 @@ angular.module('app', ['ionic'])
     }
   });
 });
+
+
