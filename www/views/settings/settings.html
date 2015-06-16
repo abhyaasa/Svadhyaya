@@ -1,0 +1,22 @@
+<ion-view view-title="Settings"  hide-back-button="true">
+    <ion-content padding="true" class="has-header">
+        <ion-list>
+            <ion-item ui-sref="tabs.about">About this app</ion-item>
+            <ion-toggle toggle-class="toggle-positive">Randomize answers</ion-toggle>
+            <ion-toggle toggle-class="toggle-positive">Randomize questions</ion-toggle>
+            <ion-toggle toggle-class="toggle-positive">Devanagari</ion-toggle>
+            <label class="item item-select">
+                <span class="input-label">Transliteration</span>
+                <select></select>
+            </label>
+            <ion-item class="range range-positive">HInt percent
+                <input type="range" value="50" min="0" max="100">
+            </ion-item>
+            <ion-item>Reset</ion-item>
+        </ion-list>
+        <div class="button-bar">
+            <button class="button button-stable button-block">Cancel</button>
+            <button class="button button-stable button-block">Done</button>
+        </div>
+    </ion-content>
+</ion-view>
