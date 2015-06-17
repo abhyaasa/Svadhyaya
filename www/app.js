@@ -40,8 +40,9 @@ angular.module('app', ['ionic'])
         .state('tabs.about', {
             url: '/about',
             views: {
-                'about-tab': {
-                    templateUrl: 'views/about/about.html'
+                'settings-tab': {
+                    templateUrl: 'views/about/about.html',
+                    controller: 'AboutController'
                 }
             }
         })
@@ -56,6 +57,10 @@ angular.module('app', ['ionic'])
         });
 
     $urlRouterProvider.otherwise('/tabs/decks');
+})
+
+.controller('AboutController', function ($scope) {
+    // todo: remove if not needed
 })
 
 .directive('x', function () {
