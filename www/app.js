@@ -8,7 +8,7 @@ angular.module('app', ['ionic'])
         .state('tabs', {
             url: '/tabs',
             abstract: true,
-            templateUrl: 'views/tabs/tabs.html'
+            templateUrl: 'views/tabs.html'
         })
         .state('tabs.decks', {
             url: '/decks',
@@ -19,38 +19,29 @@ angular.module('app', ['ionic'])
                 }
             }
         })
-        .state('tabs.qanda', {
-            url: '/qanda',
+        .state('tabs.card', {
+            url: '/card',
             views: {
-                'qanda-tab': {
-                    templateUrl: 'views/qanda/qanda.html',
-                    controller: 'QandAController'
+                'card-tab': {
+                    templateUrl: 'views/card/card.html',
+                    controller: 'CardController'
                 }
             }
         })
         .state('tabs.answer', {
-            url: '/qanda',
+            url: '/answer',
             views: {
-                'qanda-tab': {
-                    templateUrl: 'views/qanda/qanda.html',
-                    controller: 'QandAController'
-                }
-            }
-        })
-        .state('tabs.question', {
-            url: '/qanda',
-            views: {
-                'qanda-tab': {
-                    templateUrl: 'views/qanda/qanda.html',
-                    controller: 'QandAController'
+                'card-tab': {
+                    templateUrl: 'views/answer/answer.html',
+                    controller: 'AnswerController'
                 }
             }
         })
         .state('tabs.score', {
-            url: '/qanda',
+            url: '/score',
             views: {
-                'study-tab': {
-                    templateUrl: 'views/score.html',
+                'card-tab': {
+                    templateUrl: 'views/score/score.html',
                     controller: 'ScoreController'
                 }
             }
@@ -70,6 +61,15 @@ angular.module('app', ['ionic'])
                 'settings-tab': {
                     templateUrl: 'views/about/about.html',
                     controller: 'AboutController'
+                }
+            }
+        })
+        .state('tabs.reset', {
+            url: '/about',
+            views: {
+                'settings-tab': {
+                    templateUrl: 'views/reset/reset.html',
+                    controller: 'ResetController'
                 }
             }
         })
