@@ -19,12 +19,39 @@ angular.module('app', ['ionic'])
                 }
             }
         })
-        .state('tabs.study', {
-            url: '/study',
+        .state('tabs.qanda', {
+            url: '/qanda',
+            views: {
+                'qanda-tab': {
+                    templateUrl: 'views/qanda/qanda.html',
+                    controller: 'QandAController'
+                }
+            }
+        })
+        .state('tabs.answer', {
+            url: '/qanda',
+            views: {
+                'qanda-tab': {
+                    templateUrl: 'views/qanda/qanda.html',
+                    controller: 'QandAController'
+                }
+            }
+        })
+        .state('tabs.question', {
+            url: '/qanda',
+            views: {
+                'qanda-tab': {
+                    templateUrl: 'views/qanda/qanda.html',
+                    controller: 'QandAController'
+                }
+            }
+        })
+        .state('tabs.score', {
+            url: '/qanda',
             views: {
                 'study-tab': {
-                    templateUrl: 'views/study/study.html',
-                    controller: 'StudyController'
+                    templateUrl: 'views/score.html',
+                    controller: 'ScoreController'
                 }
             }
         })
@@ -59,8 +86,20 @@ angular.module('app', ['ionic'])
     $urlRouterProvider.otherwise('/tabs/decks');
 })
 
-.controller('AboutController', function ($scope) {
-    // todo: remove if not needed
+.factory('Settings', function () {
+    var Settings = {
+        qrandom: false,
+        arandom: false,
+        devanagari: false,
+        transliteration: 'IAST',
+        hintPercent: 10
+    };
+    return Settings;
+})
+
+.factory('Decks', function () {
+    var Decks = {};
+    return Decks;
 })
 
 .directive('x', function () {
@@ -72,7 +111,10 @@ angular.module('app', ['ionic'])
     };
 })
 
-.run(function ($ionicPlatform) {
+.run(function ($ionicPlatform, $rootScope) {
+    // replaced with app version if device is defined
+    $rootScope.version = '0.0.0';
+
     $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the
         // accessory bar above the keyboard for form inputs)
@@ -81,6 +123,12 @@ angular.module('app', ['ionic'])
         }
         if (window.StatusBar) {
             StatusBar.styleDefault();
+        }
+
+        if (ionic.Platform.device()[0] !== undefined) {
+            cordova.getAppVersion(function (version) {
+                $rootScope.version = version;
+            });
         }
     });
 });
