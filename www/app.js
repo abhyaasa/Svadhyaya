@@ -92,7 +92,12 @@ angular.module('app', ['ionic'])
         arandom: false,
         devanagari: false,
         transliteration: 'IAST',
-        hintPercent: 10
+        hintPercent: 10,
+        filter: {
+            max: 50,
+            min: 50,
+            tags: []
+        }
     };
     return Settings;
 })
