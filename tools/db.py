@@ -31,7 +31,7 @@ See also abstract syntax context sensitive requirements.
 
 <tag> is non-empty string of letters (case insensitive), digits, underscore, or spaces (trimmed at ends).
 
-<tag range> ,, [ / ] <tag>
+<tag range> , [ / ] <tag>\n
 
 Questions up to EOF or / <tag> line have <tag>.
 
@@ -43,16 +43,16 @@ Questions up to EOF or / <tag> line have <tag>.
 
 : single-line format: EOL ends question and no =, / or ? in <answer>, no = or / in <text>, and no ? in <hint> .
 
+If no answer or distractors, then it is a sequence question, whose mind answer is the next question.
 If answer is True, False, T or F (case insensitive), then true/false question.
-If no distractors, then mind question.
+If answer, but no distractors, then mind question.
 If multiple answers, then multiple-choices question.
 Otherwise, multiple-choice question.
 
 
 SPECIAL TAGS
 
-.seq : sequence (each element is answer of previous and question on next)
-.lineseq : each following line of multi-line question is a sequence answer
+.lineseq : each line of multi-line question text is a sequence answer
 .text : preferatory text, not a question
 .md : text is in markdown format
 .case_sensitive : responses are case sensitive
@@ -63,23 +63,21 @@ One tag may be a non-negative decimal number (e.g. difficulty rating).
 JSON FORMAT
 
 Quiz questions json format is list of question dictionaries with keys:
-type: string=true-false, multiiple-choice, multiple-choices, or mind
+type: string=true-false, multiiple-choice, multiple-choices, sequence, or mind
 question: text of question
-answer: Response or list of Response
+responses: list of (is_answer, response) pairs, where response is text or,
+           if a true-false question, the boolean answer
 tag: list of tag strings
 hints: list of hint strings
 number: difficulty number
 """
 
-test = """line 1
-line 2
-"""
-
 tag_re = r'[a-zA-Z0-9_ ]+'
-tags_cre = re.compile(r'(,'+tag_re+'+)?:(:)(.*)')
-tagrange_cre = re.compile(r',,(/)?('+tag_re+') *\n(.*)')
+tags_cre = re.compile(r'(,'+tag_re+'+)?:(:)?')
+tagrange_cre = re.compile(r',(/)?('+tag_re+')\n')
 line_question_cre = re.compile(r'(.*)([=/][^?]*)(\?.*)')
-multiline_question_cre = re.compile(r'', re.MULTILINE)
+mline_question_cre = re.compile(r'(.*)(^[=/].*?)*(^\?.*)(?:\n[,:])',
+                                re.MULTILINE)
 number_cre = re.compile(r'.\d+|\d+.\d*|\d+')
 
 def isnumber(string):
@@ -136,17 +134,36 @@ def main(args):
             if len(numbers) > 1:
                 error('number tag already present')
             if multiline:
-                reo = multiline_question_cre.match(text)
+                reo = mline_question_cre.match(text)
             else:
                 reo = line_question_cre.match(text)
             if not reo:
                 error('ill formed question')
             question, responses_str, hints_str = reo.groups()
-            quiz.append({'question': question,
+            responses = [(r[0] == '=', r[1:],strip())
+                         for r in re.findall(r'[/=][^/=]*', responses_str)]
+            if not responses:
+                _type = 'sequence'
+            elif len(responses) == 1:
+                _type = 'true-false'
+                if responses[0][0]:
+                    response = responses[0][1].lower()
+                    if response in ['t', 'f', 'true', 'false']:
+                        responses[0][1] = response in ['t', 'true']
+                    else:
+                        error('not a true/false answer')
+                else:
+                    error('no answer')
+            elif len(filter(None, map(lambda r: r[0], responses))) == 1:
+                _type = 'multiple-choice'
+            else:
+                _type = 'multiple-choices'
+            quiz.append({'question': question.strip(),
                          'number': float(numbers[0]) if numbers else None,
                          'hints': hints_str.split('?')[1:],
                          'tags': filter(lambda t: not isnumber(t), qtags),
-                         'responses': re.findall(r'[/=][^/=]*', responses_str)
+                         'responses': responses,
+                         'type': _type
                         })
         text = text[reo.end():]
     json.dump(quiz, writer)
@@ -172,6 +189,17 @@ def get_args():
     return args
 
 sys.stdout = UTF8Writer(sys.stdout)
+
+test = """,foo
+:qtext=a/b
+,bar:q=t
+,a,1:qt
+,/foo
+::mq
+/a
+=b
+,c::mcq
+"""
 
 if __name__ == "__main__":
     main(get_args())
