@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8
 
 """Svadhyaya db file preprocessor, compact text to json."""
 
@@ -9,6 +10,7 @@ import json
 from StringIO import StringIO
 import argparse
 import codecs
+import re
 
 try:
     import debug
@@ -23,19 +25,26 @@ UTF8Writer = codecs.getwriter('utf8')
 epilog = """
 DB FILE PREPROCESSOR FORMAT
 
-Extended BNF notation: -> production, <...> non-terminal, {…} grouping, [...] optional, | or, + one or more, * zero or more, ,... non-empty comma-separated list, other symbols terminal, spaces not significant in grammar productions syntax. BOL/EOL beginning/end of line. EOF end of file.
+Extended BNF notation: -> production, <...> non-terminal, {…} grouping, [...]
+optional, | or, + one or more, * zero or more, ,... non-empty comma-separated
+list, other symbols terminal, spaces not significant in grammar productions
+syntax. BOL/EOL beginning/end of line. EOF end of file.
 
 See also abstract syntax context sensitive requirements.
 
 <file> -> { <question> | <tag range> }+
 
-<tag> is non-empty string of letters (case insensitive), digits, underscore, or spaces (trimmed at ends).
+<tag> is non-empty string of letters (case insensitive), digits, underscore, or
+spaces (trimmed at ends).
 
 <tag range> , [ / ] <tag>\n
 
 Questions up to EOF or / <tag> line have <tag>.
 
-<question> -> [ , <tag>,… ] { : | :: } <text> { { = <answer> } | { / <distractor> } }+ [ ? <hint> ]*
+<question> -> [ , <tag>,… ] { : | :: } <text>
+                { { = <answer> } | { / <distractor> } }+
+                [ ? <hint>
+              ]*
 
 <text>, <hint>, <answer>, and <distractor> are strings.
 
@@ -73,10 +82,10 @@ number: difficulty number
 """
 
 tag_re = r'[a-zA-Z0-9_ ]+'
-tags_cre = re.compile(r'(,'+tag_re+'+)?:(:)?')
-tagrange_cre = re.compile(r',(/)?('+tag_re+')\n')
+tags_cre = re.compile(r',('+tag_re+r')+?')
+tagrange_cre = re.compile(r',(/)?('+tag_re+r')\n')
 line_question_cre = re.compile(r'(.*)([=/][^?]*)(\?.*)')
-mline_question_cre = re.compile(r'(.*)(^[=/].*?)*(^\?.*)(?:\n[,:])',
+mline_question_cre = re.compile(r':(.*)(^[=/].*?)*(^\?.*)(?:\n[,:])',
                                 re.MULTILINE)
 number_cre = re.compile(r'.\d+|\d+.\d*|\d+')
 
@@ -108,7 +117,7 @@ def main(args):
     while True:
         if not text:
             break
-        reo = tagerange_cre.match(text)
+        reo = tagrange_cre.match(text)
         if reo:
             slash, tag = reo.groups()
             tag = tag.strip()
@@ -121,15 +130,22 @@ def main(args):
             else:
                 tags.add(tag)
         else:
-            reo = tags_cre.match(text)
-            if not reo:
-                error('not start of question')
-            tags_str, multiline = reo.groups()
-            if tags_str:
-                qtags = set([tag.strip() for tag in tags_str.split(',')[1:]])
-            else:
-                qtags = set()
-            qtags |= tags
+            if ':' not in text:
+                error('no question')
+            qtags = []
+            tags_str, text = text.split(':', 1)
+            if not text:
+                error('no question body')
+            multiline = text[0] == ':'
+            if tags_str == ',':
+                reo = tags_cre.match(tags_str)
+                if not reo:
+                    error('bad tags format')
+                if tags_str:
+                    qtags = set([tag.strip() for tag in tags_str.split(',')[1:]])
+                else:
+                    qtags = set()
+                qtags |= tags
             numbers = filter(isnumber, qtags)
             if len(numbers) > 1:
                 error('number tag already present')
@@ -181,7 +197,7 @@ def get_args():
                    type=argparse.FileType('w'),
                    help='json format file, default stdout')
     p.add_argument('-t', '--test', action='store_true',
-                   help='run trans.test() first')
+                   help='run with test variable value as input')
     args = p.parse_args()
     if args.infile == '-':
         args.infile = sys.stdin
