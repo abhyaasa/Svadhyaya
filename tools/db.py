@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8
 
-"""Svadhyaya db file preprocessor, compact text to json."""
+"""Svadhyaya question preprocessor: compact text to json."""
 
 # Code Copyright (c) Christopher T. Haynes under the MIT License.
 
@@ -18,62 +18,57 @@ try:
 except:
     pass
 
+debug_mode = False
+
 UTF8Reader = codecs.getreader('utf8')
 UTF8Writer = codecs.getwriter('utf8')
 
 
 epilog = """
-DB FILE PREPROCESSOR FORMAT
+QUESTION PREPROCESSOR FORMAT
 
-Extended BNF notation: -> production, <...> non-terminal, {…} grouping, [...]
-optional, | or, + one or more, * zero or more, ,... non-empty comma-separated
-list, other symbols terminal, spaces not significant in grammar productions
-syntax. BOL/EOL beginning/end of line. EOF end of file.
+Notation: Grammar rules are of the form ELEMENT_TYPE -> GRAMMAR_EXPRESSION.
+A grammar expression may contain the following notation.
+{...} grouping, [...] optional, | or, +/* one/zero or more of the preceding form.
+,... non-empty comma-separated sequence of preceding form.
+Spaces are not significant in grammar rules. Sequences are non-empty.
+BOL/EOL beginning/end of line. EOF end of file.
 
-See also abstract syntax context sensitive requirements.
+INPUT -> { QUESTION | TAG_RANGE } +
 
-<file> -> { <question> | <tag range> }+
+QUESTION -> BOL ; [ TAG,... ] ; TEXT
+                { == ANSWER } | // DISTRACTOR } *
+                { ?? HINT } *
 
-<tag> is non-empty string of letters (case insensitive), digits, underscore, or
-spaces (trimmed at ends).
+TEXT, ANSWER, DISTRACTOR, and HINT are strings in which ==, //, and ?? may not appear.
 
-<tag range> , [ / ] <tag>\n
+If no answer or distractors, then it is a sequence question, whose mind answer is the next question. If multiple answers, then multiple-choices question.
+Otherwise, if one or more distractors, then multiple-choice question.
+If one answer and no distractors, then if answer is True, False, T or F (case insensitive), then true/false question, and otherwise mind answer question.
 
-Questions up to EOF or / <tag> line have <tag>.
+TAG is a sequence of letter (case insensitive), digit, dot, underscore, or
+space characters. Spaces are trimmed at both ends.
 
-<question> -> [ , <tag>,… ] { : | :: } <text>
-                { { = <answer> } | { / <distractor> } }+
-                [ ? <hint>
-              ]*
+TAG_RANGE -> BOL ; [ / ] TAG EOL
 
-<text>, <hint>, <answer>, and <distractor> are strings.
+A ;tag line tag range is terminated by EOF or a ;/tag line.
+Questions in a tag range all have its tag.
 
-:: for multi-line format: =, / and ? above must be at start of line, questions end with EOF or next line beginning with a colon or comma.
-
-: single-line format: EOL ends question and no =, / or ? in <answer>, no = or / in <text>, and no ? in <hint> .
-
-If no answer or distractors, then it is a sequence question, whose mind answer is the next question.
-If answer is True, False, T or F (case insensitive), then true/false question.
-If answer, but no distractors, then mind question.
-If multiple answers, then multiple-choices question.
-Otherwise, multiple-choice question.
-
+A numeric tag has the form of an unsigned non-negataive number with optional decimal point. A question may not have more than one numeric tag.
 
 SPECIAL TAGS
 
-.lineseq : each line of multi-line question text is a sequence answer
+.lineseq : each line of question text is a sequence question
 .text : preferatory text, not a question
 .md : text is in markdown format
-.case_sensitive : responses are case sensitive
-
-One tag may be a non-negative decimal number (e.g. difficulty rating).
+.case_sensitive : response is case sensitive
 
 
 JSON FORMAT
 
 Quiz questions json format is list of question dictionaries with keys:
 type: string=true-false, multiiple-choice, multiple-choices, sequence, or mind
-question: text of question
+text: text of question
 responses: list of (is_answer, response) pairs, where response is text or,
            if a true-false question, the boolean answer
 tag: list of tag strings
@@ -81,83 +76,77 @@ hints: list of hint strings
 number: difficulty number
 """
 
-tag_re = r'[a-zA-Z0-9_ ]+'
-tags_cre = re.compile(r',('+tag_re+r')+?')
-tagrange_cre = re.compile(r',(/)?('+tag_re+r')\n')
-line_question_cre = re.compile(r'(.*)([=/][^?]*)(\?.*)')
-mline_question_cre = re.compile(r':(.*)(^[=/].*?)*(^\?.*)(?:\n[,:])',
-                                re.MULTILINE)
+q_split_cre = re.compile(r'(\r)(?=//|==)')
 number_cre = re.compile(r'.\d+|\d+.\d*|\d+')
+isnumber = number_cre.match
 
-def isnumber(string):
-    return number_cre.match(string)
+def istag(string):
+    return filter(None, [c.isalnum() or c in '._ ' for c in string])
 
-text = None
-orig_text = None
+line_num = 1
 def error(msg):
-    line_num = len(orig_text[:-len(text)].split('\n'))
-    full_msg = 'ERROR at line ' + str(line_num) + ': ' + msg
-    sys.stderr.writeln(full_msg)
-    exit()
+    sys.stderr.write('ERROR at line ' + str(line_num) + ': ' + msg + '\n')
+    if debug_mode:
+        breakpoint()
+    else:
+        exit()
 
 def main(args):
     """Command line invocation with argparse args."""
+    global debug_mode, line_num
     if args.outfile:
         writer = UTF8Writer(args.outfile)
     else:
         writer = sys.stdout
+    _input = None
     if args.test:
-        text = test
+        _input = test
+        debug_mode = True
     else:
-        text = args.infile.read()
-    orig_text = text
+        _input = args.infile.read()
+    if not _input.startswith(';'):
+        error('input must start with semicolon')
 
     tags = set()
     quiz = []
-    while True:
-        if not text:
-            break
-        reo = tagrange_cre.match(text)
-        if reo:
-            slash, tag = reo.groups()
-            tag = tag.strip()
-            if slash:
+    for elt in _input[1:].split('\n;'):
+        elt = elt.strip()
+        if not elt:
+            error('bad syntax')
+        if ';' not in elt:  ## tag range
+            if elt.startswith('/'):
+                tag = elt[1:]
+                if not istag(tag):
+                    error('bad range tag')
                 if tag not in tags:
                     error('closing tag without opening')
                 tags.remove(tag)
-            elif tag in tags:
-                error('tag already active')
             else:
-                tags.add(tag)
-        else:
-            if ':' not in text:
-                error('no question')
-            qtags = []
-            tags_str, text = text.split(':', 1)
-            if not text:
-                error('no question body')
-            multiline = text[0] == ':'
-            if tags_str == ',':
-                reo = tags_cre.match(tags_str)
-                if not reo:
-                    error('bad tags format')
-                if tags_str:
-                    qtags = set([tag.strip() for tag in tags_str.split(',')[1:]])
+                tag = elt.strip()
+                if tag in tags:
+                    error('tag already active')
                 else:
-                    qtags = set()
-                qtags |= tags
+                    tags.add(tag)
+        else:
+            tags_str, question = elt.split(';', 1)
+            if not question:
+                error('no question body')
+            qtaglst = filter(None, map(str.strip, tags_str.split(',')))
+            if filter(None, [not istag(tag) for tag in qtaglst]):
+                error('bad tag')
+            qtags = set(qtaglst)
+            intersection = qtags & tags
+            if intersection:
+                error('tag(s) in context: ' + str(intersection))
+            qtags |= tags
             numbers = filter(isnumber, qtags)
             if len(numbers) > 1:
                 error('number tag already present')
-            if multiline:
-                reo = mline_question_cre.match(text)
-            else:
-                reo = line_question_cre.match(text)
-            if not reo:
-                error('ill formed question')
-            question, responses_str, hints_str = reo.groups()
-            responses = [(r[0] == '=', r[1:],strip())
-                         for r in re.findall(r'[/=][^/=]*', responses_str)]
+            lst = map(str.strip, re.split(r'\n(?=??)', question))
+            hints = lst[1:]
+            lst = re.split(r'(\r)(?=//|==)', lst[0])
+            text = lst[0]
+            responses = [(r[0] == '==', r[2:]) for r in lst[1:]]
             if not responses:
                 _type = 'sequence'
             elif len(responses) == 1:
@@ -174,15 +163,15 @@ def main(args):
                 _type = 'multiple-choice'
             else:
                 _type = 'multiple-choices'
-            quiz.append({'question': question.strip(),
+            quiz.append({'text': text,
                          'number': float(numbers[0]) if numbers else None,
-                         'hints': hints_str.split('?')[1:],
+                         'hints': hints,
                          'tags': filter(lambda t: not isnumber(t), qtags),
                          'responses': responses,
                          'type': _type
                         })
-        text = text[reo.end():]
-    json.dump(quiz, writer)
+        line_num += len(elt.split('\n')) + 1
+    json.dump(quiz, writer, indent=4)  ## indent=None for compact form
 
 def get_args():
     formatter = argparse.RawDescriptionHelpFormatter
@@ -206,15 +195,19 @@ def get_args():
 
 sys.stdout = UTF8Writer(sys.stdout)
 
-test = """,foo
-:qtext=a/b
-,bar:q=t
-,a,1:qt
-,/foo
-::mq
-/a
-=b
-,c::mcq
+test = """;foo
+;;qtext==a//b
+;bar;q==t
+;a,1;qt
+;/foo
+;;mq
+//a
+==b
+;c;mcq
+;.lineseq;
+one
+two
+three
 """
 
 if __name__ == "__main__":
