@@ -1,9 +1,12 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2.6
 # -*- coding: utf-8
-
+# Code Copyright (c) Christopher T. Haynes under the MIT License.
 """Svadhyaya question preprocessor: compact text to json."""
 
-# Code Copyright (c) Christopher T. Haynes under the MIT License.
+"""Dependencies: python 2.6 with markdown module installed
+(http://pythonhosted.org/Markdown/index.html). If .md tag is not used,
+markdown is not needed. Should work with later, and some earlier, python2.x provided markdown is available if needed.
+"""
 
 import sys
 import json
@@ -24,8 +27,7 @@ UTF8Reader = codecs.getreader('utf8')
 UTF8Writer = codecs.getwriter('utf8')
 
 
-epilog = """
-QUESTION PREPROCESSOR FORMAT
+epilog = """QUESTION PREPROCESSOR FORMAT
 
 Notation: Grammar rules are of the form ELEMENT_TYPE -> GRAMMAR_EXPRESSION.
 A grammar expression may contain the following notation.
@@ -58,9 +60,12 @@ A numeric tag has the form of an unsigned non-negataive number with optional dec
 
 SPECIAL TAGS
 
-.lineseq : each line of question text is a sequence question
+.lineseq : all but last line of question text is a sequence question
+           (at least two lines required, and no responses or hints allowed)
 .text : preferatory text, not a question
-.md : text is in markdown format
+.md : question, response, and hints text is in markdown format
+      (requires markdown module and associated python version)
+.html : text is in html format
 .case_sensitive : response is case sensitive
 
 
@@ -69,11 +74,11 @@ JSON FORMAT
 Quiz questions json format is list of question dictionaries with keys:
 type: string=true-false, multiiple-choice, multiple-choices, sequence, or mind
 text: text of question
-responses: list of (is_answer, response) pairs, where response is text or,
-           if a true-false question, the boolean answer
+responses (not t/f, sequence or mind): list of (is_answer, response_text) pairs
+answer (t/f or mind): boolean (t/f) or text (mind)
 tag: list of tag strings
-hints: list of hint strings
-number: difficulty number
+hints (if any): list of hint strings
+number (if any): difficulty number
 """
 
 q_split_cre = re.compile(r'(\r)(?=//|==)')
@@ -91,9 +96,20 @@ def error(msg):
     else:
         exit()
 
+Markdown = False  # lazilly loaded markdown.Markdown
 def main(args):
     """Command line invocation with argparse args."""
-    global debug_mode, line_num
+    global debug_mode, line_num, Markdown
+    tags = set()
+
+    def do_text(text):
+        if '.md' in tags:
+            if not Markdown:
+                import markdown
+                Markdown = markdown.Markdown
+            text = str(Markdown.convert(text))
+        return text.strip()
+
     if args.outfile:
         writer = UTF8Writer(args.outfile)
     else:
@@ -107,7 +123,6 @@ def main(args):
     if not _input.startswith(';'):
         error('input must start with semicolon')
 
-    tags = set()
     quiz = []
     for elt in _input[1:].split('\n;'):
         elt = elt.strip()
@@ -128,10 +143,11 @@ def main(args):
                 else:
                     tags.add(tag)
         else:
+            q = {}
             tags_str, question = elt.split(';', 1)
-            if not question:
-                error('no question body')
-            qtaglst = filter(None, map(str.strip, tags_str.split(',')))
+
+            # tag processing
+            qtaglst = filter(None, map(do_text, tags_str.split(',')))
             if filter(None, [not istag(tag) for tag in qtaglst]):
                 error('bad tag')
             qtags = set(qtaglst)
@@ -139,39 +155,58 @@ def main(args):
             if intersection:
                 error('tag(s) in context: ' + str(intersection))
             qtags |= tags
+            q['tags'] = filter(lambda t: not isnumber(t), qtags)
             numbers = filter(isnumber, qtags)
             if len(numbers) > 1:
                 error('number tag already present')
-            lst = map(str.strip, re.split(r'\n(?=??)', question))
-            hints = lst[1:]
-            lst = re.split(r'(\r)(?=//|==)', lst[0])
-            text = lst[0]
-            responses = [(r[0] == '==', r[2:]) for r in lst[1:]]
-            if not responses:
-                _type = 'sequence'
+            elif len(numbers) == 1:
+                q['number'] = float(numbers[0])
+
+            # question/response processing
+            if not question:
+                error('no question body')
+            qlst = map(do_text, re.split(r'\?\?', question))
+            hints = qlst[1:]
+            if hints:
+                q['hints'] = hints
+            trlst = re.split(r'=(?==)|/(?=/)', qlst[0])
+            q['text'] = do_text(trlst[0])
+            responses = [(r[0] == '=', do_text(r[1:])) for r in trlst[1:]]
+            if '.lineseq' in qtags:
+                if responses or hints:
+                    error('no responses or hints in .lineseq mode')
+                lines = map(do_text, q['text'].split('\n'))
+                if len(lines) < 2:
+                    error('at least two lines in .lineseq mode')
+                for line in lines[:-2]:
+                    quiz.append({'text': line,
+                                 'tags': q['tags'],
+                                 'type': 'sequence'
+                                })
+                q['type'] = 'mind'
+                q['text'] = lines[-2]
+                q['answer'] = lines[-1]
+            elif not responses:
+                q['type'] = 'sequence'
             elif len(responses) == 1:
-                _type = 'true-false'
-                if responses[0][0]:
-                    response = responses[0][1].lower()
-                    if response in ['t', 'f', 'true', 'false']:
-                        responses[0][1] = response in ['t', 'true']
-                    else:
-                        error('not a true/false answer')
-                else:
+                if not responses[0][0]:
                     error('no answer')
-            elif len(filter(None, map(lambda r: r[0], responses))) == 1:
-                _type = 'multiple-choice'
+                response = responses[0][1]
+                if response.lower() in ['t', 'f', 'true', 'false']:
+                    q['type'] = 'true-false'
+                    q['answer'] = response.lower() in ['t', 'true']
+                else:
+                    q['type'] = 'mind'
+                    q['answer'] = response
             else:
-                _type = 'multiple-choices'
-            quiz.append({'text': text,
-                         'number': float(numbers[0]) if numbers else None,
-                         'hints': hints,
-                         'tags': filter(lambda t: not isnumber(t), qtags),
-                         'responses': responses,
-                         'type': _type
-                        })
+                q['responses'] = responses
+                if len(filter(None, map(lambda r: r[0], responses))) == 1:
+                    q['type'] = 'multiple-choice'
+                else:
+                    q['type'] = 'multiple-choices'
+            quiz.append(q)
         line_num += len(elt.split('\n')) + 1
-    json.dump(quiz, writer, indent=4)  ## indent=None for compact form
+    json.dump(quiz, writer, indent=1, sort_keys=True)
 
 def get_args():
     formatter = argparse.RawDescriptionHelpFormatter
@@ -199,11 +234,14 @@ test = """;foo
 ;;qtext==a//b
 ;bar;q==t
 ;a,1;qt
+;;q with
+??    hint
 ;/foo
 ;;mq
 //a
 ==b
 ;c;mcq
+;;mind==answer
 ;.lineseq;
 one
 two
