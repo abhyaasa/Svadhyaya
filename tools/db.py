@@ -3,11 +3,6 @@
 # Code Copyright (c) Christopher T. Haynes under the MIT License.
 """Svadhyaya question preprocessor: compact text to json."""
 
-"""Dependencies: python 2.6 with markdown module installed
-(http://pythonhosted.org/Markdown/index.html). If .md tag is not used,
-markdown is not needed. Should work with later, and some earlier, python2.x provided markdown is available if needed.
-"""
-
 import sys
 import json
 from StringIO import StringIO
@@ -21,11 +16,8 @@ try:
 except:
     pass
 
-debug_mode = False
-
 UTF8Reader = codecs.getreader('utf8')
 UTF8Writer = codecs.getwriter('utf8')
-
 
 epilog = """QUESTION PREPROCESSOR FORMAT
 
@@ -72,35 +64,42 @@ SPECIAL TAGS
 JSON FORMAT
 
 Quiz questions json format is list of question dictionaries with keys:
-type: string=true-false, multiiple-choice, multiple-choices, sequence, or mind
+type: string = text, true-false, multiiple-choice, multiple-choices,
+      sequence, or mind
 text: text of question
-responses (not t/f, sequence or mind): list of (is_answer, response_text) pairs
-answer (t/f or mind): boolean (t/f) or text (mind)
+responses (not text, t/f, sequence or mind type):
+          list of (is_answer, response_text) pairs
+answer (t/f or mind type): boolean (t/f) or text (mind)
 tag: list of tag strings
 hints (if any): list of hint strings
 number (if any): difficulty number
+
+Dependencies: python 2.6 with markdown module installed
+(http://pythonhosted.org/Markdown/index.html). If .md tag is not used,
+markdown is not needed. Should work with later, and some earlier, python2.x provided markdown is available if needed.
+
+TODO: add unicode support
 """
 
-q_split_cre = re.compile(r'(\r)(?=//|==)')
 number_cre = re.compile(r'.\d+|\d+.\d*|\d+')
 isnumber = number_cre.match
 
 def istag(string):
     return filter(None, [c.isalnum() or c in '._ ' for c in string])
 
-line_num = 1
-def error(msg):
-    sys.stderr.write('ERROR at line ' + str(line_num) + ': ' + msg + '\n')
-    if debug_mode:
-        breakpoint()
-    else:
-        exit()
-
-Markdown = False  # lazilly loaded markdown.Markdown
 def main(args):
     """Command line invocation with argparse args."""
-    global debug_mode, line_num, Markdown
+    Markdown = None  # lazilly loaded markdown.Markdown
+    debug_mode = False
     tags = set()
+    line_num = 1
+
+    def error(msg):
+        sys.stderr.write('ERROR at line ' + str(line_num) + ': ' + msg + '\n')
+        if debug_mode:
+            breakpoint()
+        else:
+            exit()
 
     def do_text(text):
         if '.md' in tags:
@@ -172,7 +171,11 @@ def main(args):
             trlst = re.split(r'=(?==)|/(?=/)', qlst[0])
             q['text'] = do_text(trlst[0])
             responses = [(r[0] == '=', do_text(r[1:])) for r in trlst[1:]]
-            if '.lineseq' in qtags:
+            if '.text' in qtags:
+                if responses or hints:
+                    error('no hints or responses in text mode')
+                q['type'] = 'text'
+            elif '.lineseq' in qtags:
                 if responses or hints:
                     error('no responses or hints in .lineseq mode')
                 lines = map(do_text, q['text'].split('\n'))
