@@ -31,10 +31,11 @@ BOL/EOL beginning/end of line. EOF end of file.
 INPUT -> { QUESTION | TAG_RANGE } +
 
 QUESTION -> BOL ; [ TAG,... ] ; TEXT
-                { == ANSWER } | // DISTRACTOR } *
-                { ?? HINT } *
+                { <ws>= ANSWER } | <ws>/ DISTRACTOR } *
+                { <ws>? HINT } *
+where
 
-TEXT, ANSWER, DISTRACTOR, and HINT are strings in which ==, //, and ?? may not appear.
+TEXT, ANSWER, DISTRACTOR, and HINT are strings in which the <ws> prefixed sequences above may not appear. This may be avoided by using \?, \=, or \/, with the backslash escape characters removed after parsing.
 
 If no answer or distractors, then it is a sequence question, whose mind answer is the next question. If multiple answers, then multiple-choices question.
 Otherwise, if one or more distractors, then multiple-choice question.
@@ -107,7 +108,7 @@ def main(args):
                 import markdown
                 Markdown = markdown.Markdown
             text = str(Markdown.convert(text))
-        return text.strip()
+        return re.sub(r'\\([=/]?)', r'\1', text.strip())
 
     if args.outfile:
         writer = UTF8Writer(args.outfile)
@@ -164,11 +165,11 @@ def main(args):
             # question/response processing
             if not question:
                 error('no question body')
-            qlst = map(do_text, re.split(r'\?\?', question))
-            hints = qlst[1:]
+            qlst = re.split(r'\s\?', question)
+            hints = map(do_text, qlst[1:])
             if hints:
                 q['hints'] = hints
-            trlst = re.split(r'=(?==)|/(?=/)', qlst[0])
+            trlst = re.split(r'\s(?==)|\s(?=/)', qlst[0])
             q['text'] = do_text(trlst[0])
             responses = [(r[0] == '=', do_text(r[1:])) for r in trlst[1:]]
             if '.text' in qtags:
@@ -234,17 +235,17 @@ def get_args():
 sys.stdout = UTF8Writer(sys.stdout)
 
 test = """;foo
-;;qtext==a//b
-;bar;q==t
+;;qtext =a /b
+;bar;q =t
 ;a,1;qt
 ;;q with
-??    hint
+?    hint \?questionmark
 ;/foo
 ;;mq
-//a
-==b
+/a
+=b
 ;c;mcq
-;;mind==answer
+;;mind =answer a \= b
 ;.lineseq;
 one
 two

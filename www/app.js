@@ -64,6 +64,15 @@ angular.module('app', ['ionic'])
                 }
             }
         })
+        .state('tabs.help', {
+            url: '/help',
+            views: {
+                'settings-tab': {
+                    templateUrl: 'views/help/help.html',
+                    controller: 'HelpController'
+                }
+            }
+        })
         .state('tabs.reset', {
             url: '/about',
             views: {
