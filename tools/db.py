@@ -90,7 +90,6 @@ def istag(string):
 
 def main(args):
     """Command line invocation with argparse args."""
-    Markdown = None  # lazilly loaded markdown.Markdown
     debug_mode = False
     tags = set()
     line_num = 1
@@ -103,10 +102,7 @@ def main(args):
             exit()
 
     def do_text(text):
-        if '.md' in tags:
-            if not Markdown:
-                import markdown
-                Markdown = markdown.Markdown
+        if markdown_mode:
             text = str(Markdown.convert(text))
         return re.sub(r'\\([=/]?)', r'\1', text.strip())
 
@@ -122,9 +118,13 @@ def main(args):
         _input = args.infile.read()
     if not _input.startswith(';'):
         error('input must start with semicolon')
-
+    if '.md' in _input:
+        import markdown
+        Markdown = markdown.Markdown
+        
     quiz = []
     for elt in _input[1:].split('\n;'):
+        markdown_mode = False
         elt = elt.strip()
         if not elt:
             error('bad syntax')
@@ -155,6 +155,9 @@ def main(args):
             if intersection:
                 error('tag(s) in context: ' + str(intersection))
             qtags |= tags
+            if '.md' in qtags:
+                markdown_mode = True
+                qtags.remove('.md')
             q['tags'] = filter(lambda t: not isnumber(t), qtags)
             numbers = filter(isnumber, qtags)
             if len(numbers) > 1:
