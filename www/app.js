@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app', ['ionic'])
+angular.module('app', ['ionic', 'hc.marked'])
 
 .config(function ($stateProvider, $urlRouterProvider) {
 
