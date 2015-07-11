@@ -25,11 +25,11 @@ TODO
 This app is in an early stage of development, with much remaining to do,
 including the following:
 
+* backbutton from help on from settings
+* backbutton with inverted svg font possible?
 * Fill out this page
-* ? (help) in nav bar
 * help and about .md content: see notes/markdown_error.txt
 * help content context sensitive
-* ?? fix app.js tabs
 * functionality
 
 Copyright and License
