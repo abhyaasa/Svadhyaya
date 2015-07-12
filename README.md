@@ -31,6 +31,12 @@ including the following:
 * help and about .md content: see notes/markdown_error.txt
 * help content context sensitive
 * functionality
+* unit testing
+* ios and android simulator testing
+* ios and android device testing
+* make injected functions minifiable, e.g. function (a, b){} =>
+  ['a', 'b', function (a, b){}
+* publish app
 
 Copyright and License
 ---------------------

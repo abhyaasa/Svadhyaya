@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app', ['ionic', 'hc.marked'])
+angular.module('app', ['ionic', 'ionic.utils', 'hc.marked'])
 
 .config(function ($stateProvider, $urlRouterProvider) {
 
@@ -128,6 +128,10 @@ angular.module('app', ['ionic', 'hc.marked'])
 .run(function ($ionicPlatform, $rootScope) {
     // replaced with app version if device is defined
     $rootScope.version = '0.0.0';
+
+    console.log('RUNNING APP'); // //
+    console.log(getData.text('data/test.json'));
+    console.log(getData.json('dtat/test.json'));
 
     $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the
