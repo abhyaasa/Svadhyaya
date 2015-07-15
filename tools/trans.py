@@ -1,13 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2.7
 # -*- coding: utf-8
+# Code Copyright (c) Christopher T. Haynes under the MIT License.
 
 """Sanskrit transliteration conversion."""
-
-# Code Copyright (c) Christopher T. Haynes with MIT License.
-
-# TODO
-# github
-# provide web-based host, via Rusthon?
 
 import sys
 import json
@@ -72,7 +67,9 @@ vs_to_v = {u'\u093E': u'\u0906',  # A
            }
 
 # map Unicode Devanagari vowels to assocated dependent vowel signs
-v_to_vs = {v : k for k, v in vs_to_v.items()}
+v_to_vs = {}
+for k, v in vs_to_v.items():
+    v_to_vs[v] = k
 
 # lists of (devanagari, ascii) character associations
 digits = [(unichr(ord(dud['zero']) + i), str(i)) for i in range(10)]
