@@ -16,6 +16,8 @@ try:
 except:
     pass
 
+from trans import translate
+
 UTF8Reader = codecs.getreader('utf8')
 UTF8Writer = codecs.getwriter('utf8')
 
@@ -41,7 +43,7 @@ If no answer or distractors, then it is a sequence question, whose mind answer i
 Otherwise, if one or more distractors, then multiple-choice question.
 If one answer and no distractors, then if answer is True, False, T or F (case insensitive), then true/false question, and otherwise mind answer question.
 
-TAG is a sequence of letter (case insensitive), digit, dot, underscore, or
+TAG is a sequence of letter (case insensitive), digit, dash, dot, underscore, or
 space characters. Spaces are trimmed at both ends.
 
 TAG_RANGE -> BOL ; [ / ] TAG EOL
@@ -60,6 +62,14 @@ SPECIAL TAGS
       (requires markdown module and associated python version)
 .html : text is in html format
 .case_sensitive : response is case sensitive
+.tr : transliterate responses
+.tq : transliterate question
+.th : transliterate hints
+.iast : IAST source for transliteration
+.itrans : ITRANS source for transliteration (default)
+.harvard-kyoto : Harvard-Kyoto source for transliteration
+.slp1 : SLP1 source for transliteration
+.velthuis : Velthuis source for transliteration
 
 
 JSON FORMAT
@@ -74,6 +84,7 @@ answer (t/f or mind type): boolean (t/f) or text (mind)
 tag: list of tag strings
 hints (if any): list of hint strings
 number (if any): difficulty number
+The "text" of a question, response, answer, or hint may be a unicode string or a (trans_to-text, devanagari) pair of unicode strings, where the trans_to program argument indicates the transliteration scheme of the first element.
 
 Dependencies: python 2.6 with markdown module installed
 (http://pythonhosted.org/Markdown/index.html). If .md tag is not used,
@@ -84,9 +95,12 @@ TODO: add unicode support
 
 number_cre = re.compile(r'.\d+|\d+.\d*|\d+')
 isnumber = number_cre.match
+from_tags = '.iast .harvard-kyoto .itrans .velthuis .slp1 .devanagari'.split()
+# tags removed after db processing
+db_tags = set(from_tags + '.tr .tq .th .md .lineseq'.split())
 
 def istag(string):
-    return filter(None, [c.isalnum() or c in '._ ' for c in string])
+    return filter(None, [c.isalnum() or c in '._ -' for c in string])
 
 def main(args):
     """Command line invocation with argparse args."""
@@ -101,10 +115,15 @@ def main(args):
         else:
             exit()
 
-    def do_text(text):
+    def do_text(text, translit=False):
         if markdown_mode:
             text = str(Markdown.convert(text))
-        return re.sub(r'\\([=/]?)', r'\1', text.strip())
+        text = re.sub(r'\\([=/]?)', r'\1', text.strip())
+        if not translit:
+            return text
+        else:
+            return (translate(text, trans_from, args.trans_to),
+                    translate(text, trans_from, 'devanagari'))
 
     if args.outfile:
         writer = UTF8Writer(args.outfile)
@@ -121,10 +140,11 @@ def main(args):
     if '.md' in _input:
         import markdown
         Markdown = markdown.Markdown
-        
+
     quiz = []
     for elt in _input[1:].split('\n;'):
         markdown_mode = False
+        devanagari = False
         elt = elt.strip()
         if not elt:
             error('bad syntax')
@@ -146,19 +166,23 @@ def main(args):
             q = {}
             tags_str, question = elt.split(';', 1)
 
-            # tag processing
+            # tag processing            qt
             qtaglst = filter(None, map(do_text, tags_str.split(',')))
             if filter(None, [not istag(tag) for tag in qtaglst]):
                 error('bad tag')
             qtags = set(qtaglst)
+            if len(qtags) < len(qtaglst):
+                error('duplicate tag')
             intersection = qtags & tags
             if intersection:
                 error('tag(s) in context: ' + str(intersection))
             qtags |= tags
             if '.md' in qtags:
                 markdown_mode = True
-                qtags.remove('.md')
-            q['tags'] = filter(lambda t: not isnumber(t), qtags)
+            q_from_tags = from_tags.intersection(qtags)
+            if len(q_from_tags) > 1:
+                error('at most one from tag')
+            trans_from = trans_from_tags.pop()[1:] if q_from_tags else 'itrans'
             numbers = filter(isnumber, qtags)
             if len(numbers) > 1:
                 error('number tag already present')
@@ -169,12 +193,13 @@ def main(args):
             if not question:
                 error('no question body')
             qlst = re.split(r'\s\?', question)
-            hints = map(do_text, qlst[1:])
+            hints = [do_text(s, '.th' in qtags) for s in qlst[1:]]
             if hints:
                 q['hints'] = hints
             trlst = re.split(r'\s(?==)|\s(?=/)', qlst[0])
-            q['text'] = do_text(trlst[0])
-            responses = [(r[0] == '=', do_text(r[1:])) for r in trlst[1:]]
+            q['text'] = do_text(trlst[0], 'tq' in qtags)
+            responses = [(r[0] == '=', do_text(r[1:], '.tr' in qtags))
+                         for r in trlst[1:]]
             if '.text' in qtags:
                 if responses or hints:
                     error('no hints or responses in text mode')
@@ -182,12 +207,13 @@ def main(args):
             elif '.lineseq' in qtags:
                 if responses or hints:
                     error('no responses or hints in .lineseq mode')
-                lines = map(do_text, q['text'].split('\n'))
+                lines = [do_text(line, '.tq' in qtags)
+                         for line in q['text'].split('\n')]
                 if len(lines) < 2:
                     error('at least two lines in .lineseq mode')
                 for line in lines[:-2]:
                     quiz.append({'text': line,
-                                 'tags': q['tags'],
+                                 'tags': qtags.symmetric_difference(db_tags),
                                  'type': 'sequence'
                                 })
                 q['type'] = 'mind'
@@ -211,6 +237,8 @@ def main(args):
                     q['type'] = 'multiple-choice'
                 else:
                     q['type'] = 'multiple-choices'
+            qtags.symmetric_difference_update(db_tags)
+            q['tags'] = filter(lambda t: not isnumber(t), qtags)
             quiz.append(q)
         line_num += len(elt.split('\n')) + 1
     json.dump(quiz, writer, indent=1, sort_keys=True)
@@ -221,12 +249,13 @@ def get_args():
         description=__doc__,
         epilog=epilog,
         formatter_class=formatter)
-    p.add_argument('infile', nargs='?', default='-',
-                   type=str,
+    p.add_argument('infile', nargs='?', default='-', type=str,
                    help='compact format input file, default stdin (-)')
     p.add_argument('outfile', nargs='?', default=None,
                    type=argparse.FileType('w'),
                    help='json format file, default stdout')
+    p.add_argument('--trans_to', type=str, default='iast',
+                   help='transliteration translation output form')
     p.add_argument('-t', '--test', action='store_true',
                    help='run with test variable value as input')
     args = p.parse_args()

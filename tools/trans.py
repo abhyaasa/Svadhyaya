@@ -3,7 +3,7 @@
 
 """Sanskrit transliteration conversion."""
 
-# Code Copyright (c) Christopher T. Haynes under the MIT License.
+# Code Copyright (c) Christopher T. Haynes with MIT License.
 
 # TODO
 # github
@@ -165,7 +165,7 @@ def make_trans_dict(trans):
     together make an associated letter string in trans.
     An empty suffix, if any, is always last.
     """
-    # First build table mapping trans character string to its table row. 
+    # First build table mapping trans character string to its table row.
     col = table[0].index(trans)
     dict = {}
     for row in range(2, len(table)):
@@ -188,7 +188,7 @@ def make_trans_dict(trans):
 def translate(text, from_, to):
     """Translates unicode text between indicated transliteration schemes."""
     col = table[0].index(to)
-    if not table[1][table[0].index(from_)]: 
+    if not table[1][table[0].index(from_)]:
         text = text.lower()  # not case sensitive
     trans_dict = make_trans_dict(from_)
     output = StringIO()
@@ -351,7 +351,7 @@ def main(args):
 sys.stdout = UTF8Writer(sys.stdout)
 
 table = make_table()
-    
+
 if __name__ == "__main__":
     p = argparse.ArgumentParser(
         description=__doc__,
