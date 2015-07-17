@@ -1,0 +1,21 @@
+{
+	"regex": {
+		"prefix": "(?:\\/\\*|\\/\\/|#|<!--) *@?(",
+		"suffix": "):? *(.*?) ?(?=\\*/|\\n|$|-->)"
+	},
+	"tags": ["TODO",
+        "xx",
+        "NOTE",
+        "FIX ?ME",
+        "CHANGES",
+        "FUTURE"],
+	"case": false,
+	"search": {
+		"scope": "project",
+		"excludeFolders": ["lib"],
+		"excludeFiles": []
+	},
+	"sort": {
+		"done": false
+	}
+}

@@ -33,23 +33,14 @@ angular.module('app', ['ionic', 'ionic.utils'])
     };
 }])
 
-// TODO complete this
 .service('getData', function ($http) {
     // from http://forum.ionicframework.com/t/\
     // reading-json-file-from-local-for-android-ios/10648
-    // TODO test if this is needed
-    var appPath = '';
+    var appPath = '/data/';
     if (ionic.Platform.isAndroid()) {
-        appPath = '/android_asset/www/';
+        appPath = '/android_asset/www' + appPath;
     }
-
-    this.text = function (path) { // path relative to app www/
-        $http.get(appPath + path).success(function (data) {
-            return data;
-        });
-    };
-
-    this.json = function (path) { // path relative to app www/
-        return JSON.parse(this.text(path));
+    return function (path) { // path relative to app www/data
+        return $http.get(appPath + path);
     };
 });

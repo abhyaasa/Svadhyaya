@@ -129,9 +129,10 @@ angular.module('app', ['ionic', 'ionic.utils', 'hc.marked'])
     // replaced with app version if device is defined
     $rootScope.version = '0.0.0';
 
-    console.log('RUNNING APP'); // //
-    console.log(getData.text('data/test.json')); // // empty string
-    // // console.log(getData.json('data/test.json'));
+    getData('test.json')
+        .success(function (data) {
+            console.log(JSON.stringify(data));
+        }); // xx
 
     $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the

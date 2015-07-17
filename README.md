@@ -25,10 +25,10 @@ TODO
 This app is in an early stage of development, with much remaining to do,
 including the following:
 
+* TODO and xx (temporary, remove) comments
 * backbutton from help on from settings
 * backbutton with inverted svg font possible?
-* Fill out this page
-* help and about .md content: see notes/markdown_error.txt
+* fill out this page
 * help content context sensitive
 * functionality
 * unit testing
