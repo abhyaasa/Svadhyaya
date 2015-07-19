@@ -129,7 +129,7 @@ angular.module('app', ['ionic', 'tests'])
     };
 })
 
-.run(function ($ionicPlatform, $rootScope, tests) {
+.run(function ($ionicPlatform, $rootScope, testAll) {
     // replaced with app version if device is defined
     $rootScope.version = '0.0.0';
 
@@ -150,5 +150,5 @@ angular.module('app', ['ionic', 'tests'])
         }
     });
 
-    tests(); // PUBLISH remove
+    testAll(); // PUBLISH remove
 });
