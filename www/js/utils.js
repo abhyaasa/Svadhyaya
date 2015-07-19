@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ionic.utils', ['ionic'])
+angular.module('utils', ['ionic'])
 
 /* from http://learn.ionicframework.com/formulas/localstorage/
 Usage example:
