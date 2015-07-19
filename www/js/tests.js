@@ -2,9 +2,10 @@
 
 angular.module('tests', ['utils'])
 
-.service('testAll', function (testGetData) {
+.service('testAll', function (testGetData, testLocalStorage) {
     return function () {
         testGetData();
+        testLocalStorage();
     };
 })
 
@@ -17,6 +18,9 @@ angular.module('tests', ['utils'])
     };
 })
 
-.service('testLocalStorage', function (getData) {
-    // xx
+.service('testLocalStorage', function (localStorage) {
+    return function () {
+        localStorage.set('a', 3);
+        console.log('localStorage: ' + localStorage.get('a'));
+    };
 });
