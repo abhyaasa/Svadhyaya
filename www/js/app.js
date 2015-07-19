@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app', ['ionic', 'ionic.utils', 'hc.marked'])
+angular.module('app', ['ionic', 'tests'])
 
 .config(function ($stateProvider, $urlRouterProvider) {
 
@@ -116,6 +116,10 @@ angular.module('app', ['ionic', 'ionic.utils', 'hc.marked'])
     return Decks;
 })
 
+/*
+  Use directive name as tag, attribute, class name, or after directive: in comment.
+  The associated element is removed.
+*/
 .directive('x', function () {
     return {
         restrict: 'AE',
@@ -125,14 +129,9 @@ angular.module('app', ['ionic', 'ionic.utils', 'hc.marked'])
     };
 })
 
-.run(function ($ionicPlatform, $rootScope, getData) {
+.run(function ($ionicPlatform, $rootScope, tests) {
     // replaced with app version if device is defined
     $rootScope.version = '0.0.0';
-
-    getData('test.json')
-        .success(function (data) {
-            console.log(JSON.stringify(data));
-        }); // xx
 
     $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the
@@ -150,4 +149,6 @@ angular.module('app', ['ionic', 'ionic.utils', 'hc.marked'])
             });
         }
     });
+
+    tests(); // PUBLISH remove
 });
