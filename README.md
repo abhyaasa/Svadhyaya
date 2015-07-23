@@ -19,24 +19,9 @@ This "flashcard" app is designed to supports this site with an expandiing
 range of flashcard "decks" (quetion databases), and is suitable for a wide
 range of study through user-created flashcard decks.
 
-TODO
-----
+This app is in an early stage of development, with much remaining to do. See the
+**issues.md** file.
 
-This app is in an early stage of development, with much remaining to do,
-including the following:
-
-* TODO and xx (temporary, remove) comments
-* backbutton from help on from settings
-* backbutton with inverted svg font possible?
-* fill out this page
-* help content context sensitive
-* functionality
-* unit testing
-* ios and android simulator testing
-* ios and android device testing
-* make injected functions minifiable, e.g. function (a, b){} =>
-  ['a', 'b', function (a, b){}
-* publish app
 
 Copyright and License
 ---------------------

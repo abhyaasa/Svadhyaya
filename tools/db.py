@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.6
+#!/usr/bin/env python
 # -*- coding: utf-8
 # Code Copyright (c) Christopher T. Haynes under the MIT License.
 
@@ -88,9 +88,9 @@ hints (if any): list of hint strings
 number (if any): difficulty number
 The "text" of a question, response, answer, or hint may be a unicode string or a (trans_to-text, devanagari) pair of unicode strings, where the trans_to program argument indicates the transliteration scheme of the first element.
 
-Dependencies: python 2.6 with markdown module installed
+Dependencies: python 2.6+ (maybe earlier) with markdown module installed
 (http://pythonhosted.org/Markdown/index.html). If .md tag is not used,
-markdown is not needed. Should work with later, and some earlier, python2.x provided markdown is available if needed.
+markdown is not needed. 
 """
 
 number_cre = re.compile(r'.\d+|\d+.\d*|\d+')

@@ -1,7 +1,7 @@
 {
     "name": "svadhaya",
     "version": "0.0.1",
-    "description": "Svadhaya: An Ionic project",
+    "description": "Flash card app for SGS Datta Deepam or personal use",
     "dependencies": {
         "gulp": "^3.5.6",
         "gulp-sass": "^0.7.1",
@@ -14,7 +14,14 @@
         "gulp-util": "^2.2.14",
         "shelljs": "^0.3.0"
     },
-    "author": "Christopher T. Haynes",
+    "author": "Christopher T. Haynes <vasudeva.chaynes@gmail.com>",
     "license": "MIT",
+    "bugs": {
+        "email": "vasudeva.chaynes@gmail.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/vasudeva-chaynes/Svadhyaya"
+    },
     "cordovaPlugins": []
 }

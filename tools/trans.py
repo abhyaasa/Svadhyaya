@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 # -*- coding: utf-8
 # Code Copyright (c) Christopher T. Haynes under the MIT License.
 

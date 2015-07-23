@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app', ['ionic', 'tests'])
+angular.module('app', ['ionic', 'utils', 'tests'])
 
 .config(function ($stateProvider, $urlRouterProvider) {
 
@@ -95,23 +95,7 @@ angular.module('app', ['ionic', 'tests'])
     $urlRouterProvider.otherwise('/tabs/decks');
 })
 
-.factory('Settings', function () {
-    var Settings = {
-        qrandom: false,
-        arandom: false,
-        devanagari: false,
-        transliteration: 'IAST',
-        hintPercent: 10,
-        filter: {
-            max: 50,
-            min: 50,
-            tags: []
-        }
-    };
-    return Settings;
-})
-
-.factory('Decks', function () {
+.factory('decks', function () {
     var Decks = {};
     return Decks;
 })
@@ -129,7 +113,11 @@ angular.module('app', ['ionic', 'tests'])
     };
 })
 
+<<<<<<< HEAD
 .run(function ($ionicPlatform, $rootScope, testAll) {
+=======
+.run(function ($ionicPlatform, $rootScope, testAll, settings) {
+>>>>>>> settings
     // replaced with app version if device is defined
     $rootScope.version = '0.0.0';
 
@@ -150,5 +138,17 @@ angular.module('app', ['ionic', 'tests'])
         }
     });
 
+<<<<<<< HEAD
+=======
+    angular.module('utils').factory('_', ['$window', function () {
+        return $window._; // assumes underscore has already been loaded on the page
+    }]);
+
+    $rootScope._ = window._; // underscore use in views, ng-repeat="x in _.range(3)"
+    //    settings.hintPercent = 20;
+    //    console.log('Settings: ' + JSON.stringify(settings) + settings);
+    // TODO load settings from localstorage
+
+>>>>>>> settings
     testAll(); // PUBLISH remove
 });
