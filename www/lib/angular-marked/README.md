@@ -3,7 +3,7 @@
 
 AngularJS Markdown using [marked](https://github.com/chjj/marked).
 
-**Please note:** neither this directive nor marked (by default) implementation sanitization. As always, sanitizing is necessary for user-generated content.
+**Please note:** neither this directive nor marked (by default) implement sanitization. As always, sanitizing is necessary for user-generated content.
 
 [![get this with bower](http://benschwarz.github.io/bower-badges/badge@2x.png)](http://bower.io/ "get this with bower")
 
@@ -67,7 +67,7 @@ Bind the markdown input to a scope variable:
 Include a markdown file:
 
 ```html
-    <div marked ng-include="'README.md'">
+    <div marked src="'README.md'">
     </div>
     <!-- Uses markdown content from README.md -->
 ```

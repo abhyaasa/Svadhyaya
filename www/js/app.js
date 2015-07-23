@@ -113,11 +113,7 @@ angular.module('app', ['ionic', 'utils', 'tests'])
     };
 })
 
-<<<<<<< HEAD
 .run(function ($ionicPlatform, $rootScope, testAll) {
-=======
-.run(function ($ionicPlatform, $rootScope, testAll, settings) {
->>>>>>> settings
     // replaced with app version if device is defined
     $rootScope.version = '0.0.0';
 
@@ -138,17 +134,5 @@ angular.module('app', ['ionic', 'utils', 'tests'])
         }
     });
 
-<<<<<<< HEAD
-=======
-    angular.module('utils').factory('_', ['$window', function () {
-        return $window._; // assumes underscore has already been loaded on the page
-    }]);
-
-    $rootScope._ = window._; // underscore use in views, ng-repeat="x in _.range(3)"
-    //    settings.hintPercent = 20;
-    //    console.log('Settings: ' + JSON.stringify(settings) + settings);
-    // TODO load settings from localstorage
-
->>>>>>> settings
     testAll(); // PUBLISH remove
 });

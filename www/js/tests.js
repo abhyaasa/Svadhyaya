@@ -2,12 +2,6 @@
 
 angular.module('tests', ['utils'])
 
-<<<<<<< HEAD
-.service('testAll', function (testGetData, testLocalStorage) {
-    return function () {
-        testGetData();
-        testLocalStorage();
-=======
 .service('testAll', function (testGetData, testLocalStorage, _) {
     return function () {
         testGetData();
@@ -16,7 +10,6 @@ angular.module('tests', ['utils'])
         console.log('test underscore: ' + _([1, 2, 3]).map(function (n) {
             return n * 2;
         }));
->>>>>>> settings
     };
 })
 
@@ -31,14 +24,9 @@ angular.module('tests', ['utils'])
 
 .service('testLocalStorage', function (localStorage) {
     return function () {
-<<<<<<< HEAD
-        localStorage.set('a', 3);
-        console.log('localStorage: ' + localStorage.get('a'));
-=======
         localStorage.set('key', 3);
         console.log('test localStorage: ' + localStorage.get('key'));
         console.log('test localStorage undefined: ' +
             (localStorage.get('x') === undefined));
->>>>>>> settings
     };
 });
