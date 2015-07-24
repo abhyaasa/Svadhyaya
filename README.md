@@ -27,4 +27,4 @@ Copyright and License
 ---------------------
 
 Code is MIT-licensed, see LICENSE file.  SGS Datta Deepam holds copyright
-on question databases developed in support of its content.
+on question databases developed in support of its content (as in data/decks/).

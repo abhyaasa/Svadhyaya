@@ -15,7 +15,7 @@ angular.module('tests', ['utils'])
 
 .service('testGetData', function (getData) {
     return function () {
-        getData('test.json')
+        getData('deck_names.json')
             .success(function (data) {
                 console.log('test getData: ' + JSON.stringify(data));
             });
