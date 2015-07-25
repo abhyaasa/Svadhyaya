@@ -27,7 +27,8 @@ angular.module('utils', ['ionic'])
     if (ionic.Platform.isAndroid()) {
         appPath = '/android_asset/www' + appPath;
     }
-    return function (path) { // path relative to app www/data
+    return function (path) { // path is relative to app www/data
+        // returns promise
         return $http.get(appPath + path);
     };
 });
