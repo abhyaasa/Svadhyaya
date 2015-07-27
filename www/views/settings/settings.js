@@ -4,20 +4,18 @@ angular.module('app')
 
 .controller('SettingsController', function ($scope) {})
 
-.service('settings', function () {
-    return {
-        randomQuestions: false,
-        randomResponses: false,
-        devanagari: false,
-        hintPercent: 10,
-        filter: {
-            max: 50,
-            min: 50,
-            required: [],
-            exclude: [],
-            include: []
-        }
-    };
+.value('settings', {
+    randomQuestions: false,
+    randomResponses: false,
+    devanagari: false,
+    hintPercent: 10,
+    filter: {
+        max: 50,
+        min: 50,
+        required: [],
+        exclude: [],
+        include: []
+    }
 })
 
 .service('restoreSettings', function (settings, localStorage, _) {

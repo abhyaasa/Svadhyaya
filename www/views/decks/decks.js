@@ -5,7 +5,6 @@ angular.module('app')
 // return filename w/o suffic, e.g. 'foo.json' | stripSuffix ==> foo
 .filter('stripSuffix', function () {
     return function (input) {
-        console.log('----input: ' + input);
         return input.match(/.*(?=\.)/)[0];
     };
 })
