@@ -2,7 +2,7 @@
 # -*- coding: utf-8
 # Code Copyright (c) Christopher T. Haynes under the MIT License.
 
-"""Svadhyaya question preprocessor: compact text to json."""
+"""Svadhyaya cdeck preprocessor: compact deck text to json."""
 
 import sys
 import json
@@ -23,7 +23,12 @@ except:
 UTF8Reader = codecs.getreader('utf8')
 UTF8Writer = codecs.getwriter('utf8')
 
-epilog = """QUESTION PREPROCESSOR FORMAT
+EPILOG = """
+Dependencies: python 2.6+ (maybe earlier). If the .md tag is used, the markdown module
+(http://pythonhosted.org/Markdown/index.html) must be installed.
+"""
+
+FORMAT_HELP = """QUESTION PREPROCESSOR FORMAT
 
 Notation: Grammar rules are of the form ELEMENT_TYPE -> GRAMMAR_EXPRESSION.
 A grammar expression may contain the following notation.
@@ -87,10 +92,6 @@ tag: list of tag strings
 hints (if any): list of hint strings
 number (if any): difficulty number
 The "text" of a question, response, answer, or hint may be a unicode string or a (trans_to-text, devanagari) pair of unicode strings, where the trans_to program argument indicates the transliteration scheme of the first element.
-
-Dependencies: python 2.6+ (maybe earlier) with markdown module installed
-(http://pythonhosted.org/Markdown/index.html). If .md tag is not used,
-markdown is not needed. 
 """
 
 number_cre = re.compile(r'.\d+|\d+.\d*|\d+')
@@ -133,10 +134,15 @@ def main(args):
     if args.test:
         _input = test
         debug_mode = True
+    elif args.format_help:
+        print FORMAT_HELP
+        return
+    elif str(args.infile) == 'None':
+        _input = UTF8Reader(sys.stdin).read()
     else:
-        _input = args.infile.read()
+        _input = codecs.open(str(args.infile), "r", "utf-8").read()
     if not _input.startswith(';'):
-        error('input must start with semicolon')
+        error('input must start with semicolon, not: "' + _input[:5] + '"')
     if '.md' in _input:
         from markdown import markdown
 
@@ -147,7 +153,7 @@ def main(args):
         elt = elt.strip()
         if not elt:
             error('bad syntax')
-        if ';' not in elt:  ## tag range
+        if ';' not in elt:  # tag range
             if elt.startswith('/'):
                 tag = elt[1:]
                 if not istag(tag):
@@ -165,7 +171,7 @@ def main(args):
             q = {}
             tags_str, question = elt.split(';', 1)
 
-            # tag processing            qt
+            # tag processing
             qtaglst = filter(None, map(do_text, tags_str.split(',')))
             if filter(None, [not istag(tag) for tag in qtaglst]):
                 error('bad tag')
@@ -246,13 +252,16 @@ def get_args():
     formatter = argparse.RawDescriptionHelpFormatter
     p = argparse.ArgumentParser(
         description=__doc__,
-        epilog=epilog,
+        epilog = EPILOG,
         formatter_class=formatter)
-    p.add_argument('infile', nargs='?', default='-', type=str,
+    p.add_argument('infile', nargs='?', default=None,
+                   type=str,
                    help='compact format input file, default stdin (-)')
-    p.add_argument('outfile', nargs='?', default=None,
+    p.add_argument('outfile', nargs='?', default='-',
                    type=argparse.FileType('w'),
                    help='json format file, default stdout')
+    p.add_argument('--format_help', action='store_true',
+                   help='print input and output format documentation')
     p.add_argument('--trans_to', type=str, default='iast',
                    help='transliteration translation output form')
     p.add_argument('-t', '--test', action='store_true',
