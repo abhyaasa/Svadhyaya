@@ -1,0 +1,5 @@
+This folder is for deck files in compact format.
+
+Run the update script with the name of any new or modified compact deck file.
+
+New files must also be added to the www/data/deck_files.json list.

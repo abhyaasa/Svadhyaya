@@ -2,7 +2,9 @@
 
 angular.module('app')
 
-.controller('SettingsController', function ($scope) {})
+.controller('SettingsController', function ($scope, settings) {
+    $scope.settings = settings;
+})
 
 .value('settings', {
     randomQuestions: false,

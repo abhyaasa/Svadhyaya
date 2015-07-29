@@ -2,17 +2,23 @@
     <ion-content padding="true" class="has-header">
         <ion-list>
             <ion-item ui-sref="tabs.about">About this app</ion-item>
-            <ion-toggle toggle-class="toggle-positive">Randomize responses</ion-toggle>
-            <ion-toggle toggle-class="toggle-positive">Randomize questions</ion-toggle>
-            <ion-toggle toggle-class="toggle-positive">Devanagari</ion-toggle>
-            <ion-item class="range range-positive">Hint percent
+            <ion-toggle toggle-class="toggle-positive"
+              ng-model="settings.randomResponses">
+                Randomize responses
+            </ion-toggle>
+            <ion-toggle toggle-class="toggle-positive"
+              ng-model="settings.randomQuestions">
+                Randomize questions
+            </ion-toggle>
+            <ion-toggle toggle-class="toggle-positive"
+              ng-model="settings.devanagari">
+                Devanagari
+            </ion-toggle>
+            <ion-item class="range range-positive" ng-model="settings.hintPercent">
+                Hint percent
                 <input type="range" value="50" min="0" max="100">
             </ion-item>
             <ion-item ui-sref="tabs.reset">Reset</ion-item>
         </ion-list>
-        <div class="button-bar">
-            <button class="button button-stable button-block">Cancel</button>
-            <button class="button button-stable button-block">Done</button>
-        </div>
     </ion-content>
 </ion-view>

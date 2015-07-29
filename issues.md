@@ -11,9 +11,12 @@ Issues are many at this stage. A partial list follows:
 * getData promise return necessary?
 * help content context sensitive
 * functionality
-* unit testing
+* unit testing: yeoman (uses karma and grunt, jasmine syntax),
+  cf. Angular book ch 6
+* e-e testig: protractor (with grunt, uses selenium webdriver), also ch 6
 * ios and android simulator testing
 * ios and android device testing
+* consider adding other features, as in notes/features.txt
 * make injected functions minifiable, e.g. function (a, b){} =>
-  ['a', 'b', function (a, b){}
+  ['a', 'b', function (a, b){}, use ng-strict-di: Angular book p 281
 * publish app
