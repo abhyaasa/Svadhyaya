@@ -24,7 +24,7 @@ angular.module('tests', ['utils'])
 
 .service('testLocalStorage', function (localStorage, $log) {
     return function () {
-        localStorage.set('key', 3);
+        localStorage.set('key', 4);
         $log.debug('test localStorage: ' + localStorage.get('key'));
         $log.debug('test localStorage undefined: ' +
             (localStorage.get('x') === undefined));

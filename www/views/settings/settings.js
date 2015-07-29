@@ -21,14 +21,18 @@ angular.module('app')
 })
 
 .service('restoreSettings', function (settings, localStorage, _) {
-    var s = localStorage.getObject('settings');
-    if (s !== undefined) {
-        _.extendOwn(settings, s);
-    }
+    return function () {
+        var s = localStorage.getObject('settings');
+        if (s !== undefined) {
+            _.extendOwn(settings, s);
+        }
+    };
 })
 
-.service('saveSettings', function (settings, _) {
-    var s = {};
-    _.extendOwn(s, settings);
-    localStorage.setObject('settings', s);
+.service('saveSettings', function (settings, localStorage, _) {
+    return function () {
+        var s = {};
+        _.extendOwn(s, settings);
+        localStorage.setObject('settings', s);
+    };
 });

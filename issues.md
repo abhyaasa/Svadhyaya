@@ -4,6 +4,7 @@ ISSUES
 Issues are many at this stage. A partial list follows:
 
 * TODO, FIXME, and xx (to be removed) comments
+* remove console.log statements
 * backbutton from help on from settings
 * backbutton with inverted svg font possible?
 * remove $log.debug calls
