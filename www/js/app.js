@@ -37,12 +37,12 @@ angular.module('app', ['ionic', 'utils', 'tests'])
                 }
             }
         })
-        .state('tabs.score', {
-            url: '/score',
+        .state('tabs.deck', {
+            url: '/deck/:deckId',
             views: {
                 'card-tab': {
-                    templateUrl: 'views/score/score.html',
-                    controller: 'ScoreController'
+                    templateUrl: 'views/deck/deck.html',
+                    controller: 'DeckController'
                 }
             }
         })
@@ -83,7 +83,7 @@ angular.module('app', ['ionic', 'utils', 'tests'])
             }
         })
         .state('tabs.filter', {
-            url: '/filter',
+            url: '/deck',
             views: {
                 'filter-tab': {
                     templateUrl: 'views/filter/filter.html',
@@ -119,6 +119,10 @@ angular.module('app', ['ionic', 'utils', 'tests'])
     // replaced with app version if device is defined
     $rootScope.version = '0.0.0';
 
+    // https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#issue\
+    // -im-getting-a-blank-screen-and-there-are-no-errors
+    $rootScope.$on('$stateChangeError', console.log.bind(console));
+
     $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the
         // accessory bar above the keyboard for form inputs)
@@ -138,5 +142,5 @@ angular.module('app', ['ionic', 'utils', 'tests'])
 
     restoreSettings();
 
-    testAll(); // PUBLISH remove
+    // testAll(); // PUBLISH remove
 });
