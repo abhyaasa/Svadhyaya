@@ -113,8 +113,9 @@ angular.module('app', ['ionic', 'utils', 'tests'])
     };
 })
 
-.run(function ($ionicPlatform, $rootScope, $state, localStorage,
-    saveSettings, restoreSettings, testAll) {
+.run(function ($ionicPlatform, $rootScope, restoreSettings, testAll) {
+    $rootScope.dattaDeepam = true;
+
     // replaced with app version if device is defined
     $rootScope.version = '0.0.0';
 
@@ -133,10 +134,9 @@ angular.module('app', ['ionic', 'utils', 'tests'])
                 $rootScope.version = version;
             });
         }
-
-        $state.get('tabs.settings').onExit = saveSettings;
-        restoreSettings();
     });
+
+    restoreSettings();
 
     testAll(); // PUBLISH remove
 });

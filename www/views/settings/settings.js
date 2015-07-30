@@ -29,10 +29,12 @@ angular.module('app')
     };
 })
 
-.service('saveSettings', function (settings, localStorage, _) {
-    return function () {
+.service('saveSettings', function ($state, settings, localStorage, _) {
+    var f = function () {
         var s = {};
         _.extendOwn(s, settings);
         localStorage.setObject('settings', s);
     };
+    $state.onExit = f;
+    return f;
 });

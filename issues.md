@@ -18,6 +18,7 @@ Issues are many at this stage. A partial list follows:
 * ios and android simulator testing
 * ios and android device testing
 * consider adding other features, as in notes/features.txt
+* Chrome developer > angularjs > hints
 * make injected functions minifiable, e.g. function (a, b){} =>
   ['a', 'b', function (a, b){}, use ng-strict-di: Angular book p 281
 * publish app

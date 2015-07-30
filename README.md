@@ -19,6 +19,9 @@ This "flashcard" app is designed to supports this site with an expandiing
 range of flashcard "decks" (quetion databases), and is suitable for a wide
 range of study through user-created flashcard decks.
 
+To avoid Datta Deepam specific formating, remove first statement in app.js
+.run call.
+
 This app is in an early stage of development, with much remaining to do. See the
 **issues.md** file.
 
