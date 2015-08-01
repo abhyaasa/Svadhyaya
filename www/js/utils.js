@@ -27,15 +27,13 @@ angular.module('utils', ['ionic'])
     };
 })
 
-// from http://forum.ionicframework.com/t/how-to-play-local-audio-files/7479/5
+// adapted from http://forum.ionicframework.com/t/how-to-play-local-audio-files/7479/5
 // for media plugin : http://plugins.cordova.io/#/package/org.apache.cordova.media
+// Usage:
+//   MediaSrv.loadMedia('sounds/mysound.mp3').then(function (media) {
+//    media.play();
+//   });
 .factory('MediaSrv', function ($q, $ionicPlatform, $window) {
-    var service = {
-        loadMedia: loadMedia,
-        getStatusMessage: getStatusMessage,
-        getErrorMessage: getErrorMessage
-    };
-
     function loadMedia(src, onError, onStatus, onStop) {
         var defer = $q.defer();
         $ionicPlatform.ready(function () {
@@ -100,6 +98,13 @@ angular.module('utils', ['ionic'])
             return 'Unknown code <' + code + '>';
         }
     }
+
+    // xx cleanup useless var
+    var service = {
+        loadMedia: loadMedia,
+        getStatusMessage: getStatusMessage,
+        getErrorMessage: getErrorMessage
+    };
 
     return service;
 });
