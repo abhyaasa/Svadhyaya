@@ -113,8 +113,15 @@ angular.module('app', ['ionic', 'utils', 'tests'])
     };
 })
 
-.run(function ($ionicPlatform, $rootScope, restoreSettings, testAll) {
+.run(function ($ionicPlatform, $rootScope, restoreSettings, $state,
+    $log, testAll) {
+
     $rootScope.dattaDeepam = true;
+
+    // from http://www.thekuroko.com/using-angulars-log-provider/
+    // $logProvider.debugEnabled(false);
+    // $log.debug('DEBUG-------------');
+
 
     // replaced with app version if device is defined
     $rootScope.version = '0.0.0';
@@ -138,9 +145,9 @@ angular.module('app', ['ionic', 'utils', 'tests'])
                 $rootScope.version = version;
             });
         }
+        // xxx $state.go('tabs.decks');
     });
 
     restoreSettings();
-
     // testAll(); // PUBLISH remove
 });
