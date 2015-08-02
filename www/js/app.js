@@ -149,5 +149,4 @@ angular.module('app', ['ionic', 'utils', 'tests'])
     });
 
     restoreSettings();
-    // testAll(); // PUBLISH remove
 });

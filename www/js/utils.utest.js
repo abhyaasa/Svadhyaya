@@ -10,11 +10,22 @@ describe('getData', function () {
                         .toEqual('["data", "for unit test"]');
                 });
         }));
-    xit('should do something if indicated local json file does not exist',
+    it('should do something if indicated local json file does not exist',
         inject(function (getData) {
-            expect(getData('xx.json')
-                .success(function (data) {
-                    return data; // xx identity fn
-                })).toThrow('');
+            getData('xx.json')
+                .error(function (data, status) {
+                    expect('Error: ' + data + status)
+                        .toEqual('');
+                });
+        }));
+});
+
+describe('localStorage', function () {
+    beforeEach(module('utils'));
+    it('should store and retrieve the same thing',
+        inject(function (localStorage) {
+            localStorage.set('test key', 'test value');
+            expect(localStorage.get('test key')).toEqual('test value');
+            expect(localStorage.get('bogus key')).toEqual(undefined);
         }));
 });
