@@ -14,7 +14,6 @@ head.load(
 
     // this app
     'js/utils.js',
-    'js/tests.js', // PUBLISH remove
     'js/app.js',
     'views/decks/decks.js',
     'views/filter/filter.js',

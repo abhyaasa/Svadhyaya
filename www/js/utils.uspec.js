@@ -26,6 +26,6 @@ describe('localStorage', function () {
         inject(function (localStorage) {
             localStorage.set('test key', 'test value');
             expect(localStorage.get('test key')).toEqual('test value');
-            expect(localStorage.get('bogus key')).toEqual(undefined);
+            expect(localStorage.get('bogus key')).not.toBeDefined();
         }));
 });
