@@ -2,7 +2,8 @@
 
 angular.module('app', ['ionic', 'utils'])
 
-.config(function ($stateProvider, $urlRouterProvider) {
+.config(function ($stateProvider, $urlRouterProvider, $logProvider) {
+    $logProvider.debugEnabled(true);
 
     $stateProvider
         .state('tabs', {
@@ -144,6 +145,5 @@ angular.module('app', ['ionic', 'utils'])
         }
         // xxx $state.go('tabs.decks');
     });
-
     restoreSettings();
 });
