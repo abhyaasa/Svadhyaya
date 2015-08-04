@@ -5,7 +5,7 @@ angular.module('app')
 .controller('DecksController', function ($scope, getData, _) {
     getData('deck_files.json').success(function (fileNames) {
         $scope.allDeckNames = _.map(fileNames, function (name) {
-            return { // android does not display
+            return {
                 fullName: name,
                 // discard suffix and replace _ characters with spaces
                 displayName: name.match(/.*(?=\.)/)[0].replace(/_/g, ' ')

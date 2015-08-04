@@ -2,11 +2,11 @@
 <widget id="com.github.vasudeva-chaynes.svadhyaya" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>Svadhyaya</name>
   <description>
-    SGS Datta Deepam flash card application under development.
+    SGS Datta Deepam flash card application; under development.
   </description>
-  <author email="vasudeva.chaynes@gmail.com" 
+  <author email="vasudeva.chaynes@gmail.com"
 	  href="https://github.com/vasudeva-chaynes/Svadhyaya">
-    Chris Haynes
+    Vasudeva (Chris Haynes)
   </author>
   <content src="index.html"/>
   <access origin="*"/>
