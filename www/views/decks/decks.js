@@ -3,7 +3,7 @@
 angular.module('app')
 
 .controller('DecksController', function ($scope, getData, _) {
-    getData('deck_files.json').success(function (fileNames) {
+    getData('test/decks/deck-files.json').success(function (fileNames) {
         $scope.allDeckNames = _.map(fileNames, function (name) {
             return {
                 fullName: name,

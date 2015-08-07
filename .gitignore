@@ -8,11 +8,14 @@ plugins/
 
 # development notes and temporary stuff
 notes/
-temp/
 
 # emacs backup
 *~
 
 # compiled python
 *.pyc
+
+# proprietary Datta Deepam content
+**/datta-deepam/
+
 

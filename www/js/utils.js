@@ -33,7 +33,7 @@ angular.module('utils', ['ionic'])
 //   MediaSrv.loadMedia('sounds/mysound.mp3').then(function (media) {
 //    media.play();
 //   });
-.factory('MediaSrv', function ($q, $ionicPlatform, $window) {
+.factory('MediaSrv', function ($q, $ionicPlatform, $window, $log) {
     function loadMedia(src, onError, onStatus, onStop) {
         var defer = $q.defer();
         $ionicPlatform.ready(function () {
@@ -63,7 +63,7 @@ angular.module('utils', ['ionic'])
     }
 
     function _logError(src, err) {
-        console.error('media error', {
+        $log.error('media error', {
             code: err.code,
             message: getErrorMessage(err.code)
         });
