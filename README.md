@@ -16,15 +16,18 @@ wisdom and truth in our Scriptures and brings to light the glory of
 Sanatana Dharma."
 
 This "flashcard" app is designed to supports this site with an expandiing
-range of flashcard "decks" (quetion databases), and is suitable for a wide
+range of flashcard "decks" (quetion databases). It is also suitable for a wide
 range of study through user-created flashcard decks.
 
-This app is in an early stage of development, with much remaining to do. See the
-**issues.md** file.
+To avoid Datta Deepam specific formating, remove first statement in app.js
+.run call.
+
+This app is early in development.
+See **www/todo.md** and (issues)[https://github.com/vasudeva-chaynes/Svadhyaya/issues].
 
 
 Copyright and License
 ---------------------
 
 Code is MIT-licensed, see LICENSE file.  SGS Datta Deepam holds copyright
-on question databases developed in support of its content.
+on question databases developed in support of its content (as in data/decks/).

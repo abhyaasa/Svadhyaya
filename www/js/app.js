@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('app', ['ionic', 'utils', 'tests'])
+angular.module('app', ['ionic', 'utils'])
 
-.config(function ($stateProvider, $urlRouterProvider) {
+.config(function ($stateProvider, $urlRouterProvider, $logProvider) {
+    $logProvider.debugEnabled(true);
 
     $stateProvider
         .state('tabs', {
@@ -37,12 +38,12 @@ angular.module('app', ['ionic', 'utils', 'tests'])
                 }
             }
         })
-        .state('tabs.score', {
-            url: '/score',
+        .state('tabs.deck', {
+            url: '/deck/:deckId',
             views: {
                 'card-tab': {
-                    templateUrl: 'views/score/score.html',
-                    controller: 'ScoreController'
+                    templateUrl: 'views/deck/deck.html',
+                    controller: 'DeckController'
                 }
             }
         })
@@ -83,7 +84,7 @@ angular.module('app', ['ionic', 'utils', 'tests'])
             }
         })
         .state('tabs.filter', {
-            url: '/filter',
+            url: '/deck',
             views: {
                 'filter-tab': {
                     templateUrl: 'views/filter/filter.html',
@@ -113,9 +114,22 @@ angular.module('app', ['ionic', 'utils', 'tests'])
     };
 })
 
-.run(function ($ionicPlatform, $rootScope, testAll) {
+.run(function ($ionicPlatform, $rootScope, restoreSettings, $state,
+    $log, $logProvider) {
+    // TODO change to format variable and update README.md
+    $rootScope.dattaDeepam = true;
+
+    // from http://www.thekuroko.com/using-angulars-log-provider/
+    $logProvider.debugEnabled(false);
+    $log.debug('-------- DEBUG LOGGING ENGABLED ----------');
+
     // replaced with app version if device is defined
     $rootScope.version = '0.0.0';
+
+    // https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#issue\
+    // -im-getting-a-blank-screen-and-there-are-no-errors
+    // TODO try $log.log instead of console...
+    $rootScope.$on('$stateChangeError', console.log.bind(console));
 
     $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the
@@ -132,7 +146,7 @@ angular.module('app', ['ionic', 'utils', 'tests'])
                 $rootScope.version = version;
             });
         }
+        // xxx $state.go('tabs.decks');
     });
-
-    testAll(); // PUBLISH remove
+    restoreSettings();
 });
