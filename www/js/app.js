@@ -114,14 +114,14 @@ angular.module('app', ['ionic', 'utils'])
     };
 })
 
-.run(function ($ionicPlatform, $rootScope, restoreSettings, $state,
-    $log, $logProvider) {
+.run(function ($ionicPlatform, $rootScope, restoreSettings, $state) {
     // TODO change to format variable and update README.md
     $rootScope.dattaDeepam = true;
 
     // from http://www.thekuroko.com/using-angulars-log-provider/
-    $logProvider.debugEnabled(false);
-    $log.debug('-------- DEBUG LOGGING ENGABLED ----------');
+    // $logProvider.debugEnabled(false);
+    // TODO provide $logProvider
+    // $log.debug('-------- DEBUG LOGGING ENGABLED ----------');
 
     // replaced with app version if device is defined
     $rootScope.version = '0.0.0';
