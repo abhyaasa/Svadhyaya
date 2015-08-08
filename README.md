@@ -19,8 +19,7 @@ This "flashcard" app is designed to supports this site with an expandiing
 range of flashcard "decks" (quetion databases). It is also suitable for a wide
 range of study through user-created flashcard decks.
 
-To avoid Datta Deepam specific formating, remove first statement in app.js
-.run call.
+To avoid Datta Deepam specific formating, remove `$rootScope.dattaDeepam` statement in **app.js** `.run` call.
 
 This app is early in development.
 See **www/todo.md** and (issues)[https://github.com/vasudeva-chaynes/Svadhyaya/issues].
