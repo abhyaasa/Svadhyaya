@@ -44,7 +44,9 @@ QUESTION -> BOL ; [ TAG,... ] ; TEXT
                 { <ws>? HINT } *
 where
 
-TEXT, ANSWER, DISTRACTOR, and HINT are strings in which the <ws> prefixed sequences above may not appear. This may be avoided by using \?, \=, or \/, with the backslash escape characters removed after parsing.
+TEXT, ANSWER, DISTRACTOR, and HINT are strings in which the <ws> prefixed
+sequences above may not appear. This may be avoided by using \?, \=, or \/,
+with the backslash escape characters removed after parsing.
 
 If no answer or distractors, then it is a sequence question, whose mind answer is the next question. If multiple answers, then multiple-choices question.
 Otherwise, if one or more distractors, then multiple-choice question.

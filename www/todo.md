@@ -3,7 +3,7 @@ ISSUES
 
 Issues are many at this stage. A partial list follows:
 
-* support matching questions
+* support matching question
 * github issues notification
 * use https://github.com/charlouze/ionic-starter-sass-coffee
   https://github.com/CaryLandholt/ng-classify
@@ -11,8 +11,9 @@ Issues are many at this stage. A partial list follows:
 * install https://github.com/js2coffee/js2coffee
 * install http://compass-style.org
 * convert to coffee, jade, NOT stylus
-* npm install angular-marked, test with coffee
-* https://www.npmjs.com/package/gulp-replace
+* test angular-marked with coffee
+* automate generation of deck_files.json file
+* use https://www.npmjs.com/package/gulp-replace
 * TODO, FIXME, and xx (to be removed) comments
 * e2e test
 * data/build.json for version customization
