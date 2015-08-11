@@ -4,7 +4,6 @@ ISSUES
 Issues are many at this stage. A partial list follows:
 
 * support matching question
-* github issues notification
 * use https://github.com/charlouze/ionic-starter-sass-coffee
   https://github.com/CaryLandholt/ng-classify
 * install https://www.npmjs.com/package/gulp-ng-classify#coffeescript

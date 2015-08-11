@@ -19,7 +19,6 @@ try:
 except:
     pass
 
-
 UTF8Reader = codecs.getreader('utf8')
 UTF8Writer = codecs.getwriter('utf8')
 
@@ -28,18 +27,18 @@ Dependencies: python 2.6+ (maybe earlier). If the .md tag is used, the markdown 
 (http://pythonhosted.org/Markdown/index.html) must be installed.
 """
 
-FORMAT_HELP = """QUESTION PREPROCESSOR FORMAT
+FORMAT_HELP = """PREPROCESSOR INPUT SYNTAX
 
 Notation: Grammar rules are of the form ELEMENT_TYPE -> GRAMMAR_EXPRESSION.
 A grammar expression may contain the following notation.
 {...} grouping, [...] optional, | or, +/* one/zero or more of the preceding form.
-,... non-empty comma-separated sequence of preceding form.
+,.. non-empty comma-separated sequence of preceding form.
 Spaces are not significant in grammar rules. Sequences are non-empty.
 BOL/EOL beginning/end of line. EOF end of file.
 
 INPUT -> { QUESTION | TAG_RANGE } +
 
-QUESTION -> BOL ; [ TAG,... ] ; TEXT
+QUESTION -> BOL ; [ TAG,.. ] ; TEXT
                 { <ws>= ANSWER } | <ws>/ DISTRACTOR } *
                 { <ws>? HINT } *
 where
@@ -48,29 +47,36 @@ TEXT, ANSWER, DISTRACTOR, and HINT are strings in which the <ws> prefixed
 sequences above may not appear. This may be avoided by using \?, \=, or \/,
 with the backslash escape characters removed after parsing.
 
-If no answer or distractors, then it is a sequence question, whose mind answer is the next question. If multiple answers, then multiple-choices question.
+
+SEMANTIC NOTES
+
+If no answer or distractors, then it is a sequence question, whose mind answer
+is the next question. If multiple answers, then multiple-choices question.
 Otherwise, if one or more distractors, then multiple-choice question.
-If one answer and no distractors, then if answer is True, False, T or F (case insensitive), then true/false question, and otherwise mind answer question.
+If one answer and no distractors, then if answer is True, False, T or F
+(case insensitive), then true/false question, and otherwise mind answer question.
 
 TAG is a sequence of letter (case insensitive), digit, dash, dot, underscore, or
 space characters. Spaces are trimmed at both ends.
 
-TAG_RANGE -> BOL ; [ / ] TAG EOL
+TAG_RANGE -> BOL ; [ / ] TAG,.. EOL
 
-A ;tag line tag range is terminated by EOF or a ;/tag line.
-Questions in a tag range all have its tag.
+A ;tag,.. line tag range is terminated by EOF its appearance in a ;/tag,.. line.
+Questions in a tag range all have its tags.
 
-A numeric tag has the form of an unsigned non-negataive number with optional decimal point. A question may not have more than one numeric tag.
+A numeric tag has the form of an unsigned non-negataive number with optional decimal
+point. A question may not have more than one numeric tag.
+
 
 SPECIAL TAGS
 
-.lineseq : all but last line of question text is a sequence question
-           (at least two lines required, and no responses or hints allowed)
-.text : preferatory text, not a question
+.lineseq : all but last line of question text is a sequence question.
+           At least two lines required, no responses or hints allowed,
+           and all questions in a sequence share the same tags.
+.text : question of "text" type, for preferatory text (not a question_
 .md : question, response, and hints text is in ascii markdown format
       (requires markdown module and associated python version)
 .html : text is in html format
-.case_sensitive : response is case sensitive
 .tr : transliterate responses
 .tq : transliterate question
 .th : transliterate hints
@@ -79,28 +85,56 @@ SPECIAL TAGS
 .harvard-kyoto : Harvard-Kyoto source for transliteration
 .slp1 : SLP1 source for transliteration
 .velthuis : Velthuis source for transliteration
+case_sensitive : response is case sensitive
+matching : only meaningful as a range tag, indicating questions in the range
+    belong belong to a matching group.  Questions in a matching group must each have
+    a single answer and no distractors. User preferences may indicate options for
+    displaying matching questions, which may include visual pairing or multiple choice,
+    where distractors are chosen randomly from answers of other questions in the group.
+
+Tags beginning with . effect the preprocessor only: they are not included in the
+json output. The matching tag effects both the preprocessor and interpreting app.
+
+Text is in HTML format. The characters <, >, &, ', and " are automatically escaped in
+text unless the .md or .html tags are active.
+
+Use --test_input argument to display input demonstrating the above options.
 
 
 JSON FORMAT
 
 Quiz questions json format is list of question dictionaries with keys:
+id: question order number (1-based)
 type: string = text, true-false, multiiple-choice, multiple-choices,
-      sequence, or mind
+        sequence, matching, or mind
 text: text of question
-responses (not text, t/f, sequence or mind type):
-          list of (is_answer, response_text) pairs
-answer (t/f or mind type): boolean (t/f) or text (mind)
-tag: list of tag strings
-hints (if any): list of hint strings
-number (if any): difficulty number
-The "text" of a question, response, answer, or hint may be a unicode string or a (trans_to-text, devanagari) pair of unicode strings, where the trans_to program argument indicates the transliteration scheme of the first element.
+responses (absent in text, t/f, sequence and mind question types):
+          list of [is_answer, response_text] pairs, where is_answer is boolean
+answer (t/f, matching or mind type): boolean (t/f) or text (mind)
+tags (optional): list of tag strings
+hints (optional): list of hint strings
+number (optional): difficulty number
+matching_begin (only if .matching in tags): id of first question in matching range
+matching_end (only if .matching in tags): id of last question in matching range
+
+The "text" of a question, response, answer, or hint may be a unicode string or a
+[trans_to-text, devanagari] pair of unicode strings, where the trans_to program
+argument indicates the transliteration scheme of the first element.
+
+HTML markups are interpreted in all text.
+
+The answer of a sequence question is automatically the text of the following question.
 """
+
+# from https://wiki.python.org/moin/EscapingHtml
+html_escape_table = {"&": "&amp;", '"': "&quot;", "'": "&apos;", ">": "&gt;", "<": "&lt;"}
+def html_escape(text):
+    """Produce entities within text."""
+    return "".join(html_escape_table.get(c,c) for c in text)
 
 number_cre = re.compile(r'.\d+|\d+.\d*|\d+')
 isnumber = number_cre.match
 from_tags = set('.iast .harvard-kyoto .itrans .velthuis .slp1 .devanagari'.split())
-# tags removed after db processing
-db_tags = from_tags.union(set('.tr .tq .th .md .lineseq'.split()))
 
 def istag(string):
     return filter(None, [c.isalnum() or c in '._ -' for c in string])
@@ -110,6 +144,9 @@ def main(args):
     debug_mode = False
     tags = set()
     line_num = 1
+    id_num = 1
+    matching_start = None
+    quiz = []
 
     def error(msg):
         sys.stderr.write('ERROR at line ' + str(line_num) + ': ' + msg + '\n')
@@ -118,21 +155,36 @@ def main(args):
         else:
             exit()
 
+    def unescape(text): # strip text, and remove \ from \= and \/ sequences
+        return re.sub(r'\\([=/]?)', r'\1', text.strip())
+
     def do_text(text, translit=False):
+        text = unescape(text)
         if markdown_mode:
             text = str(markdown(text))
-        text = re.sub(r'\\([=/]?)', r'\1', text.strip())
-        if not translit:
-            return text
-        else:
+        if translit:
             return (translate(text, trans_from, args.trans_to),
                     translate(text, trans_from, 'devanagari'))
+        elif tags.intersection(['.html', '.md']):
+            return text
+        else:
+            return html_escape(text)
+
+    def end_matching():
+        for i in range(matching_start - 1, len(quiz)):
+            quiz[i]['matching_begin'] = matching_start
+            quiz[i]['matching_end'] = len(quiz)
+
+    def tag_filter(tags):
+        return list(filter(lambda t: not isnumber(t) and not t.startswith('.'), tags))
 
     if args.outfile:
         writer = UTF8Writer(args.outfile)
     else:
         writer = sys.stdout
     _input = None
+    if args.test_input:
+        print test
     if args.test:
         _input = test
         debug_mode = True
@@ -148,7 +200,6 @@ def main(args):
     if '.md' in _input:
         from markdown import markdown
 
-    quiz = []
     for elt in _input[1:].split('\n;'):
         markdown_mode = False
         devanagari = False
@@ -156,25 +207,28 @@ def main(args):
         if not elt:
             error('bad syntax')
         if ';' not in elt:  # tag range
-            if elt.startswith('/'):
-                tag = elt[1:]
-                if not istag(tag):
-                    error('bad range tag')
-                if tag not in tags:
+            not_tags = elt.startswith('/')
+            range_tags = [tag.strip() for tag in elt[1 if not_tags else 0 : ].split(',')]
+            if not all([istag(tag) for tag in range_tags]):
+                error('bad range tag')
+            if not_tags:
+                if not all([tag in tags for tag in range_tags]):
                     error('closing tag without opening')
-                tags.remove(tag)
+                if 'matching' in range_tags:
+                    end_matching()
+                tags.difference_update(range_tags)
             else:
-                tag = elt.strip()
-                if tag in tags:
+                if not all([tag not in tags for tag in range_tags]):
                     error('tag already active')
-                else:
-                    tags.add(tag)
+                tags.update(range_tags)
+                if 'matching' in tags:
+                    matching_start = id_num
         else:
             q = {}
             tags_str, question = elt.split(';', 1)
 
             # tag processing
-            qtaglst = filter(None, map(do_text, tags_str.split(',')))
+            qtaglst = filter(None, map(unescape, tags_str.split(',')))
             if filter(None, [not istag(tag) for tag in qtaglst]):
                 error('bad tag')
             qtags = set(qtaglst)
@@ -219,10 +273,15 @@ def main(args):
                 if len(lines) < 2:
                     error('at least two lines in .lineseq mode')
                 for line in lines[:-2]:
-                    quiz.append({'text': line,
-                                 'tags': list(qtags.difference(db_tags)),
-                                 'type': 'sequence'
-                                })
+                    aq = {'id': id_num,
+                          'text': line,
+                          'tags': tag_filter(qtags),
+                          'type': 'sequence'
+                         }
+                    if q.has_key('number'):
+                        aq['number'] = q['number']
+                    quiz.append(aq)
+                    id_num += 1
                 q['type'] = 'mind'
                 q['text'] = lines[-2]
                 q['answer'] = lines[-1]
@@ -236,7 +295,7 @@ def main(args):
                     q['type'] = 'true-false'
                     q['answer'] = response.lower() in ['t', 'true']
                 else:
-                    q['type'] = 'mind'
+                    q['type'] = 'matching' if 'matching' in tags else 'mind'
                     q['answer'] = response
             else:
                 q['responses'] = responses
@@ -244,10 +303,13 @@ def main(args):
                     q['type'] = 'multiple-choice'
                 else:
                     q['type'] = 'multiple-choices'
-            qtags.difference_update(db_tags)
-            q['tags'] = list(filter(lambda t: not isnumber(t), qtags))
+            q['tags'] = tag_filter(qtags)
+            q['id'] = id_num
+            id_num += 1
             quiz.append(q)
         line_num += len(elt.split('\n')) + 1
+    if 'matching' in tags:
+        end_matching()
     json.dump(quiz, writer, indent=1, sort_keys=True)
 
 def get_args():
@@ -268,6 +330,8 @@ def get_args():
                    help='transliteration translation output form')
     p.add_argument('-t', '--test', action='store_true',
                    help='run with test variable value as input')
+    p.add_argument('--test_input', action='store_true',
+                   help='print test input text')
     args = p.parse_args()
     if args.infile == '-':
         args.infile = sys.stdin
@@ -276,13 +340,13 @@ def get_args():
 
 sys.stdout = UTF8Writer(sys.stdout)
 
-test = u""";foo
+test = u""";foo,case_sensitive,bar
 ;;qtext =a /b
-;bar;q =t
+;baz;q =t
 ;a,1;qt
 ;;q with
 ?    hint \?questionmark
-;/foo
+;/foo,bar
 ;;mq
 /a
 =b
@@ -292,11 +356,19 @@ test = u""";foo
 one
 two
 three
+;matching
+;;a =A
+;;b =B
+;;c =C
+;/matching
 ;.devanagari
 ;.tq;श्रद्धावाँल्ल =f
 ;/.devanagari
 ;.iast,.tr;pranava =om
 ;.md;*emphasis* =**bold**
+;matching
+;;a =A
+;;b =B
 """
 
 if __name__ == "__main__":
