@@ -1,5 +1,6 @@
 [
  {
+  "id": 1, 
   "responses": [
    [
     true, 
@@ -18,6 +19,7 @@
  }, 
  {
   "answer": "t", 
+  "id": 2, 
   "tags": [
    "foo", 
    "bar"
@@ -26,6 +28,7 @@
   "type": "mind"
  }, 
  {
+  "id": 3, 
   "number": 1.0, 
   "tags": [
    "a", 
@@ -38,6 +41,7 @@
   "hints": [
    "hint ?questionmark"
   ], 
+  "id": 4, 
   "tags": [
    "foo"
   ], 
@@ -45,6 +49,7 @@
   "type": "sequence"
  }, 
  {
+  "id": 5, 
   "responses": [
    [
     false, 
@@ -60,6 +65,7 @@
   "type": "multiple-choice"
  }, 
  {
+  "id": 6, 
   "tags": [
    "c"
   ], 
@@ -68,23 +74,27 @@
  }, 
  {
   "answer": "answer a = b", 
+  "id": 7, 
   "tags": [], 
   "text": "mind", 
   "type": "mind"
  }, 
  {
+  "id": 8, 
   "tags": [], 
   "text": "one", 
   "type": "sequence"
  }, 
  {
   "answer": "three", 
+  "id": 9, 
   "tags": [], 
   "text": "two", 
   "type": "mind"
  }, 
  {
   "answer": "f", 
+  "id": 10, 
   "tags": [], 
   "text": [
    "\u015braddh\u0101v\u0101~lla", 
@@ -97,14 +107,16 @@
    "om", 
    "\u0950"
   ], 
+  "id": 11, 
   "tags": [], 
   "text": "pranava", 
   "type": "mind"
  }, 
  {
-  "answer": "<p><strong>bold</strong></p>", 
+  "answer": "&lt;p&gt;&lt;strong&gt;bold&lt;/strong&gt;&lt;/p&gt;", 
+  "id": 12, 
   "tags": [], 
-  "text": "<p><em>emphasis</em></p>", 
+  "text": "&lt;p&gt;&lt;em&gt;emphasis&lt;/em&gt;&lt;/p&gt;", 
   "type": "mind"
  }
 ]

@@ -1,21 +1,17 @@
-ISSUES
-======
+To Do List
+==========
 
-Issues are many at this stage. A partial list follows:
+There is lots to do at this stage. A partial list follows:
 
-* support matching question
-* use https://github.com/charlouze/ionic-starter-sass-coffee
-  https://github.com/CaryLandholt/ng-classify
-* install https://www.npmjs.com/package/gulp-ng-classify#coffeescript
-* install https://github.com/js2coffee/js2coffee
-* install http://compass-style.org
+* e2e test
 * convert to coffee, jade, NOT stylus
-* test angular-marked with coffee
-* automate generation of deck_files.json file
+	- https://github.com/CaryLandholt/ng-classify
+	- install https://www.npmjs.com/package/gulp-ng-classify#coffeescript
+	- install https://github.com/js2coffee/js2coffee
+	- install http://compass-style.org
+	- test angular-marked with coffee
 * use https://www.npmjs.com/package/gulp-replace
 * TODO, FIXME, and xx (to be removed) comments
-* e2e test
-* data/build.json for version customization
 * splash screen http://blog.ionic.io/automating-icons-and-splash-screens/
 * add sound and image support
 * tabs: decklist, deck, card, settings

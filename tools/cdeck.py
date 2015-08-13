@@ -19,12 +19,14 @@ try:
 except:
     pass
 
+# debug_mode = False
+
 UTF8Reader = codecs.getreader('utf8')
 UTF8Writer = codecs.getwriter('utf8')
 
 EPILOG = """
-Dependencies: python 2.6+ (maybe earlier). If the .md tag is used, the markdown module
-(http://pythonhosted.org/Markdown/index.html) must be installed.
+Dependencies: python 2.6+ (maybe earlier). If the .md tag is used, install the
+markdown module (http://pythonhosted.org/Markdown/index.html).
 """
 
 FORMAT_HELP = """PREPROCESSOR INPUT SYNTAX
@@ -141,7 +143,6 @@ def istag(string):
 
 def main(args):
     """Command line invocation with argparse args."""
-    debug_mode = False
     tags = set()
     line_num = 1
     id_num = 1
@@ -178,19 +179,22 @@ def main(args):
     def tag_filter(tags):
         return list(filter(lambda t: not isnumber(t) and not t.startswith('.'), tags))
 
+    if args.format_help:
+        print FORMAT_HELP
+        return
+    if args.test_input:
+        print test
+        return
+
     if args.outfile:
         writer = UTF8Writer(args.outfile)
     else:
-        writer = sys.stdout
+        writer = UTF8Writer(sys.stdout)
+
     _input = None
-    if args.test_input:
-        print test
     if args.test:
         _input = test
         debug_mode = True
-    elif args.format_help:
-        print FORMAT_HELP
-        return
     elif str(args.infile) == 'None':
         _input = UTF8Reader(sys.stdin).read()
     else:
@@ -318,27 +322,21 @@ def get_args():
         description=__doc__,
         epilog = EPILOG,
         formatter_class=formatter)
-    p.add_argument('infile', nargs='?', default=None,
-                   type=str,
-                   help='compact format input file, default stdin (-)')
-    p.add_argument('outfile', nargs='?', default='-',
+    p.add_argument('infile', nargs='?', type=str,
+                   help='compact format input file, default stdin')
+    p.add_argument('outfile', nargs='?',
                    type=argparse.FileType('w'),
                    help='json format file, default stdout')
-    p.add_argument('--format_help', action='store_true',
-                   help='print input and output format documentation')
     p.add_argument('--trans_to', type=str, default='iast',
-                   help='transliteration translation output form')
+                   help='transliteration translation output form (default itrans)')
     p.add_argument('-t', '--test', action='store_true',
                    help='run with test variable value as input')
     p.add_argument('--test_input', action='store_true',
-                   help='print test input text')
+                   help='print test input text and quit')
+    p.add_argument('--format_help', action='store_true',
+                   help='print format documentation and quit')
     args = p.parse_args()
-    if args.infile == '-':
-        args.infile = sys.stdin
-    args.infile = UTF8Writer(args.infile)
     return args
-
-sys.stdout = UTF8Writer(sys.stdout)
 
 test = u""";foo,case_sensitive,bar
 ;;qtext =a /b

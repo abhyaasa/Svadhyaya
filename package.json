@@ -31,5 +31,13 @@
     "type": "git",
     "url": "https://github.com/vasudeva-chaynes/Svadhyaya"
   },
-  "cordovaPlugins": []
+  "cordovaPlugins": [
+    "cordova-plugin-console",
+    "cordova-plugin-device",
+    "ionic-plugin-keyboard",
+    "cordova-plugin-splashscreen",
+    "cordova-plugin-media",
+    "cordova-plugin-file",
+    "uk.co.whiteoctober.cordova.appversion"
+  ]
 }
