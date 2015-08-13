@@ -3,7 +3,7 @@
 angular.module('app')
 
 .controller('DecksController', function ($scope, getData, _) {
-    getData('test/decks/deck-files.json').success(function (fileNames) {
+    getData('test/decks/index.json').success(function (fileNames) {
         $scope.allDeckNames = _.map(fileNames, function (name) {
             return {
                 fullName: name,
@@ -16,9 +16,9 @@ angular.module('app')
     angular.extend($scope, {
         model: {searchText: ''},
         search: function () {
-            // TODO try AngularJS cookbook p 64 http://jsfiddle.net/msfrisbie/ghsa3nym/
             // TODO implement search, Ionic in action 6.3, p 140
-            $scope.deckNames = _.filter($scope.allDeckNames, function(deck) {
+            // try AngularJS cookbook p 64 http://jsfiddle.net/msfrisbie/ghsa3nym/
+           $scope.deckNames = _.filter($scope.allDeckNames, function(deck) {
                 var name = deck.displayName.toLowerCase;
                 return name.indexOf($scope.model.searchText.toLowerCase) !== -1;
             });

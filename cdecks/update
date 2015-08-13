@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-../tools/cdeck.py $1 ../www/data/decks/$1.json

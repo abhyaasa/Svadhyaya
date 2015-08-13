@@ -99,7 +99,6 @@ angular.module('utils', ['ionic'])
         }
     }
 
-    // xx cleanup useless var
     var service = {
         loadMedia: loadMedia,
         getStatusMessage: getStatusMessage,

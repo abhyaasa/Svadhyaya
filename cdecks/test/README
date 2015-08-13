@@ -1,0 +1,6 @@
+This directory contains test deck files in compact format.
+
+Run the update script with the name of any new or modified compact deck file.
+
+New files must be added to the www/data/test/decks/index.json list, which the
+update script does automatically.
