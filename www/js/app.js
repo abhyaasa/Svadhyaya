@@ -116,9 +116,6 @@ angular.module('app', ['ionic', 'utils'])
 
     $log.debug('ENABLED');
 
-    // replaced with app version if device is defined
-    $rootScope.version = '0.0.0';
-
     // https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#issue\
     // -im-getting-a-blank-screen-and-there-are-no-errors
     // TODO try $log.log instead of console...
@@ -132,12 +129,6 @@ angular.module('app', ['ionic', 'utils'])
         }
         if (window.StatusBar) {
             StatusBar.styleDefault();
-        }
-
-        if (ionic.Platform.device()[0] !== undefined) {
-            cordova.getAppVersion(function (version) {
-                $rootScope.version = version;
-            });
         }
         // TODO try $state.go('tabs.decks');
     });

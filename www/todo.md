@@ -4,6 +4,7 @@ To Do List
 There is lots to do at this stage. A partial list follows:
 
 * e2e test
+* ionic lab run and emulate no d-d image
 * convert to coffee, jade, NOT stylus
 	- https://github.com/CaryLandholt/ng-classify
 	- install https://www.npmjs.com/package/gulp-ng-classify#coffeescript

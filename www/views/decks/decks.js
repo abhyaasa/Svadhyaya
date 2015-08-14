@@ -3,7 +3,7 @@
 angular.module('app')
 
 .controller('DecksController', function ($scope, getData, _) {
-    getData('test/decks/index.json').success(function (fileNames) {
+    getData('datta-deepam/decks/index.json').success(function (fileNames) {
         $scope.allDeckNames = _.map(fileNames, function (name) {
             return {
                 fullName: name,
