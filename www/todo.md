@@ -12,7 +12,7 @@ There is lots to do at this stage. A partial list follows:
 	- install http://compass-style.org
 	- test angular-marked with coffee
 * use https://www.npmjs.com/package/gulp-replace
-* TODO, FIXME, and xx (to be removed) comments
+* TODO, FIXME, and XX (to be removed) comments
 * splash screen http://blog.ionic.io/automating-icons-and-splash-screens/
 * add sound and image support
 * tabs: decklist, deck, card, settings

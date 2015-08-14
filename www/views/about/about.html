@@ -1,22 +1,29 @@
-<!DOCTYPE html>
 <ion-view>
     <ion-content id="about-view" padding="true" class="has-header">
         <div>
+           <h2>{{ config.name }}</h2>
             <p>
                 <strong>Version:</strong> {{ config.version }}
-                <x>todo: fill from global state</x>
             </p>
-
+            <p><strong>For comments or assistance contact</strong>
+                <a href="mailto:{{ config.email }}"></a>{{ config.email }}.
+            </p>
             <p>
                 <strong>Donations</strong> are most welcome. Please use the
                 <a href="http://www.sgsdattadeepam.org"> SGS Datta Deepam</a> site.
             </p>
-            <div class="fine-print">
-                <p>Code Copyright &copy; 2015 Christopher Haynes,
-                    <a href="http://opensource.org/licenses/MIT">MIT License</a>.
+            <div class="about-minor">
+                <p>
+                    This app is under development. Interested developers please see
+                    <a href="{{ config.href }}">{{ config.href }}</a>.
                 </p>
+                <div class="fine-print">
+                    <p>Code Copyright &copy; 2015 Christopher Haynes,
+                        <a href="http://opensource.org/licenses/MIT">MIT License</a>.
+                    </p>
 
-                <p>Card database Copyright &copy; 2015 SGS Datta Deepam, Inc.</p>
+                    <p>Card database Copyright &copy; 2015 SGS Datta Deepam, Inc.</p>
+                </div>
             </div>
         </div>
     </ion-content>
