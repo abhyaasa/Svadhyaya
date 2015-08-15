@@ -2,7 +2,7 @@
   "name": "Svadhaya",
   "app_id": "d5e1e9cc",
   "gulpStartupTasks": [
-    "sass",
+    "default",
     "watch"
   ],
   "watchPatterns": [

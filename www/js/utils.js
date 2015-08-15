@@ -23,7 +23,7 @@ angular.module('utils', ['ionic'])
 .service('getData', function ($http) {
     return function (path) { // path is relative to app www/data/
         // returns promise
-        return $http.get('/data/' + path);
+        return $http.get('data/' + path);
     };
 })
 

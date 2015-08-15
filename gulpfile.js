@@ -10,10 +10,14 @@ var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+var jshint = require('gulp-jshint');
+var taskListing = require('gulp-task-listing');
+var argv = require('minimist')(process.argv.slice(2));
 
 var paths = {
     sass: ['./scss/**/*.scss'],
-    javascript: [ // for index task
+    scripts: [ // for index task
+        '*.js',
         './www/**/*.js',
         '!./www/js/app.js',
         '!./www/**/*spec.js', // no test files
@@ -26,7 +30,26 @@ var paths = {
     ]
 };
 
-gulp.task('default', ['sass', 'index']); // run by ionic
+var help = ('\n"build -a" for android, default ios');
+gulp.task('help', function () {
+    console.log(help);
+    taskListing();
+});
+
+gulp.task('default', ['sass', 'index']);
+
+// BUILD finish this: see https://github.com/leob/ionic-quickstarter
+gulp.task('build', ['pre-build'], function () {
+    sh.exec('ionic build ' + (argv.a ? 'android' : 'ios')); // TODO add pre-build
+});
+
+gulp.task('pre-build', ['default']);
+
+gulp.task('jshint', function () {
+    gulp.src(paths.scripts)
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'));
+});
 
 gulp.task('sass', function (done) {
     gulp.src('./scss/ionic.app.scss')
@@ -46,7 +69,7 @@ gulp.task('sass', function (done) {
 gulp.task('index', function () {
     return gulp.src('./www/index.html')
         .pipe(ginject(
-            gulp.src(paths.javascript, {
+            gulp.src(paths.scripts, {
                 read: false
             }), {
                 relative: true
@@ -63,7 +86,7 @@ gulp.task('index', function () {
 gulp.task('watch', function () {
     gulp.watch(paths.sass, ['sass']);
     gulp.watch([ // for index task
-        paths.javascript,
+        paths.scripts,
         paths.css
     ], ['index']);
 });
