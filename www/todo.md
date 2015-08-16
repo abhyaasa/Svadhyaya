@@ -12,9 +12,8 @@ There is lots to do at this stage. A partial list follows:
 	- test angular-marked with coffee
 * use https://www.npmjs.com/package/gulp-replace
 * TODO, FIXME, and XX (to be removed) comments
-* icon http://learn.ionicframework.com/formulas/adding-an-icon/
-       http://blog.ionic.io/automating-icons-and-splash-screens/
-* splash screen http://blog.ionic.io/automating-icons-and-splash-screens/
+* splash and icon http://learn.ionicframework.com/formulas/adding-an-icon/
+  http://blog.ionic.io/automating-icons-and-splash-screens/
 * add sound and image support
 * tabs: decklist, deck, card, settings
 * disable inop tabs

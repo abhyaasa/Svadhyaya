@@ -14,6 +14,8 @@ var jshint = require('gulp-jshint');
 var taskListing = require('gulp-task-listing');
 var argv = require('minimist')(process.argv.slice(2));
 
+var ionicBrowser = '/Applications/Google Chrome Canary.app';
+
 var paths = {
     sass: ['./scss/**/*.scss'],
     scripts: [ // for index task
@@ -30,9 +32,12 @@ var paths = {
     ]
 };
 
-var help = ('\n"build -a" for android, default ios');
+var helpPreamble =
+    ('\n"gulp build -a" for android, default ios' +
+     '\n"gulp is [-a|-i]" for ionic serve for android, ios, or (default) both');
+
 gulp.task('help', function () {
-    console.log(help);
+    console.log(helpPreamble);
     taskListing();
 });
 
@@ -49,6 +54,24 @@ gulp.task('jshint', function () {
     gulp.src(paths.scripts)
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
+});
+
+gulp.task('is', function() {
+    var platform = argv.a ? '-t android' : argv.i ? '-t ios' : '-l';
+    var command = 'ionic serve -c ' + platform + ' --browser "' + ionicBrowser + '"';
+    console.log(command); // xx
+    sh.exec(command);
+});
+
+gulp.task('utest', function () {
+    sh.exec('karma start');
+});
+
+gulp.task('itest', function () {
+    sh.exec('ionic start', {async: true});
+    sh.exec('webdriver-manager start', {async: true});
+    // sh.exec('protractor protractor.conf.js'); // TODO ibook p227 itest
+    // TODO fails, see notes/gulp-itest.txt
 });
 
 gulp.task('sass', function (done) {

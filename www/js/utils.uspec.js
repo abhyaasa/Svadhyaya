@@ -12,7 +12,7 @@ describe('getData', function () {
         }));
     it('should do something if indicated local json file does not exist',
         inject(function (getData) {
-            getData('xx.json')
+            getData('bogus.json')
                 .error(function (data, status) {
                     expect('Error: ' + data + status)
                         .toEqual('');
