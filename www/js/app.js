@@ -112,9 +112,6 @@ angular.module('app', ['ionic', 'utils'])
 .run(function ($ionicPlatform, $rootScope, $state, $log, getData, restoreSettings) {
     getData('config.json').success(function (config) {
         $rootScope.config = config;
-    })
-    .error(function(data, status, headers, config) {
-        console.log(status);
     });
 
     $log.debug('ENABLED');
