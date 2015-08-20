@@ -12,9 +12,8 @@ var rename = require('gulp-rename');
 var sh = require('shelljs');
 var jshint = require('gulp-jshint');
 var taskListing = require('gulp-task-listing');
+var fs = require('fs');
 var argv = require('minimist')(process.argv.slice(2));
-
-var ionicBrowser = 'chrome'; // '/Applications/Google Chrome Canary.app';
 
 var paths = {
     sass: ['./scss/**/*.scss'],
@@ -32,61 +31,7 @@ var paths = {
     ]
 };
 
-var helpPreamble =
-    ('\n"gulp build -a" for android, default ios' +
-     '\n"gulp is [-a|-i]" for ionic serve for android, ios, or (default) both');
-
-gulp.task('help', function () {
-    console.log(helpPreamble);
-    taskListing();
-});
-
-gulp.task('default', ['sass', 'index', 'config']);
-
-// BUILD finish this: see https://github.com/leob/ionic-quickstarter
-gulp.task('build', ['pre-build'], function () {
-    sh.exec('ionic build ' + (argv.a ? 'android' : 'ios'));
-});
-
-gulp.task('pre-build', ['default'], function () {
-    // TODO fill out pre-build
-});
-
-gulp.task('jshint', function () {
-    gulp.src(paths.scripts)
-        .pipe(jshint())
-        .pipe(jshint.reporter('default'));
-});
-
-gulp.task('is', function() {
-    var platform = argv.a ? '-t android' : argv.i ? '-t ios' : '-l';
-    var command = 'ionic serve -c ' + platform + ' --browser "' + ionicBrowser + '"';
-    console.log(command); // xx
-    sh.exec(command);
-});
-
-gulp.task('utest', function () {
-    sh.exec('karma start');
-});
-
-gulp.task('kill', function () {
-    sh.exec('killall gulp');
-    sh.exec('osascript -e \'quit app "Terminal"\'');
-    // instead use the following if itest processs not rn in Terminal
-    // sh.exec('kill -9 $(pgrep bash)'); // 'killall bash' does not work
-});
-
-gulp.task('itest', function () {
-    var cwd = process.cwd(),
-        mkCmd = function (cmd) {
-                    return 'tools/term.sh "cd ' + cwd + ';' + cmd + '"';
-                };
-    sh.exec(mkCmd('ionic serve -c -t ios --browser ' + ionicBrowser));
-    sh.exec('sleep 10');
-    sh.exec(mkCmd('webdriver-manager start'));
-    sh.exec('sleep 3');
-    sh.exec(mkCmd('protractor protractor.conf.js'));
-});
+gulp.task('default', ['sass', 'index', 'config']); // was just ['sass']
 
 gulp.task('sass', function (done) {
     gulp.src('./scss/ionic.app.scss')
@@ -100,24 +45,6 @@ gulp.task('sass', function (done) {
         }))
         .pipe(gulp.dest('./www/css/'))
         .on('end', done);
-});
-
-// after http://digitaldrummerj.me/gulp-inject/
-gulp.task('index', function () {
-    return gulp.src('./www/index.html')
-        .pipe(ginject(
-            gulp.src(paths.scripts, {
-                read: false
-            }), {
-                relative: true
-            }))
-        .pipe(ginject(
-            gulp.src(paths.css, {
-                read: false
-            }), {
-                relative: true
-            }))
-        .pipe(gulp.dest('./www'));
 });
 
 gulp.task('watch', function () {
@@ -143,12 +70,24 @@ var message =
     '\n  Once git is installed, run \'' +
     gutil.colors.cyan('gulp install') + '\' again.';
 
-gulp.task('git-checkxx', function (done) { // run by ionic
+gulp.task('git-check', function (done) { // run by ionic
     if (!sh.which('git')) {
         console.log(message);
         process.exit(1);
     }
     done();
+});
+
+// The above is mostly from the standard ionic gulpfile.
+// The following is specific to this project.
+
+var helpPreamble =
+    ('\n"gulp build -a" for android, default ios' +
+      '\n"gulp is [-a|-i]" for ionic serve for android, ios, or (default) both');
+
+gulp.task('help', function () {
+    console.log(helpPreamble);
+    taskListing();
 });
 
 // Transfer some config data from config.xml to www/data/config.json.
@@ -159,7 +98,7 @@ gulp.task('config', function () {
         util = require('util'),
         parser = new xml2js.Parser(),
         xmlstr = fs.readFileSync(__dirname + '/config.xml').toString(),
-        jsonFileName =__dirname + '/www/data/config.json',
+        jsonFileName = __dirname + '/www/data/config.json',
         jsonstr = fs.readFileSync(jsonFileName).toString();
     parser.parseString(xmlstr, function (err, xconfig) {
         var widget = xconfig.widget,
@@ -170,4 +109,82 @@ gulp.task('config', function () {
         config.href = widget.author[0].$.href;
         fs.writeFileSync(jsonFileName, JSON.stringify(config, null, 2));
     });
+});
+
+// BUILD finish this: see https://github.com/leob/ionic-quickstarter
+gulp.task('build', ['pre-build'], function () {
+    sh.exec('ionic build ' + (argv.a ? 'android' : 'ios'));
+});
+
+gulp.task('pre-build', ['default'], function () {
+    // TODO fill out pre-build
+});
+
+gulp.task('jshint', function () {
+    gulp.src(paths.scripts)
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'));
+});
+
+var configJsonFile = 'www/data/config.json';
+
+gulp.task('flavor', function () {
+    if (!argv.name) {
+        console.log(gutil.colors.magenta('Usage: gulp flavor --name NAME'));
+    } else {
+        var configJson = JSON.parse(fs.readFileSync(configJsonFile).toString());
+        configJson.flavor = argv.name;
+        fs.writeFileSync(configJsonFile, JSON.stringify(configJson, null, 2));
+        sh.exec('ln -s -f data/' + argv.name + '/resources .');
+    }
+});
+
+var ionicBrowser = 'chrome'; // '/Applications/Google Chrome Canary.app';
+
+gulp.task('is', function () {
+    var platform = argv.a ? '-t android' : argv.i ? '-t ios' : '-l';
+    var command = 'ionic serve -c ' + platform + ' --browser "' + ionicBrowser + '"';
+    console.log(command); // xx
+    sh.exec(command);
+});
+
+gulp.task('utest', function () {
+    sh.exec('karma start');
+});
+
+gulp.task('kill', function () {
+    sh.exec('killall gulp');
+    sh.exec('osascript -e \'quit app "Terminal"\'');
+    // instead use the following if itest processs not in Terminal
+    // sh.exec('kill -9 $(pgrep bash)'); // 'killall bash' does not work
+});
+
+gulp.task('itest', function () {
+    var cwd = process.cwd(),
+        mkCmd = function (cmd) {
+            return 'tools/term.sh "cd ' + cwd + ';' + cmd + '"';
+        };
+    sh.exec(mkCmd('ionic serve -c -t ios --browser ' + ionicBrowser));
+    sh.exec('sleep 10');
+    sh.exec(mkCmd('webdriver-manager start'));
+    sh.exec('sleep 3');
+    sh.exec(mkCmd('protractor protractor.conf.js'));
+});
+
+// after http://digitaldrummerj.me/gulp-inject/
+gulp.task('index', function () {
+    return gulp.src('./www/index.html')
+        .pipe(ginject(
+            gulp.src(paths.scripts, {
+                read: false
+            }), {
+                relative: true
+            }))
+        .pipe(ginject(
+            gulp.src(paths.css, {
+                read: false
+            }), {
+                relative: true
+            }))
+        .pipe(gulp.dest('./www'));
 });

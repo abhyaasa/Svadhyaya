@@ -109,9 +109,16 @@ angular.module('app', ['ionic', 'utils'])
     };
 })
 
-.run(function ($ionicPlatform, $rootScope, $state, $log, getData, restoreSettings) {
+.run(function ($ionicPlatform, $rootScope, $state, $log,
+               getData, restoreSettings) {
     getData('config.json').success(function (config) {
-        $rootScope.config = config;
+        getData(config.flavor + '/config.json').success(function (fConfig) {
+            Object.keys(fConfig).forEach(function (item) {
+                config[item] = fConfig[item];
+            });
+            $rootScope.config = config;
+            $log.debug('config:', JSON.stringify(config));
+        });
     });
 
     $log.debug('ENABLED');
