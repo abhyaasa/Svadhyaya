@@ -71,7 +71,9 @@ gulp.task('utest', function () {
 
 gulp.task('kill', function () {
     sh.exec('killall gulp');
-    sh.exec('kill -9 $(pgrep bash)');
+    sh.exec('osascript -e \'quit app "Terminal"\'');
+    // instead use the following if itest processs not rn in Terminal
+    // sh.exec('kill -9 $(pgrep bash)'); // 'killall bash' does not work
 });
 
 gulp.task('itest', function () {
