@@ -14,7 +14,7 @@ var jshint = require('gulp-jshint');
 var taskListing = require('gulp-task-listing');
 var argv = require('minimist')(process.argv.slice(2));
 
-var ionicBrowser = '/Applications/Google Chrome Canary.app';
+var ionicBrowser = 'chrome'; // '/Applications/Google Chrome Canary.app';
 
 var paths = {
     sass: ['./scss/**/*.scss'],
@@ -41,14 +41,16 @@ gulp.task('help', function () {
     taskListing();
 });
 
-gulp.task('default', ['sass', 'index']);
+gulp.task('default', ['sass', 'index', 'config']);
 
 // BUILD finish this: see https://github.com/leob/ionic-quickstarter
 gulp.task('build', ['pre-build'], function () {
-    sh.exec('ionic build ' + (argv.a ? 'android' : 'ios')); // TODO add pre-build
+    sh.exec('ionic build ' + (argv.a ? 'android' : 'ios'));
 });
 
-gulp.task('pre-build', ['default']);
+gulp.task('pre-build', ['default'], function () {
+    // TODO fill out pre-build
+});
 
 gulp.task('jshint', function () {
     gulp.src(paths.scripts)
@@ -68,6 +70,7 @@ gulp.task('utest', function () {
 });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 gulp.task('kill', function () {
     sh.exec('killall gulp');
@@ -77,11 +80,23 @@ gulp.task('kill', function () {
 });
 
 >>>>>>> parent of bd622b2... Revert "moved flavor dirs again and other weeks"
+=======
+gulp.task('kill', function () {
+    sh.exec('killall gulp');
+    sh.exec('kill -9 $(pgrep bash)');
+});
+
+>>>>>>> parent of 565a57d... Revert "itest not working"
 gulp.task('itest', function () {
-    sh.exec('ionic start', {async: true});
-    sh.exec('webdriver-manager start', {async: true});
-    // sh.exec('protractor protractor.conf.js'); // TODO ibook p227 itest
-    // TODO fails, see notes/gulp-itest.txt
+    var cwd = process.cwd(),
+        mkCmd = function (cmd) {
+                    return 'tools/term.sh "cd ' + cwd + ';' + cmd + '"';
+                };
+    sh.exec(mkCmd('ionic serve -c -t ios --browser ' + ionicBrowser));
+    sh.exec('sleep 10');
+    sh.exec(mkCmd('webdriver-manager start'));
+    sh.exec('sleep 3');
+    sh.exec(mkCmd('protractor protractor.conf.js'));
 });
 
 gulp.task('sass', function (done) {

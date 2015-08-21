@@ -15,7 +15,7 @@ angular.module('app')
         $scope.deckNames = $scope.allDeckNames;
     });
     angular.extend($scope, {
-        model: {searchText: ''},
+        model: {searchText: ''}, // used in itest
         search: function () {
             // TODO implement search, Ionic in action 6.3, p 140
             // try AngularJS cookbook p 64 http://jsfiddle.net/msfrisbie/ghsa3nym/
