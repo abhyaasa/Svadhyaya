@@ -47,7 +47,6 @@
         "ionic": false,
         "head": false,
         "xit": false,
-        "xdescribe": false,
-        "by": false
+        "xdescribe": false
     }
 }

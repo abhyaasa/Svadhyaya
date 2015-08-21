@@ -14,7 +14,7 @@ var jshint = require('gulp-jshint');
 var taskListing = require('gulp-task-listing');
 var argv = require('minimist')(process.argv.slice(2));
 
-var ionicBrowser = 'chrome'; // '/Applications/Google Chrome Canary.app';
+var ionicBrowser = '/Applications/Google Chrome Canary.app';
 
 var paths = {
     sass: ['./scss/**/*.scss'],
@@ -41,16 +41,14 @@ gulp.task('help', function () {
     taskListing();
 });
 
-gulp.task('default', ['sass', 'index', 'config']);
+gulp.task('default', ['sass', 'index']);
 
 // BUILD finish this: see https://github.com/leob/ionic-quickstarter
 gulp.task('build', ['pre-build'], function () {
-    sh.exec('ionic build ' + (argv.a ? 'android' : 'ios'));
+    sh.exec('ionic build ' + (argv.a ? 'android' : 'ios')); // TODO add pre-build
 });
 
-gulp.task('pre-build', ['default'], function () {
-    // TODO fill out pre-build
-});
+gulp.task('pre-build', ['default']);
 
 gulp.task('jshint', function () {
     gulp.src(paths.scripts)
@@ -69,21 +67,11 @@ gulp.task('utest', function () {
     sh.exec('karma start');
 });
 
-gulp.task('kill', function () {
-    sh.exec('killall gulp');
-    sh.exec('kill -9 $(pgrep bash)');
-});
-
 gulp.task('itest', function () {
-    var cwd = process.cwd(),
-        mkCmd = function (cmd) {
-                    return 'tools/term.sh "cd ' + cwd + ';' + cmd + '"';
-                };
-    sh.exec(mkCmd('ionic serve -c -t ios --browser ' + ionicBrowser));
-    sh.exec('sleep 10');
-    sh.exec(mkCmd('webdriver-manager start'));
-    sh.exec('sleep 3');
-    sh.exec(mkCmd('protractor protractor.conf.js'));
+    sh.exec('ionic start', {async: true});
+    sh.exec('webdriver-manager start', {async: true});
+    // sh.exec('protractor protractor.conf.js'); // TODO ibook p227 itest
+    // TODO fails, see notes/gulp-itest.txt
 });
 
 gulp.task('sass', function (done) {

@@ -3,7 +3,7 @@ To Do List
 
 There is lots to do at this stage. A partial list follows:
 
-* killgulp.sh
+* e2e test
 * convert to coffee, jade, NOT stylus
 	- https://github.com/CaryLandholt/ng-classify
 	- install https://www.npmjs.com/package/gulp-ng-classify#coffeescript
