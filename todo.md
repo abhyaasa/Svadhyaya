@@ -3,14 +3,7 @@ To Do List
 
 There is lots to do at this stage. A partial list follows:
 
-<<<<<<< HEAD:todo.md
-<<<<<<< HEAD:www/todo.md
 * e2e test
-=======
->>>>>>> parent of bd622b2... Revert "moved flavor dirs again and other weeks":todo.md
-=======
-* killgulp.sh
->>>>>>> parent of 565a57d... Revert "itest not working":www/todo.md
 * convert to coffee, jade, NOT stylus
 	- https://github.com/CaryLandholt/ng-classify
 	- install https://www.npmjs.com/package/gulp-ng-classify#coffeescript

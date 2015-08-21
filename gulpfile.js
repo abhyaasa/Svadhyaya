@@ -69,9 +69,6 @@ gulp.task('utest', function () {
     sh.exec('karma start');
 });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 gulp.task('kill', function () {
     sh.exec('killall gulp');
     sh.exec('osascript -e \'quit app "Terminal"\'');
@@ -79,14 +76,12 @@ gulp.task('kill', function () {
     // sh.exec('kill -9 $(pgrep bash)'); // 'killall bash' does not work
 });
 
->>>>>>> parent of bd622b2... Revert "moved flavor dirs again and other weeks"
-=======
+>>>>>>> parent of 565a57d... Revert "itest not working"
 gulp.task('kill', function () {
     sh.exec('killall gulp');
     sh.exec('kill -9 $(pgrep bash)');
 });
 
->>>>>>> parent of 565a57d... Revert "itest not working"
 gulp.task('itest', function () {
     var cwd = process.cwd(),
         mkCmd = function (cmd) {
