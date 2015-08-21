@@ -3,14 +3,14 @@ To Do List
 
 There is lots to do at this stage. A partial list follows:
 
-* live reload error!
-* TODO, FIXME, and XX (to be removed) comments ctrl-shift-t
 * convert to coffee, jade, NOT stylus
 	- https://github.com/CaryLandholt/ng-classify
 	- install https://www.npmjs.com/package/gulp-ng-classify#coffeescript
 	- install https://github.com/js2coffee/js2coffee
 	- install http://compass-style.org
 	- test angular-marked with coffee
+* flavor /config.json
+* TODO, FIXME, and XX (to be removed) comments
 * splash and icon http://learn.ionicframework.com/formulas/adding-an-icon/
   http://blog.ionic.io/automating-icons-and-splash-screens/
 * add sound and image support
