@@ -76,12 +76,6 @@ gulp.task('kill', function () {
     // sh.exec('kill -9 $(pgrep bash)'); // 'killall bash' does not work
 });
 
->>>>>>> parent of 565a57d... Revert "itest not working"
-gulp.task('kill', function () {
-    sh.exec('killall gulp');
-    sh.exec('kill -9 $(pgrep bash)');
-});
-
 gulp.task('itest', function () {
     var cwd = process.cwd(),
         mkCmd = function (cmd) {
