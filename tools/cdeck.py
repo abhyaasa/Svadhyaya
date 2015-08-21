@@ -21,8 +21,8 @@ except:
 
 # debug_mode = False
 
-UTF8Reader = codecs.getreader('utf8')
-UTF8Writer = codecs.getwriter('utf8')
+UTF8READER = codecs.getreader('utf8')
+UTF8WRITER = codecs.getwriter('utf8')
 
 EPILOG = """
 Dependencies: python 2.6+ (maybe earlier). If the .md tag is used, install the
@@ -132,7 +132,7 @@ The answer of a sequence question is automatically the text of the following que
 html_escape_table = {"&": "&amp;", '"': "&quot;", "'": "&apos;", ">": "&gt;", "<": "&lt;"}
 def html_escape(text):
     """Produce entities within text."""
-    return "".join(html_escape_table.get(c,c) for c in text)
+    return "".join(html_escape_table.get(c, c) for c in text)
 
 number_cre = re.compile(r'.\d+|\d+.\d*|\d+')
 isnumber = number_cre.match
@@ -187,16 +187,16 @@ def main(args):
         return
 
     if args.outfile:
-        writer = UTF8Writer(args.outfile)
+        writer = UTF8WRITER(args.outfile)
     else:
-        writer = UTF8Writer(sys.stdout)
+        writer = UTF8WRITER(sys.stdout)
 
     _input = None
     if args.test:
         _input = test
         debug_mode = True
     elif str(args.infile) == 'None':
-        _input = UTF8Reader(sys.stdin).read()
+        _input = UTF8READER(sys.stdin).read()
     else:
         _input = codecs.open(str(args.infile), "r", "utf-8").read()
     if not _input.startswith(';'):
@@ -320,7 +320,7 @@ def get_args():
     formatter = argparse.RawDescriptionHelpFormatter
     p = argparse.ArgumentParser(
         description=__doc__,
-        epilog = EPILOG,
+        epilog=EPILOG,
         formatter_class=formatter)
     p.add_argument('infile', nargs='?', type=str,
                    help='compact format input file, default stdin')

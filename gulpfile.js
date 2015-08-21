@@ -67,6 +67,16 @@ gulp.task('utest', function () {
     sh.exec('karma start');
 });
 
+<<<<<<< HEAD
+=======
+gulp.task('kill', function () {
+    sh.exec('killall gulp');
+    sh.exec('osascript -e \'quit app "Terminal"\'');
+    // instead use the following if itest processs not rn in Terminal
+    // sh.exec('kill -9 $(pgrep bash)'); // 'killall bash' does not work
+});
+
+>>>>>>> parent of bd622b2... Revert "moved flavor dirs again and other weeks"
 gulp.task('itest', function () {
     sh.exec('ionic start', {async: true});
     sh.exec('webdriver-manager start', {async: true});

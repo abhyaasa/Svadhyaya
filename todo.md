@@ -3,14 +3,17 @@ To Do List
 
 There is lots to do at this stage. A partial list follows:
 
+<<<<<<< HEAD:www/todo.md
 * e2e test
+=======
+>>>>>>> parent of bd622b2... Revert "moved flavor dirs again and other weeks":todo.md
 * convert to coffee, jade, NOT stylus
 	- https://github.com/CaryLandholt/ng-classify
 	- install https://www.npmjs.com/package/gulp-ng-classify#coffeescript
 	- install https://github.com/js2coffee/js2coffee
 	- install http://compass-style.org
 	- test angular-marked with coffee
-* use https://www.npmjs.com/package/gulp-replace
+* flavor /config.json
 * TODO, FIXME, and XX (to be removed) comments
 * splash and icon http://learn.ionicframework.com/formulas/adding-an-icon/
   http://blog.ionic.io/automating-icons-and-splash-screens/
@@ -21,6 +24,7 @@ There is lots to do at this stage. A partial list follows:
 * backbutton from help on from settings
 * backbutton with inverted svg font possible?
 * help content context sensitive
+
 * complete basic functionality
 * ios and android simualtor testing
 * ios and android device testing
