@@ -32,7 +32,7 @@ on deck and compact deck file formats.
 ### Development and support
 
 This app is early in development.
-See `todo.md` and (github issues)[https://github.com/vasudeva-chaynes/Svadhyaya/issues].
+See `www/todo.md` and (github issues)[https://github.com/vasudeva-chaynes/Svadhyaya/issues].
 
 There is a `dev-notes.txt` file for developers.
 
