@@ -1,3 +1,11 @@
+## Collaboration
+
+To open discussion of collaboration possibilities, please email <svadhyaya.app@gmail.com>.
+
+## Development tasks
+
+This app is early in development, with plenty to do. See the `todo.md` file, `TODO` comments in files, and GitHub [Issues](https://github.com/vasudeva-chaynes/Svadhyaya/issues) list.
+
 ## Global installs
 
     $ npm list -g --depth=0
@@ -20,3 +28,7 @@ You test and build with the current **flavor** of your choice. The flavor is cha
 There must be a subdirectory of `www/data/` for every flavor in use, with structure similar to the test flavor.
 
 `./resources` link points to `./data/<current flavor>/resources/` of the current flavor for to keep the `ionic resources` command happy.
+
+## Python tools
+
+Python 2.6+ (maybe earlier) is needed to run **tools/*.py** scripts. Use `-h` argument for usage information. `cdeck.py --format_help` provides documentation on deck and compact deck file formats.

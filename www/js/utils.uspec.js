@@ -4,7 +4,7 @@ describe('getData', function () {
     beforeEach(module('utils'));
     it('should return object defined in local json file',
         inject(function (getData) {
-            getData('data/config.json')
+            getData('test/test.json')
                 .success(function (data) {
                     expect(JSON.stringify(data))
                         .toEqual('["data", "for unit test"]');
