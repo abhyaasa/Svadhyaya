@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp-help')(require('gulp'));
+var fs = require('fs');
 var gutil = require('gulp-util');
 // js/css file injection per http://digitaldrummerj.me/gulp-inject/
 var ginject = require('gulp-inject');
@@ -32,7 +33,6 @@ var paths = {
     ]
 };
 
-<<<<<<< HEAD
 gulp.task('default', ['sass', 'index', 'config']); // was just ['sass']
 
 gulp.task('sass', function (done) {
@@ -106,18 +106,8 @@ gulp.task('config', configMsg, function () {
         fs.writeFileSync(jsonFileName, JSON.stringify(config, null, 2));
     });
 });
-=======
-var helpPreamble =
-    ('\n"gulp build -a" for android, default ios' +
-     '\n"gulp is [-a|-i]" for ionic serve for android, ios, or (default) both');
-
-gulp.task('help', function () {
-    console.log(helpPreamble);
-    taskListing();
-});
 
 gulp.task('default', ['sass', 'index', 'config']);
->>>>>>> origin/awesome-syntax
 
 // BUILD finish this: see https://github.com/leob/ionic-quickstarter
 gulp.task('build', '-a for Android, default iOS', ['pre-build'], function () {
@@ -134,7 +124,6 @@ gulp.task('jshint', 'Run jshint on all (non-lib) script files', function () {
         .pipe(jshint.reporter('default'));
 });
 
-<<<<<<< HEAD
 var configJsonFile = 'www/data/config.json';
 var flavorMsg = ('--name FLAVOR argument required: inject FLAVOR into ' +
                  configJsonFile);
@@ -154,9 +143,6 @@ var ionicBrowser = 'chrome'; // '/Applications/Google Chrome Canary.app';
 
 gulp.task('is', '[-a|-i] for ionic serve for android, ios, or (default) both',
   function () {
-=======
-gulp.task('is', function() {
->>>>>>> origin/awesome-syntax
     var platform = argv.a ? '-t android' : argv.i ? '-t ios' : '-l';
     var command = 'ionic serve -c ' + platform + ' --browser "' + ionicBrowser + '"';
     console.log(command); // xx
@@ -167,19 +153,8 @@ gulp.task('utest', 'Unit tests', function () {
     sh.exec('karma start');
 });
 
-<<<<<<< HEAD
 gulp.task('itest', 'Integration (e-e) tests', function () {
     // TODO itest not working
-=======
-gulp.task('kill', function () {
-    sh.exec('killall gulp');
-    sh.exec('osascript -e \'quit app "Terminal"\'');
-    // instead use the following if itest processs not rn in Terminal
-    // sh.exec('kill -9 $(pgrep bash)'); // 'killall bash' does not work
-});
-
-gulp.task('itest', function () {
->>>>>>> origin/awesome-syntax
     var cwd = process.cwd(),
         mkCmd = function (cmd) {
                     return 'tools/term.sh "cd ' + cwd + ';' + cmd + '"';
@@ -191,13 +166,13 @@ gulp.task('itest', function () {
     sh.exec(mkCmd('protractor protractor.conf.js'));
 });
 
-<<<<<<< HEAD
 gulp.task('kill', 'Kill all gulp and Terminal processes', function () {
     sh.exec('killall gulp');
     sh.exec('osascript -e \'quit app "Terminal"\'');
     // Instead use the following if itest processs not in Terminal:
     // sh.exec('kill -9 $(pgrep bash)'); // 'killall bash' does not work
-=======
+});
+
 gulp.task('sass', function (done) {
     gulp.src('./scss/ionic.app.scss')
         .pipe(sass())
@@ -210,7 +185,6 @@ gulp.task('sass', function (done) {
         }))
         .pipe(gulp.dest('./www/css/'))
         .on('end', done);
->>>>>>> origin/awesome-syntax
 });
 
 // after http://digitaldrummerj.me/gulp-inject/

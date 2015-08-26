@@ -22,7 +22,6 @@ There is lots to do at this stage. A partial list follows:
 - [ ] backbutton from help on from settings
 - [ ] backbutton with inverted svg font possible?
 - [ ] help content context sensitive
-=======
 * convert to coffee, jade, NOT stylus
 	- https://github.com/CaryLandholt/ng-classify
 	- install https://www.npmjs.com/package/gulp-ng-classify#coffeescript
