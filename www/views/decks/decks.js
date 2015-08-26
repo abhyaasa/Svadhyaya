@@ -2,8 +2,9 @@
 
 angular.module('app')
 
-.controller('DecksController', function ($scope, getData, _) {
-    getData('test/decks/index.json').success(function (fileNames) {
+.controller('DecksController', function ($rootScope, $scope, getData, _) {
+    var indexFile = $rootScope.config.flavor + '/decks/index.json';
+    getData(indexFile).success(function (fileNames) {
         $scope.allDeckNames = _.map(fileNames, function (name) {
             return {
                 fullName: name,
@@ -14,11 +15,11 @@ angular.module('app')
         $scope.deckNames = $scope.allDeckNames;
     });
     angular.extend($scope, {
-        model: {searchText: ''},
+        model: {searchText: ''}, // used in itest
         search: function () {
             // TODO implement search, Ionic in action 6.3, p 140
             // try AngularJS cookbook p 64 http://jsfiddle.net/msfrisbie/ghsa3nym/
-           $scope.deckNames = _.filter($scope.allDeckNames, function(deck) {
+            $scope.deckNames = _.filter($scope.allDeckNames, function(deck) {
                 var name = deck.displayName.toLowerCase;
                 return name.indexOf($scope.model.searchText.toLowerCase) !== -1;
             });

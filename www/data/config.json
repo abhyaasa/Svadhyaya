@@ -1,4 +1,7 @@
 {
-    "flavor": "dattaDeepam",
-    "publish": false
+  "flavor": "dattaDeepam",
+  "version": "0.0.1",
+  "email": "svadhyaya.app@gmail.com",
+  "href": "https://github.com/vasudeva-chaynes/Svadhyaya",
+  "name": "Svadhyaya"
 }
