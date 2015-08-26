@@ -3,7 +3,6 @@ To Do List
 
 There is lots to do at this stage. A partial list follows:
 
-<<<<<<< HEAD
 - [ ] live reload error
 - [ ] something
 - [ ] Coffee, jade, NOT stylus
@@ -22,25 +21,6 @@ There is lots to do at this stage. A partial list follows:
 - [ ] backbutton from help on from settings
 - [ ] backbutton with inverted svg font possible?
 - [ ] help content context sensitive
-* convert to coffee, jade, NOT stylus
-	- https://github.com/CaryLandholt/ng-classify
-	- install https://www.npmjs.com/package/gulp-ng-classify#coffeescript
-	- install https://github.com/js2coffee/js2coffee
-	- install http://compass-style.org
-	- test angular-marked with coffee
-* flavor /config.json
-* TODO, FIXME, and XX (to be removed) comments
-* splash and icon http://learn.ionicframework.com/formulas/adding-an-icon/
-  http://blog.ionic.io/automating-icons-and-splash-screens/
-* add sound and image support
-* tabs: decklist, deck, card, settings
-* disable inop tabs
-* deck tab: boxes, filter, resume, (re)start
-* backbutton from help on from settings
-* backbutton with inverted svg font possible?
-* help content context sensitive
->>>>>>> origin/awesome-syntax
-
 - [ ] complete basic functionality
 - [ ] ios and android simualtor testing
 - [ ] ios and android device testing
