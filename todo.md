@@ -3,6 +3,7 @@ To Do List
 
 There is lots to do at this stage. A partial list follows:
 
+<<<<<<< HEAD
 - [ ] live reload error
 - [ ] something
 - [ ] Coffee, jade, NOT stylus
@@ -21,6 +22,8 @@ There is lots to do at this stage. A partial list follows:
 - [ ] backbutton from help on from settings
 - [ ] backbutton with inverted svg font possible?
 - [ ] help content context sensitive
+
+>>>>>>> origin/awesome-syntax
 - [ ] complete basic functionality
 - [ ] ios and android simualtor testing
 - [ ] ios and android device testing
