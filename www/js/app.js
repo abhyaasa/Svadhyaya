@@ -109,8 +109,9 @@ angular.module('app', ['ionic', 'utils'])
     };
 })
 
-.run(function ($ionicPlatform, $rootScope, $state, $log, getData, restoreSettings) {
-    getData('config.json').success(function (config) {
+.run(function ($ionicPlatform, $rootScope, $state, $log, getData,
+               restoreSettings) {
+    getData('config.json', function (config) {
         $rootScope.config = config;
     });
 

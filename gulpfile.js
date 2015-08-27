@@ -1,39 +1,37 @@
 'use strict';
 
 var gulp = require('gulp-help')(require('gulp'));
-var fs = require('fs');
 var gutil = require('gulp-util');
-// js/css file injection per http://digitaldrummerj.me/gulp-inject/
-var ginject = require('gulp-inject');
 var bower = require('bower');
 var concat = require('gulp-concat');
 var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+// following requires added to standard ionic starter
+var fs = require('fs');
 var jshint = require('gulp-jshint');
+// js/css file injection per http://digitaldrummerj.me/gulp-inject/
+var ginject = require('gulp-inject');
 var taskListing = require('gulp-task-listing');
 var argv = require('minimist')(process.argv.slice(2));
 
-var ionicBrowser = 'chrome'; // '/Applications/Google Chrome Canary.app';
-
 var paths = {
     sass: ['./scss/**/*.scss'],
-    scripts: [ // for index task
-        '*.js',
+    scripts: [ // added for index task
         './www/**/*.js',
         '!./www/js/app.js',
         '!./www/**/*spec.js', // no test files
         '!./www/lib/**'
     ],
-    css: [ // for index task
+    css: [ // added for index task
         './www/**/*.css',
         '!./www/css/ionic.app*.css',
         '!./www/lib/**'
     ]
 };
 
-gulp.task('default', ['sass', 'index', 'config']); // was just ['sass']
+gulp.task('default', ['sass', 'index', 'config']); // added index and config
 
 gulp.task('sass', function (done) {
     gulp.src('./scss/ionic.app.scss')
@@ -51,7 +49,7 @@ gulp.task('sass', function (done) {
 
 gulp.task('watch', function () {
     gulp.watch(paths.sass, ['sass']);
-    gulp.watch([ // for index task
+    gulp.watch([ // added for index task
         paths.scripts,
         paths.css
     ], ['index']);
@@ -80,14 +78,27 @@ gulp.task('git-check', function (done) { // run by ionic
     done();
 });
 
-// The above is mostly from the standard ionic gulpfile.
-// -----------------------------------------------------
+gulp.task('watch', function () {
+    gulp.watch(paths.sass, ['sass']);
+    // FIXME NOTE added comment:
+    // gulp watch doesn't auto-inject new files into index.html
+    // with next line
+    //   gulp.watch([paths.scripts, paths.css], ['index']); // added line
+    // because it produces the following log message
+    //   1     495942   log      LiveReload protocol error (invalid command
+    //   'reload', only valid commands are: hello)) after receiving data:
+    //   "{"command":"reload","path":"www/css/ionic.app.min.css",
+    //   "liveCss":true,"liveJs":true,"liveImg":true}"..
+});
+
+// The above is from the ionic starter execpt as indicated by 'added' comments.
+// -----------------------------------------------------------------------------
 // The following is specific to this project.
 
 var configMsg = ('Transfer some config data from config.xml to ' +
                  'www/data/config.json.');
 
-// Adapted from https://github.com/Leonidas-from-XIV/node-xml2js.
+// Adapted from https://github.com/Leonidas-from-XIV/node-xml2js
 gulp.task('config', configMsg, function () {
     var fs = require('fs'),
         xml2js = require('xml2js'),
@@ -119,7 +130,7 @@ gulp.task('pre-build', ['default'], function () {
 });
 
 gulp.task('jshint', 'Run jshint on all (non-lib) script files', function () {
-    gulp.src(paths.scripts + ['./www/js/app.js', './www/**/*spec.js'])
+    gulp.src(paths.scripts.concat(['./www/js/app.js', './www/**/*spec.js']))
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
 });
@@ -139,19 +150,11 @@ gulp.task('flavor', flavorMsg, function () {
     }
 });
 
-var ionicBrowser = 'chrome'; // '/Applications/Google Chrome Canary.app';
-
-gulp.task('is', '[-a|-i] for ionic serve for android, ios, or (default) both',
-  function () {
-    var platform = argv.a ? '-t android' : argv.i ? '-t ios' : '-l';
-    var command = 'ionic serve -c ' + platform + ' --browser "' + ionicBrowser + '"';
-    console.log(command); // xx
-    sh.exec(command);
-});
-
 gulp.task('utest', 'Unit tests', function () {
     sh.exec('karma start');
 });
+
+var ionicBrowser = 'chrome'; // '/Applications/Google Chrome Canary.app';
 
 gulp.task('itest', 'Integration (e-e) tests', function () {
     // TODO itest not working
@@ -166,25 +169,19 @@ gulp.task('itest', 'Integration (e-e) tests', function () {
     sh.exec(mkCmd('protractor protractor.conf.js'));
 });
 
+gulp.task('is', '[-a|-i] for ionic serve for android, ios, or (default) both',
+  function () {
+    var platform = argv.a ? '-t android' : argv.i ? '-t ios' : '-l';
+    var command = 'ionic serve -c ' + platform + ' --browser "' + ionicBrowser + '"';
+    console.log(command); // xx
+    sh.exec(command);
+});
+
 gulp.task('kill', 'Kill all gulp and Terminal processes', function () {
     sh.exec('killall gulp');
     sh.exec('osascript -e \'quit app "Terminal"\'');
     // Instead use the following if itest processs not in Terminal:
     // sh.exec('kill -9 $(pgrep bash)'); // 'killall bash' does not work
-});
-
-gulp.task('sass', function (done) {
-    gulp.src('./scss/ionic.app.scss')
-        .pipe(sass())
-        .pipe(gulp.dest('./www/css/'))
-        .pipe(minifyCss({
-            keepSpecialComments: 0
-        }))
-        .pipe(rename({
-            extname: '.min.css'
-        }))
-        .pipe(gulp.dest('./www/css/'))
-        .on('end', done);
 });
 
 // after http://digitaldrummerj.me/gulp-inject/
@@ -206,14 +203,6 @@ gulp.task('index', 'Inject script and css elements into www/index.html',
         .pipe(gulp.dest('./www'));
 });
 
-gulp.task('watch', function () {
-    gulp.watch(paths.sass, ['sass']);
-    gulp.watch([ // for index task
-        paths.scripts,
-        paths.css
-    ], ['index']);
-});
-
 gulp.task('install', ['git-check'], function () {
     return bower.commands.install()
         .on('log', function (data) {
@@ -221,7 +210,7 @@ gulp.task('install', ['git-check'], function () {
         });
 });
 
-var message =
+var gitMessage =
     '  ' + gutil.colors.red('Git is not installed.') +
     '\n  Git, the version control system, is required to download Ionic.' +
     '\n  Download git here: ' +
@@ -229,9 +218,9 @@ var message =
     '\n  Once git is installed, run \'' +
     gutil.colors.cyan('gulp install') + '\' again.';
 
-gulp.task('git-checkxx', function (done) { // run by ionic
+gulp.task('git-check', function (done) { // run by ionic
     if (!sh.which('git')) {
-        console.log(message);
+        console.log(gitMessage);
         process.exit(1);
     }
     done();

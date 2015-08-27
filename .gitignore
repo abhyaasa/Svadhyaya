@@ -1,12 +1,15 @@
 # Specifies intentionally untracked files to ignore when using Git
 # http://git-scm.com/docs/gitignore
 
-# ionic directories
+# ionic build directories
 node_modules/
 platforms/
 plugins/
 
-# development notes and temporary stuff
+# gulp-generated from scss/
+www/css/
+
+# development notes
 notes/
 
 # emacs backup
@@ -17,5 +20,3 @@ notes/
 
 # proprietary Datta Deepam content
 **/datta-deepam/
-
-
