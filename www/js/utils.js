@@ -23,7 +23,8 @@ angular.module('utils', ['ionic'])
 .service('getData', function ($http) {
     return function (path) { // path is relative to app www/data/
         // returns promise
-        return $http.get('data/' + path);
+        // TODO refactor using .then(success, failure) with success fn argument
+        return $http.get('/data/' + path);
     };
 })
 

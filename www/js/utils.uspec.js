@@ -1,21 +1,26 @@
 'use strict';
 
-describe('getData', function () {
+describe('getData', function ($log) {
     beforeEach(module('utils'));
     it('should return object defined in local json file',
-        inject(function (getData) {
+        inject(function ($rootScope, getData) {
+            var gData;
             getData('test/test.json')
                 .success(function (data) {
-                    expect(JSON.stringify(data))
-                        .toEqual('["data", "for unit test"]');
+                    console.log('data: ', data); // should log error
+                    gData = data;
                 });
+            $rootScope.$digest();
+            expect(JSON.stringify(gData))
+                // TODO this should error
+                .toEqual('["data", "for unit test"]');
         }));
     it('should do something if indicated local json file does not exist',
         inject(function (getData) {
             getData('bogus.json')
                 .error(function (data, status) {
                     expect('Error: ' + data + status)
-                        .toEqual('');
+                        .toEqual(''); // TODO this should be an error
                 });
         }));
 });
