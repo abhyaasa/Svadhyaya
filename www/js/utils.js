@@ -20,16 +20,26 @@ angular.module('utils', ['ionic'])
 
 .constant('_', window._) // underscore.js access
 
-.service('getData', function ($http) {
-    return function (path) { // path is relative to app www/data/
-        // returns promise
-        // TODO refactor using .then(success, failure) with success fn argument
-        return $http.get('/data/' + path);
+.service('getData', function ($rootScope, $http, $log) {
+    return function (path, success, failure) { // path is relative to www/data
+        $http.get('/data/' + path).then(
+            function (response) {
+                success(response.data);
+            },
+            function (error) {
+                if (failure) {
+                    return failure(error);
+                } else {
+                    $log.error('getData', JSON.stringify(error));
+                }
+            });
     };
 })
 
-// adapted from http://forum.ionicframework.com/t/how-to-play-local-audio-files/7479/5
-// for media plugin : http://plugins.cordova.io/#/package/org.apache.cordova.media
+// TODO test media service: Adapted from
+// http://forum.ionicframework.com/t/how-to-play-local-audio-files/7479/5
+// for media plugin :
+// http://plugins.cordova.io/#/package/org.apache.cordova.media
 // Usage:
 //   MediaSrv.loadMedia('sounds/mysound.mp3').then(function (media) {
 //    media.play();

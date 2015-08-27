@@ -3,8 +3,10 @@
 		"prefix": "(?:\\/\\*|\\/\\/|#|<!--) *@?(",
 		"suffix": "):? *(.*?) ?(?=\\*/|\\n|$|-->)"
 	},
-	"tags": ["TODO",
+	"tags": [
+				"CHECK",
         "xx",
+				"TODO",
         "PUBLISH",
         "ANDROID",
         "NOTE",
@@ -15,9 +17,8 @@
 	"search": {
 		"scope": "project",
 		"excludeFolders": [".git",
-				   "hooks", 
-				   "node_modules", 
-				   "platforms", 
+				   "node_modules",
+				   "platforms",
 				   "plugins",
 				   "www/lib"
 		],

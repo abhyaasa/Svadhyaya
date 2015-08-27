@@ -11,7 +11,7 @@ There is lots to do at this stage. A partial list follows:
 	- [ ] install https://github.com/js2coffee/js2coffee
 	- [ ] install http://compass-style.org
 	- [ ] test angular-marked with coffee
-- [ ] flavor /config.json
+- [ ] document code, e.g. https://www.npmjs.com/package/gulp-ngdocs
 - [ ] TODO, FIXME, and XX (to be removed) comments
 - [ ] splash and icon http://learn.ionicframework.com/formulas/adding-an-icon/ and  http://blog.ionic.io/automating-icons-and-splash-screens/
 - [ ] add sound and image support

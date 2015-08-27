@@ -4,7 +4,7 @@ angular.module('app')
 
 .controller('DecksController', function ($rootScope, $scope, getData, _) {
     var indexFile = $rootScope.config.flavor + '/decks/index.json';
-    getData(indexFile).success(function (fileNames) {
+    getData(indexFile, function (fileNames) {
         $scope.allDeckNames = _.map(fileNames, function (name) {
             return {
                 fullName: name,
