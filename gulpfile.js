@@ -14,6 +14,8 @@ var jshint = require('gulp-jshint');
 // js/css file injection per http://digitaldrummerj.me/gulp-inject/
 var ginject = require('gulp-inject');
 var taskListing = require('gulp-task-listing');
+var karma = require('gulp-karma');
+
 var argv = require('minimist')(process.argv.slice(2));
 
 var paths = {
@@ -96,7 +98,7 @@ gulp.task('watch', function () {
 // The following is specific to this project.
 
 var configMsg = ('Transfer some config data from config.xml to ' +
-                 'www/data/config.json.');
+    'www/data/config.json.');
 
 // Adapted from https://github.com/Leonidas-from-XIV/node-xml2js
 gulp.task('config', configMsg, function () {
@@ -137,7 +139,7 @@ gulp.task('jshint', 'Run jshint on all (non-lib) script files', function () {
 
 var configJsonFile = 'www/data/config.json';
 var flavorMsg = ('--name FLAVOR argument required: inject FLAVOR into ' +
-                 configJsonFile);
+    configJsonFile);
 
 gulp.task('flavor', flavorMsg, function () {
     if (!argv.name) {
@@ -160,8 +162,8 @@ gulp.task('itest', 'Integration (e-e) tests', function () {
     // TODO itest not working
     var cwd = process.cwd(),
         mkCmd = function (cmd) {
-                    return 'tools/term.sh "cd ' + cwd + ';' + cmd + '"';
-                };
+            return 'tools/term.sh "cd ' + cwd + ';' + cmd + '"';
+        };
     sh.exec(mkCmd('ionic serve -c -t ios --browser ' + ionicBrowser));
     sh.exec('sleep 10');
     sh.exec(mkCmd('webdriver-manager start'));
@@ -170,12 +172,12 @@ gulp.task('itest', 'Integration (e-e) tests', function () {
 });
 
 gulp.task('is', '[-a|-i] for ionic serve for android, ios, or (default) both',
-  function () {
-    var platform = argv.a ? '-t android' : argv.i ? '-t ios' : '-l';
-    var command = 'ionic serve -c ' + platform + ' --browser "' + ionicBrowser + '"';
-    console.log(command); // xx
-    sh.exec(command);
-});
+    function () {
+        var platform = argv.a ? '-t android' : argv.i ? '-t ios' : '-l';
+        var command = 'ionic serve -c ' + platform + ' --browser "' + ionicBrowser + '"';
+        console.log(command); // xx
+        sh.exec(command);
+    });
 
 gulp.task('kill', 'Kill all gulp and Terminal processes', function () {
     sh.exec('killall gulp');
@@ -186,22 +188,22 @@ gulp.task('kill', 'Kill all gulp and Terminal processes', function () {
 
 // after http://digitaldrummerj.me/gulp-inject/
 gulp.task('index', 'Inject script and css elements into www/index.html',
-  function () {
-    return gulp.src('./www/index.html')
-        .pipe(ginject(
-            gulp.src(paths.scripts, {
-                read: false
-            }), {
-                relative: true
-            }))
-        .pipe(ginject(
-            gulp.src(paths.css, {
-                read: false
-            }), {
-                relative: true
-            }))
-        .pipe(gulp.dest('./www'));
-});
+    function () {
+        return gulp.src('./www/index.html')
+            .pipe(ginject(
+                gulp.src(paths.scripts, {
+                    read: false
+                }), {
+                    relative: true
+                }))
+            .pipe(ginject(
+                gulp.src(paths.css, {
+                    read: false
+                }), {
+                    relative: true
+                }))
+            .pipe(gulp.dest('./www'));
+    });
 
 gulp.task('install', ['git-check'], function () {
     return bower.commands.install()
@@ -234,7 +236,7 @@ gulp.task('config', function () {
         util = require('util'),
         parser = new xml2js.Parser(),
         xmlstr = fs.readFileSync(__dirname + '/config.xml').toString(),
-        jsonFileName =__dirname + '/www/data/config.json',
+        jsonFileName = __dirname + '/www/data/config.json',
         jsonstr = fs.readFileSync(jsonFileName).toString();
     parser.parseString(xmlstr, function (err, xconfig) {
         var widget = xconfig.widget,
@@ -245,4 +247,30 @@ gulp.task('config', function () {
         config.href = widget.author[0].$.href;
         fs.writeFileSync(jsonFileName, JSON.stringify(config, null, 2));
     });
+});
+
+// from https://www.npmjs.com/package/gulp-karma
+// TODO use http://stackoverflow.com/questions/8527786
+
+var testFiles = []; // TODO fill out
+
+gulp.task('test', function () {
+    // Be sure to return the stream
+    return gulp.src(testFiles)
+        .pipe(karma({
+            configFile: 'karma.conf.js',
+            action: 'run'
+        }))
+        .on('error', function (err) {
+            // Make sure failed tests cause gulp to exit non-zero
+            throw err;
+        });
+});
+
+gulp.task('karma', function () {
+    gulp.src(testFiles)
+        .pipe(karma({
+            configFile: 'karma.conf.js',
+            action: 'watch'
+        }));
 });
