@@ -21,6 +21,7 @@ There is lots to do at this stage. A partial list follows:
 - [ ] backbutton from help on from settings
 - [ ] backbutton with inverted svg font possible?
 - [ ] help content context sensitive
+- [ ] version in data/config.json, bower.json, package.json, and config.xml
 - [ ] complete basic functionality
 - [ ] ios and android simualtor testing
 - [ ] ios and android device testing
