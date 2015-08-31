@@ -20,7 +20,7 @@ var argv = require('minimist')(process.argv.slice(2));
 
 var paths = {
     sass: ['./scss/**/*.scss'],
-    scripts: [ // added for index task
+    indexScripts: [ // added for index task
         './www/**/*.js',
         '!./www/js/app.js',
         '!./www/**/*spec.js', // no test files
@@ -32,6 +32,8 @@ var paths = {
         '!./www/lib/**'
     ]
 };
+paths.appScripts = paths.indexScripts.concat(
+    ['./www/js/app.js', './www/**/*spec.js']);
 
 gulp.task('default', ['sass', 'index', 'config']); // added index and config
 
@@ -51,10 +53,13 @@ gulp.task('sass', function (done) {
 
 gulp.task('watch', function () {
     gulp.watch(paths.sass, ['sass']);
-    gulp.watch([ // added for index task
-        paths.scripts,
-        paths.css
-    ], ['index']);
+    // NOTE: Does not auto-inject new files into index.html with the line:
+    //   gulp.watch([paths.indexScripts, paths.css], ['index']); // added line
+    // because it produces the following log message
+    //   1     495942   log      LiveReload protocol error (invalid command
+    //   'reload', only valid commands are: hello)) after receiving data:
+    //   "{"command":"reload","path":"www/css/ionic.app.min.css",
+    //   "liveCss":true,"liveJs":true,"liveImg":true}"..
 });
 
 gulp.task('install', ['git-check'], function () {
@@ -78,19 +83,6 @@ gulp.task('git-check', function (done) { // run by ionic
         process.exit(1);
     }
     done();
-});
-
-gulp.task('watch', function () {
-    gulp.watch(paths.sass, ['sass']);
-    // FIXME NOTE added comment:
-    // gulp watch doesn't auto-inject new files into index.html
-    // with next line
-    //   gulp.watch([paths.scripts, paths.css], ['index']); // added line
-    // because it produces the following log message
-    //   1     495942   log      LiveReload protocol error (invalid command
-    //   'reload', only valid commands are: hello)) after receiving data:
-    //   "{"command":"reload","path":"www/css/ionic.app.min.css",
-    //   "liveCss":true,"liveJs":true,"liveImg":true}"..
 });
 
 // The above is from the ionic starter execpt as indicated by 'added' comments.
@@ -132,7 +124,7 @@ gulp.task('pre-build', ['default'], function () {
 });
 
 gulp.task('jshint', 'Run jshint on all (non-lib) script files', function () {
-    gulp.src(paths.scripts.concat(['./www/js/app.js', './www/**/*spec.js']))
+    gulp.src(paths.appScripts)
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
 });
@@ -150,10 +142,6 @@ gulp.task('flavor', flavorMsg, function () {
         fs.writeFileSync(configJsonFile, JSON.stringify(configJson, null, 2));
         sh.exec('ln -s -f data/' + argv.name + '/resources .');
     }
-});
-
-gulp.task('utest', 'Unit tests', function () {
-    sh.exec('karma start');
 });
 
 var ionicBrowser = 'chrome'; // '/Applications/Google Chrome Canary.app';
@@ -191,7 +179,7 @@ gulp.task('index', 'Inject script and css elements into www/index.html',
     function () {
         return gulp.src('./www/index.html')
             .pipe(ginject(
-                gulp.src(paths.scripts, {
+                gulp.src(paths.indexScripts, {
                     read: false
                 }), {
                     relative: true
@@ -228,9 +216,10 @@ gulp.task('git-check', function (done) { // run by ionic
     done();
 });
 
-// Transfer some config data from config.xml to www/data/config.json.
+var configHelp = ('Transfer some config data from config.xml to ' +
+    'www/data/config.json.');
 // Adapted from https://github.com/Leonidas-from-XIV/node-xml2js.
-gulp.task('config', function () {
+gulp.task('config', configHelp, function () {
     var fs = require('fs'),
         xml2js = require('xml2js'),
         util = require('util'),
@@ -249,16 +238,19 @@ gulp.task('config', function () {
     });
 });
 
-// from https://www.npmjs.com/package/gulp-karma
-// TODO use http://stackoverflow.com/questions/8527786
+// From https://www.npmjs.com/package/gulp-karma
+// but can't find angular if files provided in gulp.src instead of karma.conf.
 
-var testFiles = []; // TODO fill out
+var utestHelp = ('Single karma run; [-m PATTERN] argument limits ' +
+    'tests to it functions with message string matching PATTERN.');
+// See http://stackoverflow.com/questions/8527786 Rimian post.
 
-gulp.task('test', function () {
+gulp.task('utest', utestHelp, function () {
     // Be sure to return the stream
-    return gulp.src(testFiles)
+    return gulp.src([])
         .pipe(karma({
             configFile: 'karma.conf.js',
+            client: { args: ['--grep', argv.m] },
             action: 'run'
         }))
         .on('error', function (err) {
@@ -267,8 +259,8 @@ gulp.task('test', function () {
         });
 });
 
-gulp.task('karma', function () {
-    gulp.src(testFiles)
+gulp.task('karma', 'Run karma in watch mode.', function () {
+    gulp.src([])
         .pipe(karma({
             configFile: 'karma.conf.js',
             action: 'watch'
