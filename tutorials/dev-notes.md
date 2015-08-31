@@ -39,3 +39,7 @@ There must be a subdirectory of `www/data/` for every flavor in use, with struct
 ## Python tools
 
 Python 2.6+ (maybe earlier) is needed to run **tools/*.py** scripts. Use `-h` argument for usage information. `cdeck.py --format_help` provides documentation on deck and compact deck file formats.
+
+## Gulp
+
+Run `gulp help` for annotated list of gulp project management tasks.

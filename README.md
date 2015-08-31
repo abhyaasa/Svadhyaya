@@ -15,7 +15,7 @@ Early users are invited to email support requests and suggestions to <svadhyaya.
 
 ## Developers
 
-See the `dev-notes.md` file for additional developer information.
+See the `dev-docs/index.html` file for developer information.
 
 ## License
 

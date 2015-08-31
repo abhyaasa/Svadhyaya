@@ -219,7 +219,7 @@ gulp.task('git-check', function (done) { // run by ionic
 var configHelp = ('Transfer some config data from config.xml to ' +
     'www/data/config.json.');
 // Adapted from https://github.com/Leonidas-from-XIV/node-xml2js.
-gulp.task('config', configHelp, function () {
+gulp.task('config', 'configHelp', function () {
     var fs = require('fs'),
         xml2js = require('xml2js'),
         util = require('util'),
@@ -245,12 +245,14 @@ var utestHelp = ('Single karma run; [-m PATTERN] argument limits ' +
     'tests to it functions with message string matching PATTERN.');
 // See http://stackoverflow.com/questions/8527786 Rimian post.
 
-gulp.task('utest', utestHelp, function () {
+gulp.task('utest', 'utestHelp', function () {
     // Be sure to return the stream
     return gulp.src([])
         .pipe(karma({
             configFile: 'karma.conf.js',
-            client: { args: ['--grep', argv.m] },
+            client: {
+                args: ['--grep', argv.m]
+            },
             action: 'run'
         }))
         .on('error', function (err) {
@@ -265,4 +267,18 @@ gulp.task('karma', 'Run karma in watch mode.', function () {
             configFile: 'karma.conf.js',
             action: 'watch'
         }));
+});
+
+// Adapted from https://www.npmjs.com/package/angular-jsdoc and
+// http://stackoverflow.com/questions/24076193 Alastair Paragas
+gulp.task('dev-docs', 'Generate jsdoc documentation.', function () {
+    sh.exec(
+        'node_modules/jsdoc/jsdoc.js ' +
+        '--configure node_modules/angular-jsdoc/common/conf.json ' +
+        '--template node_modules/angular-jsdoc/default ' +
+        '--destination dev-docs ' +
+        // '--tutorials dev-docs/tutorials ' +
+        '--readme ./README.md ' + // to include README.md as index contents
+        '--recurse www/js www/views'
+    );
 });

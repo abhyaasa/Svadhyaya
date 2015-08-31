@@ -20,6 +20,13 @@ angular.module('utils', ['ionic'])
 
 .constant('_', window._) // underscore.js access
 
+/**
+ * provides access to json files in the app file space
+ * @param {string} path to file
+ * @param {function} callback accepts data object
+ * @param {function} optional callback accepts error object
+ * @returns {object} value corresponding to json file contents
+ */
 .service('getData', function ($rootScope, $http, $log) {
     return function (path, success, failure) { // path is relative to www/data
         $http.get('/data/' + path).then(

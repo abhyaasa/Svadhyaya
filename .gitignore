@@ -12,6 +12,9 @@ www/css/
 # development notes
 notes/
 
+# development docs
+dev-docs/
+
 # emacs backup
 *~
 
