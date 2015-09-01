@@ -3,7 +3,7 @@
 angular.module('app', ['ionic', 'utils'])
 
 .config(function ($stateProvider, $urlRouterProvider, $logProvider) {
-    $logProvider.debugEnabled(true); // PUBLISH false
+    $logProvider.debugEnabled(true); // PUBLISH .debugEnabled(false)
 
     $stateProvider
         .state('tabs', {
@@ -92,14 +92,13 @@ angular.module('app', ['ionic', 'utils'])
                 }
             }
         });
-
     $urlRouterProvider.otherwise('/tabs/decks');
 })
 
-/*
-  Use directive name as tag, attribute, class name, or after directive: in comment.
-  The associated element is removed.
-*/
+/**
+ * Use x name as tag, attribute, class name, or after directive in comment.
+ * The associated element is removed.
+ */
 .directive('x', function () {
     return {
         restrict: 'AE',
@@ -115,11 +114,9 @@ angular.module('app', ['ionic', 'utils'])
         $rootScope.config = config;
     });
 
-    $log.debug('ENABLED');
-
-    // https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#issue\
-    // -im-getting-a-blank-screen-and-there-are-no-errors
-    // TODO try $log.log instead of console...
+    // https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions\
+    // #issue-im-getting-a-blank-screen-and-there-are-no-errors
+    // REVIEW $log.log instead of console?
     $rootScope.$on('$stateChangeError', console.log.bind(console));
 
     $ionicPlatform.ready(function () {
@@ -131,7 +128,8 @@ angular.module('app', ['ionic', 'utils'])
         if (window.StatusBar) {
             StatusBar.styleDefault();
         }
-        // TODO try $state.go('tabs.decks');
+        // XXX StatusBar.styleDefault(); // from ionic tabs starter
+        // XXX $state.go('tabs.decks', {});
     });
 
     restoreSettings();

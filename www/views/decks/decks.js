@@ -2,7 +2,8 @@
 
 angular.module('app')
 
-.controller('DecksController', function ($rootScope, $scope, getData, _) {
+.controller('DecksController', function ($rootScope, $scope, $log, getData, _) {
+    $log.debug('DecksController');
     var indexFile = $rootScope.config.flavor + '/decks/index.json';
     getData(indexFile, function (fileNames) {
         $scope.allDeckNames = _.map(fileNames, function (name) {

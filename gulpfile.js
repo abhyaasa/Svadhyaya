@@ -45,14 +45,13 @@ gulp.task('sass', function (done) {
 });
 
 gulp.task('watch', function () {
-    gulp.watch(paths.sass, ['sass']);
-    // NOTE: Does not auto-inject new files into index.html with the line:
-    //   gulp.watch([paths.indexScripts, paths.css], ['index']); // added line
-    // because it produces the following log message
+    // sass watch causes 3 of the following errors, which seem innocuous:
     //   1     495942   log      LiveReload protocol error (invalid command
     //   'reload', only valid commands are: hello)) after receiving data:
     //   "{"command":"reload","path":"www/css/ionic.app.min.css",
     //   "liveCss":true,"liveJs":true,"liveImg":true}"..
+    gulp.watch(paths.sass, ['sass']);
+    gulp.watch([paths.indexScripts, paths.css], ['index']); // added line
 });
 
 gulp.task('install', ['git-check'], function () {

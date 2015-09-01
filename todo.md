@@ -3,8 +3,8 @@ To Do List
 
 There is lots to do at this stage. A partial list follows:
 
-- [ ] live reload error
-- [ ] something
+- [ ] open with decks tab
+- [ ] add sound and image support
 - [ ] Coffee, jade, NOT stylus
 	- [ ] https://github.com/CaryLandholt/ng-classify
 	- [ ] install https://www.npmjs.com/package/gulp-ng-classify#coffeescript
@@ -12,9 +12,11 @@ There is lots to do at this stage. A partial list follows:
 	- [ ] install http://compass-style.org
 	- [ ] test angular-marked with coffee
 - [ ] document code, e.g. https://www.npmjs.com/package/gulp-ngdocs
-- [ ] TODO, FIXME, and XX (to be removed) comments
+- [ ] todo-show todo, fixme, and xxx (remove me)
+- [ ] todo-show review
+- [ ] todo-show android
+- [ ] todo-show hack
 - [ ] splash and icon http://learn.ionicframework.com/formulas/adding-an-icon/ and  http://blog.ionic.io/automating-icons-and-splash-screens/
-- [ ] add sound and image support
 - [ ] flesh out jsdoc documentation and improve dgeni formatting
 - [ ] tabs: decklist, deck, card, settings
 - [ ] disable inop tabs
@@ -29,4 +31,5 @@ There is lots to do at this stage. A partial list follows:
 - [ ] consider adding other features, as in notes/features.txt
 - [ ] Chrome developer > angularjs > hints
 - [ ] make injected functions minifiable, e.g. function (a, b){} => ['a', 'b', function (a, b){}, use ng-strict-di: AngularJS Web Application Development Cookbook p 281
+- [ ] todo-show publish
 - [ ] publish app
