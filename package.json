@@ -19,6 +19,7 @@
     "gulp-help": "^1.6.1",
     "gulp-inject": "^1.5.0",
     "gulp-karma": "0.0.4",
+    "gulp-ngdocs": "^0.2.13",
     "gulp-util": "^2.2.14",
     "jasmine-core": "^2.3.4",
     "jsdoc": "^3.3.2",

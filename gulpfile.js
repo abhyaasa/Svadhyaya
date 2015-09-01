@@ -9,16 +9,7 @@ var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
 
-// following requires added to standard ionic starter
-var fs = require('fs');
-var jshint = require('gulp-jshint');
-// js/css file injection per http://digitaldrummerj.me/gulp-inject/
-var ginject = require('gulp-inject');
-var taskListing = require('gulp-task-listing');
-var karma = require('gulp-karma');
-var Dgeni = require('dgeni');
-
-var argv = require('minimist')(process.argv.slice(2));
+var argv = require('minimist')(process.argv.slice(2)); // added
 
 var paths = {
     sass: ['./scss/**/*.scss'],
@@ -126,6 +117,7 @@ gulp.task('pre-build', ['default'], function () {
 });
 
 gulp.task('jshint', 'Run jshint on all (non-lib) script files', function () {
+    var jshint = require('gulp-jshint');
     gulp.src(paths.appScripts)
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
@@ -136,6 +128,7 @@ var flavorMsg = ('--name FLAVOR argument required: inject FLAVOR into ' +
     configJsonFile);
 
 gulp.task('flavor', flavorMsg, function () {
+    var fs = require('fs');
     if (!argv.name) {
         console.log(gutil.colors.magenta('Usage: gulp flavor --name NAME'));
     } else {
@@ -176,9 +169,10 @@ gulp.task('kill', 'Kill all gulp and Terminal processes', function () {
     // sh.exec('kill -9 $(pgrep bash)'); // 'killall bash' does not work
 });
 
-// after http://digitaldrummerj.me/gulp-inject/
 gulp.task('index', 'Inject script and css elements into www/index.html',
+    // after http://digitaldrummerj.me/gulp-inject/
     function () {
+        var ginject = require('gulp-inject');
         return gulp.src('./www/index.html')
             .pipe(ginject(
                 gulp.src(paths.indexScripts, {
@@ -241,16 +235,47 @@ gulp.task('config', configHelp, function () {
 });
 
 gulp.task('dgeni', 'Generate jsdoc documentation.', function () {
+    // TODO remove when ngdocs works
+    var Dgeni = require('dgeni');
     var dgeni = new Dgeni([require('./docs/dgeni-package')]);
     return dgeni.generate();
 });
 
-// From https://www.npmjs.com/package/gulp-karma,
+gulp.task('ngdocs', 'Generate jsdoc documentation.', function () {
+    // Adapted from https://www.npmjs.com/package/gulp-ngdocs
+    var gulpDocs = require('gulp-ngdocs');
+    var options = {
+        // scripts: ['../app.min.js'], // TODO use some of these
+        // startPage: '/api',
+        // image: 'path/to/my/image.png',
+        // imageLink: 'http://my-domain.com',
+        // titleLink: '/api',
+        html5Mode: true,
+        title: 'Svadhyaya Docs'
+    };
+    return gulpDocs
+        .sections({
+            api: {
+                glob: ['./www/**/*.js', '!./www/lib/**.js'],
+                api: true,
+                title: 'API Documentation'
+            },
+            tutorial: {
+                glob: ['./dev-notes.md'],
+                title: 'Introduction'
+            }
+        })
+        .pipe(gulpDocs.process(options))
+        .pipe(gulp.dest('./docs'));
+});
+
+// utest and karma tasks adapted from https://www.npmjs.com/package/gulp-karma,
 // but can't find angular if files provided in gulp.src instead of karma.conf.
 
 var utestHelp = ('Single unit test karma run; [-m PATTERN] argument limits ' +
     'tests to it functions with message string matching PATTERN.');
 gulp.task('utest', utestHelp, function () {
+    var karma = require('gulp-karma');
     // Be sure to return the stream.
     // See http://stackoverflow.com/questions/8527786 Rimian post.
     return gulp.src([])
@@ -268,6 +293,7 @@ gulp.task('utest', utestHelp, function () {
 });
 
 gulp.task('karma', 'Run karma in watch mode.', function () {
+    var karma = require('gulp-karma');
     gulp.src([])
         .pipe(karma({
             configFile: 'karma.conf.js',
