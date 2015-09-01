@@ -2,40 +2,40 @@
 
 // Jasmine unit tests
 
-describe('getData', function ($log) {
-    var $rootScope;
+// TODO need to create mock for $hhtp.
+// See http://stackoverflow.com/questions/26612156
+xdescribe('getData', function () {
+    var scope;
 
-    beforeEach(module('utils'), function () {
-        inject(function (_$rootScope_) {
-            $rootScope = _$rootScope_;
+    beforeEach(function () {
+        module('utils');
+        inject(function ($rootScope) {
+            scope = $rootScope.$new();
         });
     });
 
-    it('should return object represented in local json file',
+    it('invokes success handler with object represented in json file',
         inject(function (getData) {
-            var data;
-            getData('test/test.json', function (data_) {
-                data = data_;
-            });
-            $rootScope.$digest();
-            expect(JSON.stringify(data)).toEqual('["data", "for unit test"]');
-            // CHECK this error
+            var handler = jasmine.createSpy('success');
+            getData('test/test.json', handler);
+            scope.$digest();
+            expect(handler).toHaveBeenCalledWith(['data', 'for unit testxxx']);
+            // FIXME this xxx
         }));
 
-    xit('should do something if indicated local json file does not exist',
-        // TODO xit
+    it('invokes fail handler when local json file does not exist',
         inject(function ($log, getData) {
             getData('bogus.json', undefined, function (error) {
-                $log.error(error);
+                console.log(error);
                 expect('Error: ' + error)
-                    .toEqual(''); // FIXME this reported error
+                    .toEqual('xxx'); // FIXME this xxx
             });
         }));
 });
 
 describe('localStorage', function () {
     beforeEach(module('utils'));
-    it('should store and retrieve the same thing',
+    it('stores and retrieves the same thing using the same test key',
         inject(function (localStorage) {
             localStorage.set('test key', 'test value');
             expect(localStorage.get('test key')).toEqual('test value');
