@@ -8,6 +8,7 @@ var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+
 // following requires added to standard ionic starter
 var fs = require('fs');
 var jshint = require('gulp-jshint');
@@ -15,6 +16,7 @@ var jshint = require('gulp-jshint');
 var ginject = require('gulp-inject');
 var taskListing = require('gulp-task-listing');
 var karma = require('gulp-karma');
+var Dgeni = require('dgeni');
 
 var argv = require('minimist')(process.argv.slice(2));
 
@@ -218,8 +220,8 @@ gulp.task('git-check', function (done) { // run by ionic
 
 var configHelp = ('Transfer some config data from config.xml to ' +
     'www/data/config.json.');
-// Adapted from https://github.com/Leonidas-from-XIV/node-xml2js.
-gulp.task('config', 'configHelp', function () {
+gulp.task('config', configHelp, function () {
+    // Adapted from https://github.com/Leonidas-from-XIV/node-xml2js.
     var fs = require('fs'),
         xml2js = require('xml2js'),
         util = require('util'),
@@ -238,15 +240,19 @@ gulp.task('config', 'configHelp', function () {
     });
 });
 
-// From https://www.npmjs.com/package/gulp-karma
+gulp.task('dgeni', 'Generate jsdoc documentation.', function () {
+    var dgeni = new Dgeni([require('./docs/dgeni-package')]);
+    return dgeni.generate();
+});
+
+// From https://www.npmjs.com/package/gulp-karma,
 // but can't find angular if files provided in gulp.src instead of karma.conf.
 
-var utestHelp = ('Single karma run; [-m PATTERN] argument limits ' +
+var utestHelp = ('Single unit test karma run; [-m PATTERN] argument limits ' +
     'tests to it functions with message string matching PATTERN.');
-// See http://stackoverflow.com/questions/8527786 Rimian post.
-
-gulp.task('utest', 'utestHelp', function () {
-    // Be sure to return the stream
+gulp.task('utest', utestHelp, function () {
+    // Be sure to return the stream.
+    // See http://stackoverflow.com/questions/8527786 Rimian post.
     return gulp.src([])
         .pipe(karma({
             configFile: 'karma.conf.js',
@@ -267,10 +273,4 @@ gulp.task('karma', 'Run karma in watch mode.', function () {
             configFile: 'karma.conf.js',
             action: 'watch'
         }));
-});
-
-var Dgeni = require('dgeni');
-gulp.task('dgeni', function () {
-    var dgeni = new Dgeni([require('./docs/dgeni-package')]);
-    return dgeni.generate();
 });
