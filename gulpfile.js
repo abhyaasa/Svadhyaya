@@ -269,16 +269,8 @@ gulp.task('karma', 'Run karma in watch mode.', function () {
         }));
 });
 
-// Adapted from https://www.npmjs.com/package/angular-jsdoc and
-// http://stackoverflow.com/questions/24076193 Alastair Paragas
-gulp.task('dev-docs', 'Generate jsdoc documentation.', function () {
-    sh.exec(
-        'node_modules/jsdoc/jsdoc.js ' +
-        '--configure node_modules/angular-jsdoc/common/conf.json ' +
-        '--template node_modules/angular-jsdoc/default ' +
-        '--destination dev-docs ' +
-        // '--tutorials dev-docs/tutorials ' +
-        '--readme ./README.md ' + // to include README.md as index contents
-        '--recurse www/js www/views'
-    );
+var Dgeni = require('dgeni');
+gulp.task('dgeni', function () {
+    var dgeni = new Dgeni([require('./docs/dgeni-package')]);
+    return dgeni.generate();
 });

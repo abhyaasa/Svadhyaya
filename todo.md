@@ -15,6 +15,7 @@ There is lots to do at this stage. A partial list follows:
 - [ ] TODO, FIXME, and XX (to be removed) comments
 - [ ] splash and icon http://learn.ionicframework.com/formulas/adding-an-icon/ and  http://blog.ionic.io/automating-icons-and-splash-screens/
 - [ ] add sound and image support
+- [ ] flesh out jsdoc documentation and improve dgeni formatting
 - [ ] tabs: decklist, deck, card, settings
 - [ ] disable inop tabs
 - [ ] deck tab: boxes, filter, resume, (re)start
