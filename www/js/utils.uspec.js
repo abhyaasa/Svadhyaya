@@ -2,19 +2,9 @@
 
 // Jasmine unit tests
 
-// TODO flush this
-describe('getData bugus success', function () {
-    beforeEach(module('utils'));
-    xit('returns object defined in local json file',
-        inject(function (getData) {
-            getData('test/test.json', function (data) {
-                expect(JSON.stringify(data))
-                    .toEqual('["data", "for unit testxxx"]');
-            });
-        }));
-});
-
-describe('getData', function () {
+// TODO need to create mock for $hhtp.
+// See http://stackoverflow.com/questions/26612156
+xdescribe('getData', function () {
     var scope;
 
     beforeEach(function () {
@@ -24,7 +14,7 @@ describe('getData', function () {
         });
     });
 
-    xit('invokes success handler with object represented in json file',
+    it('invokes success handler with object represented in json file',
         inject(function (getData) {
             var handler = jasmine.createSpy('success');
             getData('test/test.json', handler);
@@ -45,7 +35,7 @@ describe('getData', function () {
             // CHECK this error
         }));
 
-    xit('invokes fail handler when local json file does not exist',
+    it('invokes fail handler when local json file does not exist',
         // TODO false success
         inject(function ($log, getData) {
             getData('bogus.json', undefined, function (error) {

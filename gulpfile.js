@@ -235,6 +235,7 @@ gulp.task('config', configHelp, function () {
 });
 
 gulp.task('dgeni', 'Generate jsdoc documentation.', function () {
+    // FUTURE consider https://www.npmjs.com/package/d2doc-dgeni-packages
     var Dgeni = require('dgeni');
     try {
         var dgeni = new Dgeni([require('./docs/dgeni-package')]);
