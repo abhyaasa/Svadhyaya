@@ -235,38 +235,14 @@ gulp.task('config', configHelp, function () {
 });
 
 gulp.task('dgeni', 'Generate jsdoc documentation.', function () {
-    // TODO remove when ngdocs works
     var Dgeni = require('dgeni');
-    var dgeni = new Dgeni([require('./docs/dgeni-package')]);
-    return dgeni.generate();
-});
-
-gulp.task('ngdocs', 'Generate jsdoc documentation.', function () {
-    // Adapted from https://www.npmjs.com/package/gulp-ngdocs
-    var gulpDocs = require('gulp-ngdocs');
-    var options = {
-        // scripts: ['../app.min.js'], // TODO use some of these
-        // startPage: '/api',
-        // image: 'path/to/my/image.png',
-        // imageLink: 'http://my-domain.com',
-        // titleLink: '/api',
-        html5Mode: true,
-        title: 'Svadhyaya Docs'
-    };
-    return gulpDocs
-        .sections({
-            api: {
-                glob: ['./www/**/*.js', '!./www/lib/**.js'],
-                api: true,
-                title: 'API Documentation'
-            },
-            tutorial: {
-                glob: ['./dev-notes.md'],
-                title: 'Introduction'
-            }
-        })
-        .pipe(gulpDocs.process(options))
-        .pipe(gulp.dest('./docs'));
+    try {
+        var dgeni = new Dgeni([require('./docs/dgeni-package')]);
+        return dgeni.generate();
+    } catch (x) {
+        console.log(x.stack);
+        throw x;
+    }
 });
 
 // utest and karma tasks adapted from https://www.npmjs.com/package/gulp-karma,

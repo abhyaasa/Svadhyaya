@@ -4,15 +4,16 @@
         "suffix": "):? *(.*?) ?(?=\\*/|\\n|$|-->)"
     },
     "tags": [
-        "xx",
+        "XXX",
         "HACK",
-        "CHECK",
+        "IDEA",
+        "REVIEW",
         "TODO",
         "PUBLISH",
         "ANDROID",
         "NOTE",
         "FIX ?ME",
-        "CHANGES",
+        "CHANGED",
         "FUTURE"
     ],
     "case": false,
