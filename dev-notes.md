@@ -46,6 +46,8 @@ Python 2.6+ (maybe earlier) is needed to run **tools/*.py** scripts. Use `-h` ar
 
 Run `gulp help` for annotated list of gulp project management tasks.
 
+`gulp index` generates www/index.html from index.html: edit only the latter. Version control of meaningless line order changes is thereby avoided. 
+
 ### jsdoc generated documentation
 
 The dgeni-generated `doc/build/` directory has jsdoc documentation.
