@@ -6,9 +6,6 @@ node_modules/
 platforms/
 plugins/
 
-# gulp-generated from index.html
-www/index.html
-
 # gulp-generated from scss/
 www/css/
 
