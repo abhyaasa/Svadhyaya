@@ -18,11 +18,6 @@ var paths = {
         '!./www/js/app.js',
         '!./www/**/*spec.js', // no test files
         '!./www/lib/**'
-    ],
-    css: [ // added for index task
-        './www/**/*.css',
-        '!./www/css/ionic.app*.css',
-        '!./www/lib/**'
     ]
 };
 paths.appScripts = paths.indexScripts.concat(
@@ -45,13 +40,8 @@ gulp.task('sass', function (done) {
 });
 
 gulp.task('watch', function () {
-    // sass watch causes 3 of the following errors, which seem innocuous:
-    //   1     495942   log      LiveReload protocol error (invalid command
-    //   'reload', only valid commands are: hello)) after receiving data:
-    //   "{"command":"reload","path":"www/css/ionic.app.min.css",
-    //   "liveCss":true,"liveJs":true,"liveImg":true}"..
     gulp.watch(paths.sass, ['sass']);
-    gulp.watch([paths.indexScripts, paths.css], ['index']); // added line
+    gulp.watch([paths.indexScripts], ['index']); // added line
 });
 
 gulp.task('install', ['git-check'], function () {
@@ -175,12 +165,6 @@ gulp.task('index', 'Inject script and css elements into www/index.html',
         return gulp.src('./www/index.html')
             .pipe(ginject(
                 gulp.src(paths.indexScripts, {
-                    read: false
-                }), {
-                    relative: true
-                }))
-            .pipe(ginject(
-                gulp.src(paths.css, {
                     read: false
                 }), {
                     relative: true

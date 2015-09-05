@@ -28,6 +28,7 @@
     "karma-jasmine": "^0.3.6",
     "karma-requirejs": "^0.2.2",
     "requirejs": "^2.1.20",
+    "scsslint": "0.0.3",
     "shelljs": "^0.3.0"
   },
   "author": "Christopher T. Haynes <vasudeva.chaynes@gmail.com>",
