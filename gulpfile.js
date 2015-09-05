@@ -128,7 +128,7 @@ gulp.task('flavor', flavorMsg, function () {
     }
 });
 
-var ionicBrowser = 'chrome'; // '/Applications/Google Chrome Canary.app';
+var ionicBrowser = ' --browser /Applications/Google\\ Chrome\\ Canary.app';
 
 gulp.task('itest', 'Integration (e-e) tests', function () {
     // TODO itest not working
@@ -136,7 +136,7 @@ gulp.task('itest', 'Integration (e-e) tests', function () {
         mkCmd = function (cmd) {
             return 'tools/term.sh "cd ' + cwd + ';' + cmd + '"';
         };
-    sh.exec(mkCmd('ionic serve -c -t ios --browser ' + ionicBrowser));
+    sh.exec(mkCmd('ionic serve -c -t ios ' + ionicBrowser));
     sh.exec('sleep 10');
     sh.exec(mkCmd('webdriver-manager start'));
     sh.exec('sleep 3');
@@ -146,8 +146,8 @@ gulp.task('itest', 'Integration (e-e) tests', function () {
 gulp.task('is', '[-a|-i] for ionic serve for android, ios, or (default) both',
     function () {
         var platform = argv.a ? '-t android' : argv.i ? '-t ios' : '-l';
-        var command = 'ionic serve -c ' + platform + ' --browser "' + ionicBrowser + '"';
-        console.log(command); // xx
+        var command = 'ionic serve -c ' + platform + ionicBrowser;
+        console.log(command); // XXX
         sh.exec(command);
     });
 
