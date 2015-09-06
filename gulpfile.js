@@ -16,6 +16,7 @@ var paths = {
     indexScripts: [ // added for index task
         './www/**/*.js',
         '!./www/js/app.js',
+        '!./www/views/decks/decks.js',
         '!./www/**/*spec.js', // no test files
         '!./www/lib/**'
     ]
@@ -41,7 +42,6 @@ gulp.task('sass', function (done) {
 
 gulp.task('watch', function () {
     gulp.watch(paths.sass, ['sass']);
-    gulp.watch([paths.indexScripts], ['index']); // added line
 });
 
 gulp.task('install', ['git-check'], function () {
@@ -94,8 +94,6 @@ gulp.task('config', configMsg, function () {
     });
 });
 
-gulp.task('default', ['sass', 'index', 'config']);
-
 // BUILD finish this: see https://github.com/leob/ionic-quickstarter
 gulp.task('build', '-a for Android, default iOS', ['pre-build'], function () {
     sh.exec('ionic build ' + (argv.a ? 'android' : 'ios'));
@@ -144,6 +142,7 @@ gulp.task('itest', 'Integration (e-e) tests', function () {
 });
 
 gulp.task('is', '[-a|-i] for ionic serve for android, ios, or (default) both',
+    ['index'],
     function () {
         var platform = argv.a ? '-t android' : argv.i ? '-t ios' : '-l';
         var command = 'ionic serve -c ' + platform + ionicBrowser;
@@ -159,9 +158,11 @@ gulp.task('kill', 'Kill all gulp and Terminal processes', function () {
 });
 
 gulp.task('index', 'Inject script and css elements into www/index.html',
+    ['config'], // wait for sass to complete
     // after http://digitaldrummerj.me/gulp-inject/
     function () {
         var ginject = require('gulp-inject');
+        sh.cp('-f', './index.html', './www/index.html');
         return gulp.src('./www/index.html')
             .pipe(ginject(
                 gulp.src(paths.indexScripts, {
@@ -197,7 +198,8 @@ gulp.task('git-check', function (done) { // run by ionic
 
 var configHelp = ('Transfer some config data from config.xml to ' +
     'www/data/config.json.');
-gulp.task('config', configHelp, function () {
+
+gulp.task('config', configHelp, ['sass'], function () {
     // Adapted from https://github.com/Leonidas-from-XIV/node-xml2js.
     var fs = require('fs'),
         xml2js = require('xml2js'),
@@ -234,6 +236,7 @@ gulp.task('dgeni', 'Generate jsdoc documentation.', function () {
 
 var utestHelp = ('Single unit test karma run; [-m PATTERN] argument limits ' +
     'tests to it functions with message string matching PATTERN.');
+
 gulp.task('utest', utestHelp, function () {
     var karma = require('gulp-karma');
     // Be sure to return the stream.
