@@ -12,7 +12,7 @@ There is lots to do at this stage. A partial list follows:
 	- [ ] install http://compass-style.org
 	- [ ] test angular-marked with coffee
 - [ ] document code, e.g. https://www.npmjs.com/package/gulp-ngdocs
-- [ ] todo-show todo, fixme, and xxx (remove me)
+- [ ] todo-show TODO, FIXME, and XXX (remove me)
 - [ ] todo-show review
 - [ ] todo-show android
 - [ ] todo-show hack

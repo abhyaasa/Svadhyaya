@@ -29,24 +29,24 @@ angular.module('app', ['ionic', 'utils'])
                 }
             }
         })
-        .state('tabs.answer', {
-            url: '/answer',
-            views: {
-                'card-tab': {
-                    templateUrl: 'views/answer/answer.html',
-                    controller: 'AnswerController'
-                }
-            }
-        })
-        .state('tabs.deck', {
-            url: '/deck/:deckId',
-            views: {
-                'card-tab': {
-                    templateUrl: 'views/deck/deck.html',
-                    controller: 'DeckController'
-                }
-            }
-        })
+        // .state('tabs.answer', {
+        //     url: '/answer',
+        //     views: {
+        //         'card-tab': {
+        //             templateUrl: 'views/answer/answer.html',
+        //             controller: 'AnswerController'
+        //         }
+        //     }
+        // })
+        // .state('tabs.deck', {
+        //     url: '/deck/:deckId',
+        //     views: {
+        //         'card-tab': {
+        //             templateUrl: 'views/deck/deck.html',
+        //             controller: 'DeckController'
+        //         }
+        //     }
+        // })
         .state('tabs.settings', {
             url: '/settings',
             views: {
@@ -56,33 +56,33 @@ angular.module('app', ['ionic', 'utils'])
                 }
             }
         })
-        .state('tabs.about', {
-            url: '/about',
-            views: {
-                'settings-tab': {
-                    templateUrl: 'views/about/about.html',
-                    controller: 'AboutController'
-                }
-            }
-        })
-        .state('tabs.help', {
-            url: '/help',
-            views: {
-                'settings-tab': {
-                    templateUrl: 'views/help/help.html',
-                    controller: 'HelpController'
-                }
-            }
-        })
-        .state('tabs.reset', {
-            url: '/about',
-            views: {
-                'settings-tab': {
-                    templateUrl: 'views/reset/reset.html',
-                    controller: 'ResetController'
-                }
-            }
-        })
+        // .state('tabs.about', {
+        //     url: '/about',
+        //     views: {
+        //         'settings-tab': {
+        //             templateUrl: 'views/about/about.html',
+        //             controller: 'AboutController'
+        //         }
+        //     }
+        // })
+        // .state('tabs.help', {
+        //     url: '/help',
+        //     views: {
+        //         'settings-tab': {
+        //             templateUrl: 'views/help/help.html',
+        //             controller: 'HelpController'
+        //         }
+        //     }
+        // })
+        // .state('tabs.reset', {
+        //     url: '/about',
+        //     views: {
+        //         'settings-tab': {
+        //             templateUrl: 'views/reset/reset.html',
+        //             controller: 'ResetController'
+        //         }
+        //     }
+        // })
         .state('tabs.filter', {
             url: '/deck',
             views: {

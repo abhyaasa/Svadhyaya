@@ -19,8 +19,8 @@ xdescribe('getData', function () {
             var handler = jasmine.createSpy('success');
             getData('test/test.json', handler);
             scope.$digest();
-            expect(handler).toHaveBeenCalledWith(['data', 'for unit testxxx']);
-            // FIXME this xxx
+            expect(handler).toHaveBeenCalledWith(['data', 'for unit testXXX']);
+            // FIXME this XXX
         }));
 
     it('invokes fail handler when local json file does not exist',
@@ -28,7 +28,7 @@ xdescribe('getData', function () {
             getData('bogus.json', undefined, function (error) {
                 console.log(error);
                 expect('Error: ' + error)
-                    .toEqual('xxx'); // FIXME this xxx
+                    .toEqual('XXX'); // FIXME this XXX
             });
         }));
 });
