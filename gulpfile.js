@@ -70,31 +70,73 @@ gulp.task('git-check', function (done) { // run by ionic
 // -----------------------------------------------------------------------------
 // The following is specific to this project.
 
-var configMsg = ('Transfer some config data from config.xml to ' +
-    'www/data/config.json.');
-
-// Adapted from https://github.com/Leonidas-from-XIV/node-xml2js
-gulp.task('config', configMsg, function () {
-    var fs = require('fs'),
-        xml2js = require('xml2js'),
-        util = require('util'),
-        parser = new xml2js.Parser(),
-        xmlstr = fs.readFileSync(__dirname + '/config.xml').toString(),
-        jsonFileName = __dirname + '/www/data/config.json',
-        jsonstr = fs.readFileSync(jsonFileName).toString();
-    parser.parseString(xmlstr, function (err, xconfig) {
-        var widget = xconfig.widget,
-            config = JSON.parse(jsonstr);
-        config.version = widget.$.version;
-        config.name = widget.name[0];
-        config.email = widget.author[0].$.email;
-        config.href = widget.author[0].$.href;
-        fs.writeFileSync(jsonFileName, JSON.stringify(config, null, 2));
+gulp.task('index', 'Inject script and css elements into www/index.html',
+    // after http://digitaldrummerj.me/gulp-inject/
+    function () {
+        var ginject = require('gulp-inject');
+        sh.cp('-f', './index.html', './www/index.html');
+        return gulp.src('./www/index.html')
+            .pipe(ginject(
+                gulp.src(paths.indexScripts, {
+                    read: false
+                }), {
+                    relative: true
+                }))
+            .pipe(gulp.dest('./www'));
     });
-});
 
-// BUILD finish this: see https://github.com/leob/ionic-quickstarter
+var configJsonFile = 'www/data/config.json';
+
+gulp.task('config',
+    'Transfer some config data from config.xml to www/data/config.json.',
+    // Adapted from https://github.com/Leonidas-from-XIV/node-xml2js
+    function () {
+        var fs = require('fs'),
+            xml2js = require('xml2js'),
+            util = require('util'),
+            parser = new xml2js.Parser(),
+            xmlstr = fs.readFileSync(__dirname + '/config.xml').toString(),
+            jsonFileName = __dirname + '/' + configJsonFile,
+            jsonstr = fs.readFileSync(jsonFileName).toString();
+        parser.parseString(xmlstr, function (err, xconfig) {
+            var widget = xconfig.widget,
+                config = JSON.parse(jsonstr);
+            config.version = widget.$.version;
+            config.name = widget.name[0];
+            config.email = widget.author[0].$.email;
+            config.href = widget.author[0].$.href;
+            fs.writeFileSync(jsonFileName, JSON.stringify(config, null, 2));
+        });
+    });
+
+gulp.task('flavor',
+    '--name FLAVOR argument required: inject FLAVOR into ' + configJsonFile,
+    function () {
+        var fs = require('fs');
+        if (!argv.name) {
+            console.log(gutil.colors.magenta('Usage: gulp flavor --name NAME'));
+        } else {
+            var configJson = JSON.parse(fs.readFileSync(configJsonFile).toString());
+            configJson.flavor = argv.name;
+            fs.writeFileSync(configJsonFile, JSON.stringify(configJson, null, 2));
+            sh.exec('ln -s -f data/' + argv.name + '/resources .');
+        }
+    });
+
+var ionicBrowser = ' --browser /Applications/Google\\ Chrome\\ Canary.app';
+
+gulp.task('is',
+    '[-a|-i|-l] for ionic serve for android, ios, or (default) both', ['default'],
+    function () {
+        var platform = argv.a ? '-t android' + ionicBrowser :
+            argv.i ? '-t ios' + ionicBrowser :
+            argv.l ? '-l' : '';
+        var command = 'ionic serve -c ' + platform;
+        sh.exec(command);
+    });
+
 gulp.task('build', '-a for Android, default iOS', ['pre-build'], function () {
+    // BUILD finish this: see https://github.com/leob/ionic-quickstarter
     sh.exec('ionic build ' + (argv.a ? 'android' : 'ios'));
 });
 
@@ -109,24 +151,6 @@ gulp.task('jshint', 'Run jshint on all (non-lib) script files', function () {
         .pipe(jshint.reporter('default'));
 });
 
-var configJsonFile = 'www/data/config.json';
-var flavorMsg = ('--name FLAVOR argument required: inject FLAVOR into ' +
-    configJsonFile);
-
-gulp.task('flavor', flavorMsg, function () {
-    var fs = require('fs');
-    if (!argv.name) {
-        console.log(gutil.colors.magenta('Usage: gulp flavor --name NAME'));
-    } else {
-        var configJson = JSON.parse(fs.readFileSync(configJsonFile).toString());
-        configJson.flavor = argv.name;
-        fs.writeFileSync(configJsonFile, JSON.stringify(configJson, null, 2));
-        sh.exec('ln -s -f data/' + argv.name + '/resources .');
-    }
-});
-
-var ionicBrowser = ' --browser /Applications/Google\\ Chrome\\ Canary.app';
-
 gulp.task('itest', 'Integration (e-e) tests', function () {
     // TODO itest not working
     var cwd = process.cwd(),
@@ -140,38 +164,12 @@ gulp.task('itest', 'Integration (e-e) tests', function () {
     sh.exec(mkCmd('protractor protractor.conf.js'));
 });
 
-gulp.task('is', '[-a|-i|-l] for ionic serve for android, ios, or (default) both',
-    ['index'],
-    function () {
-        var platform = argv.a ? '-t android' + ionicBrowser :
-            argv.i ? '-t ios' + ionicBrowser :
-            argv.l ? '-l' : '';
-        var command = 'ionic serve -c ' + platform;
-        sh.exec(command);
-    });
-
 gulp.task('kill', 'Kill all gulp and Terminal processes', function () {
     sh.exec('killall gulp');
     sh.exec('osascript -e \'quit app "Terminal"\'');
     // Instead use the following if itest processs not in Terminal:
     // sh.exec('kill -9 $(pgrep bash)'); // 'killall bash' does not work
 });
-
-gulp.task('index', 'Inject script and css elements into www/index.html',
-    ['config'], // wait for sass to complete
-    // after http://digitaldrummerj.me/gulp-inject/
-    function () {
-        var ginject = require('gulp-inject');
-        sh.cp('-f', './index.html', './www/index.html');
-        return gulp.src('./www/index.html')
-            .pipe(ginject(
-                gulp.src(paths.indexScripts, {
-                    read: false
-                }), {
-                    relative: true
-                }))
-            .pipe(gulp.dest('./www'));
-    });
 
 gulp.task('install', ['git-check'], function () {
     return bower.commands.install()
@@ -194,29 +192,6 @@ gulp.task('git-check', function (done) { // run by ionic
         process.exit(1);
     }
     done();
-});
-
-var configHelp = ('Transfer some config data from config.xml to ' +
-    'www/data/config.json.');
-
-gulp.task('config', configHelp, ['sass'], function () {
-    // Adapted from https://github.com/Leonidas-from-XIV/node-xml2js.
-    var fs = require('fs'),
-        xml2js = require('xml2js'),
-        util = require('util'),
-        parser = new xml2js.Parser(),
-        xmlstr = fs.readFileSync(__dirname + '/config.xml').toString(),
-        jsonFileName = __dirname + '/www/data/config.json',
-        jsonstr = fs.readFileSync(jsonFileName).toString();
-    parser.parseString(xmlstr, function (err, xconfig) {
-        var widget = xconfig.widget,
-            config = JSON.parse(jsonstr);
-        config.version = widget.$.version;
-        config.name = widget.name[0];
-        config.email = widget.author[0].$.email;
-        config.href = widget.author[0].$.href;
-        fs.writeFileSync(jsonFileName, JSON.stringify(config, null, 2));
-    });
 });
 
 gulp.task('dgeni', 'Generate jsdoc documentation.', function () {
