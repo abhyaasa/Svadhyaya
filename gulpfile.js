@@ -16,7 +16,6 @@ var paths = {
     indexScripts: [ // added for index task
         './www/**/*.js',
         '!./www/js/app.js',
-        '!./www/views/decks/decks.js',
         '!./www/**/*spec.js', // no test files
         '!./www/lib/**'
     ]
@@ -146,7 +145,6 @@ gulp.task('is', '[-a|-i] for ionic serve for android, ios, or (default) both',
     function () {
         var platform = argv.a ? '-t android' : argv.i ? '-t ios' : '-l';
         var command = 'ionic serve -c ' + platform + ionicBrowser;
-        console.log(command); // XXX
         sh.exec(command);
     });
 
