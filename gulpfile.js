@@ -140,11 +140,13 @@ gulp.task('itest', 'Integration (e-e) tests', function () {
     sh.exec(mkCmd('protractor protractor.conf.js'));
 });
 
-gulp.task('is', '[-a|-i] for ionic serve for android, ios, or (default) both',
+gulp.task('is', '[-a|-i|-l] for ionic serve for android, ios, or (default) both',
     ['index'],
     function () {
-        var platform = argv.a ? '-t android' : argv.i ? '-t ios' : '-l';
-        var command = 'ionic serve -c ' + platform + ionicBrowser;
+        var platform = argv.a ? '-t android' + ionicBrowser :
+            argv.i ? '-t ios' + ionicBrowser :
+            argv.l ? '-l' : '';
+        var command = 'ionic serve -c ' + platform;
         sh.exec(command);
     });
 
