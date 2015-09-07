@@ -20,15 +20,6 @@ angular.module('app', ['ionic', 'utils'])
                 }
             }
         })
-        // .state('tabs.deck', {
-        //     url: '/deck', // XXX /:deckId',
-        //     views: {
-        //         'deck-tab': {
-        //             templateUrl: 'views/deck/deck.html',
-        //             controller: 'DeckController'
-        //         }
-        //     }
-        // })
         .state('tabs.card', {
             url: '/card',
             views: {
@@ -38,15 +29,6 @@ angular.module('app', ['ionic', 'utils'])
                 }
             }
         })
-        // .state('tabs.answer', {
-        //     url: '/answer',
-        //     views: {
-        //         'card-tab': {
-        //             templateUrl: 'views/answer/answer.html',
-        //             controller: 'AnswerController'
-        //         }
-        //     }
-        // })
         .state('tabs.settings', {
             url: '/settings',
             views: {
@@ -56,33 +38,6 @@ angular.module('app', ['ionic', 'utils'])
                 }
             }
         })
-        // .state('tabs.about', {
-        //     url: '/about',
-        //     views: {
-        //         'settings-tab': {
-        //             templateUrl: 'views/about/about.html',
-        //             controller: 'AboutController'
-        //         }
-        //     }
-        // })
-        // .state('tabs.help', {
-        //     url: '/help',
-        //     views: {
-        //         'settings-tab': {
-        //             templateUrl: 'views/help/help.html',
-        //             controller: 'HelpController'
-        //         }
-        //     }
-        // })
-        // .state('tabs.reset', {
-        //     url: '/about',
-        //     views: {
-        //         'settings-tab': {
-        //             templateUrl: 'views/reset/reset.html',
-        //             controller: 'ResetController'
-        //         }
-        //     }
-        // })
         .state('tabs.filter', {
             url: '/filter',
             views: {
@@ -95,6 +50,51 @@ angular.module('app', ['ionic', 'utils'])
     $urlRouterProvider.otherwise('/tabs/decks');
 })
 
+// .state('tabs.deck', {
+//     url: '/deck', // XXX /:deckId',
+//     views: {
+//         'deck-tab': {
+//             templateUrl: 'views/deck/deck.html',
+//             controller: 'DeckController'
+//         }
+//     }
+// })
+// .state('tabs.answer', {
+//     url: '/answer',
+//     views: {
+//         'card-tab': {
+//             templateUrl: 'views/answer/answer.html',
+//             controller: 'AnswerController'
+//         }
+//     }
+// })
+// .state('tabs.about', {
+//     url: '/about',
+//     views: {
+//         'settings-tab': {
+//             templateUrl: 'views/about/about.html',
+//             controller: 'AboutController'
+//         }
+//     }
+// })
+// .state('tabs.help', {
+//     url: '/help',
+//     views: {
+//         'settings-tab': {
+//             templateUrl: 'views/help/help.html',
+//             controller: 'HelpController'
+//         }
+//     }
+// })
+// .state('tabs.reset', {
+//     url: '/about',
+//     views: {
+//         'settings-tab': {
+//             templateUrl: 'views/reset/reset.html',
+//             controller: 'ResetController'
+//         }
+//     }
+// })
 /**
  * Use x name as tag, attribute, class name, or after directive in comment.
  * The associated element is removed.
@@ -109,7 +109,7 @@ angular.module('app', ['ionic', 'utils'])
 })
 
 .run(function ($ionicPlatform, $rootScope, $state, $log, getData,
-               restoreSettings) {
+    restoreSettings) {
     getData('config.json', function (config) {
         $rootScope.config = config;
     });
