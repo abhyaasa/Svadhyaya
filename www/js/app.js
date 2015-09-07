@@ -84,7 +84,7 @@ angular.module('app', ['ionic', 'utils'])
         //     }
         // })
         .state('tabs.filter', {
-            url: '/deck',
+            url: '/filter',
             views: {
                 'filter-tab': {
                     templateUrl: 'views/filter/filter.html',
