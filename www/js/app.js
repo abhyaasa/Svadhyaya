@@ -20,6 +20,15 @@ angular.module('app', ['ionic', 'utils'])
                 }
             }
         })
+        // .state('tabs.deck', {
+        //     url: '/deck', // XXX /:deckId',
+        //     views: {
+        //         'deck-tab': {
+        //             templateUrl: 'views/deck/deck.html',
+        //             controller: 'DeckController'
+        //         }
+        //     }
+        // })
         .state('tabs.card', {
             url: '/card',
             views: {
@@ -35,15 +44,6 @@ angular.module('app', ['ionic', 'utils'])
         //         'card-tab': {
         //             templateUrl: 'views/answer/answer.html',
         //             controller: 'AnswerController'
-        //         }
-        //     }
-        // })
-        // .state('tabs.deck', {
-        //     url: '/deck/:deckId',
-        //     views: {
-        //         'card-tab': {
-        //             templateUrl: 'views/deck/deck.html',
-        //             controller: 'DeckController'
         //         }
         //     }
         // })

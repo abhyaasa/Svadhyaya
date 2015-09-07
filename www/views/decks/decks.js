@@ -3,7 +3,7 @@
 angular.module('app')
 
 .controller('DecksController', function ($rootScope, $scope, $log, getData, _) {
-    $log.debug('DecksController');
+    $log.debug('in DecksController');
     var indexFile = $rootScope.config.flavor + '/decks/index.json';
     getData(indexFile, function (fileNames) {
         $scope.allDeckNames = _.map(fileNames, function (name) {
