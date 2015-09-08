@@ -178,22 +178,6 @@ gulp.task('install', ['git-check'], function () {
         });
 });
 
-var gitMessage =
-    '  ' + gutil.colors.red('Git is not installed.') +
-    '\n  Git, the version control system, is required to download Ionic.' +
-    '\n  Download git here: ' +
-    gutil.colors.cyan('http://git-scm.com/downloads') + '.' +
-    '\n  Once git is installed, run \'' +
-    gutil.colors.cyan('gulp install') + '\' again.';
-
-gulp.task('git-check', function (done) { // run by ionic
-    if (!sh.which('git')) {
-        console.log(gitMessage);
-        process.exit(1);
-    }
-    done();
-});
-
 gulp.task('dgeni', 'Generate jsdoc documentation.', function () {
     // FUTURE consider https://www.npmjs.com/package/d2doc-dgeni-packages
     var Dgeni = require('dgeni');
