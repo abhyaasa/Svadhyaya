@@ -50,17 +50,14 @@ gulp.task('install', ['git-check'], function () {
         });
 });
 
-var message =
-    '  ' + gutil.colors.red('Git is not installed.') +
-    '\n  Git, the version control system, is required to download Ionic.' +
-    '\n  Download git here: ' +
-    gutil.colors.cyan('http://git-scm.com/downloads') + '.' +
-    '\n  Once git is installed, run \'' +
-    gutil.colors.cyan('gulp install') + '\' again.';
-
 gulp.task('git-check', function (done) { // run by ionic
     if (!sh.which('git')) {
-        console.log(message);
+        console.log('  ' + gutil.colors.red('Git is not installed.') +
+            '\n  Git, the version control system, is required to download Ionic.' +
+            '\n  Download git here: ' +
+            gutil.colors.cyan('http://git-scm.com/downloads') + '.' +
+            '\n  Once git is installed, run \'' +
+            gutil.colors.cyan('gulp install') + '\' again.');
         process.exit(1);
     }
     done();
@@ -110,7 +107,8 @@ gulp.task('config',
     });
 
 gulp.task('flavor',
-    '--name FLAVOR argument required: inject FLAVOR into ' + configJsonFile,
+    '--name FLAVOR argument required: inject FLAVOR into ' + configJsonFile +
+    ' and link ./resources to data/FLAVOR/resources',
     function () {
         var fs = require('fs');
         if (!argv.name) {
@@ -151,19 +149,6 @@ gulp.task('jshint', 'Run jshint on all (non-lib) script files', function () {
         .pipe(jshint.reporter('default'));
 });
 
-gulp.task('itest', 'Integration (e-e) tests', function () {
-    // TODO itest not working
-    var cwd = process.cwd(),
-        mkCmd = function (cmd) {
-            return 'tools/term.sh "cd ' + cwd + ';' + cmd + '"';
-        };
-    sh.exec(mkCmd('ionic serve -c -t ios ' + ionicBrowser));
-    sh.exec('sleep 10');
-    sh.exec(mkCmd('webdriver-manager start'));
-    sh.exec('sleep 3');
-    sh.exec(mkCmd('protractor protractor.conf.js'));
-});
-
 gulp.task('kill', 'Kill all gulp and Terminal processes', function () {
     sh.exec('killall gulp');
     sh.exec('osascript -e \'quit app "Terminal"\'');
@@ -190,29 +175,30 @@ gulp.task('dgeni', 'Generate jsdoc documentation.', function () {
     }
 });
 
+// ------------------ Testing tasks follow -------------------------------------
 // utest and karma tasks adapted from https://www.npmjs.com/package/gulp-karma,
 // but can't find angular if files provided in gulp.src instead of karma.conf.
 
-var utestHelp = ('Single unit test karma run; [-m PATTERN] argument limits ' +
-    'tests to it functions with message string matching PATTERN.');
-
-gulp.task('utest', utestHelp, function () {
-    var karma = require('gulp-karma');
-    // Be sure to return the stream.
-    // See http://stackoverflow.com/questions/8527786 Rimian post.
-    return gulp.src([])
-        .pipe(karma({
-            configFile: 'karma.conf.js',
-            client: {
-                args: ['--grep', argv.m]
-            },
-            action: 'run'
-        }))
-        .on('error', function (err) {
-            // Make sure failed tests cause gulp to exit non-zero
-            throw err;
-        });
-});
+gulp.task('utest',
+    'Single unit test karma run; [-m PATTERN] argument limits ' +
+    'tests to it functions with message string matching PATTERN.',
+    function () {
+        var karma = require('gulp-karma');
+        // Be sure to return the stream.
+        // See http://stackoverflow.com/questions/8527786 Rimian post.
+        return gulp.src([])
+            .pipe(karma({
+                configFile: 'karma.conf.js',
+                client: {
+                    args: ['--grep', argv.m]
+                },
+                action: 'run'
+            }))
+            .on('error', function (err) {
+                // Make sure failed tests cause gulp to exit non-zero
+                throw err;
+            });
+    });
 
 gulp.task('karma', 'Run karma in watch mode.', function () {
     var karma = require('gulp-karma');
@@ -221,4 +207,17 @@ gulp.task('karma', 'Run karma in watch mode.', function () {
             configFile: 'karma.conf.js',
             action: 'watch'
         }));
+});
+
+gulp.task('itest', 'Integration (e-e) tests', function () {
+    // TODO itest not working
+    var cwd = process.cwd(),
+        mkCmd = function (cmd) {
+            return 'tools/term.sh "cd ' + cwd + ';' + cmd + '"';
+        };
+    sh.exec(mkCmd('ionic serve -c -t ios ' + ionicBrowser));
+    sh.exec('sleep 10');
+    sh.exec(mkCmd('webdriver-manager start'));
+    sh.exec('sleep 3');
+    sh.exec(mkCmd('protractor protractor.conf.js'));
 });
