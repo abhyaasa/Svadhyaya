@@ -2,51 +2,86 @@
 
 angular.module('app', ['ionic', 'utils'])
 
-.config(function ($stateProvider, $urlRouterProvider, $logProvider) {
+/**
+ * @name getData
+ * @param {string} path to file, relative to www/data
+ * @param {function} optional callback accepts error object
+ * @returns {object} promise yielding json file contents
+ */
+.provider('getData', function ($logProvider) {
+    var $http = angular.injector(['ng']).get('$http');
+    this.$get = function () {
+        return function (path, failure) {
+            return $http.get('/data/' + path).catch(
+                function (error) {
+                    if (failure) {
+                        return failure(error);
+                    } else {
+                        $logProvider.get().error('getData', JSON.stringify(error));
+                    }
+                });
+        };
+    };
+})
+
+.config(function ($stateProvider, $urlRouterProvider, $logProvider, getDataProvider) {
     $logProvider.debugEnabled(true); // PUBLISH .debugEnabled(false)
 
     $stateProvider
-        .state('tabs', {
-            url: '/tabs',
-            abstract: true,
-            templateUrl: 'views/tabs.html'
-        })
-        .state('tabs.decks', {
-            url: '/decks',
-            views: {
-                'decks-tab': {
-                    templateUrl: 'views/decks/decks.html',
-                    controller: 'DecksController'
-                }
+    .state('tabs', {
+        url: '/tabs',
+        abstract: true,
+        templateUrl: 'views/tabs.html',
+        resolve: {
+            configPromise: function ($http) { // XXX $http
+                return getDataProvider.$get()('config.json',
+                    function (data) {
+                        return data;
+                    });
+                // return $http.get('/data/config.json');
+            }},
+        controller: function ($rootScope, configPromise, $log, $filter) {
+            // configPromise is resolved: https://github.com/angular-ui/ui-router/wiki
+            $rootScope.config = configPromise.data;
+            $log.debug($filter('json')($rootScope.config)); // PUBLISH remove
+        }
+    })
+    .state('tabs.decks', {
+        url: '/decks',
+        views: {
+            'decks-tab': {
+                templateUrl: 'views/decks/decks.html',
+                controller: 'DecksController'
             }
-        })
-        .state('tabs.card', {
-            url: '/card',
-            views: {
-                'card-tab': {
-                    templateUrl: 'views/card/card.html',
-                    controller: 'CardController'
-                }
+        }
+    })
+    .state('tabs.card', {
+        url: '/card',
+        views: {
+            'card-tab': {
+                templateUrl: 'views/card/card.html',
+                controller: 'CardController'
             }
-        })
-        .state('tabs.settings', {
-            url: '/settings',
-            views: {
-                'settings-tab': {
-                    templateUrl: 'views/settings/settings.html',
-                    controller: 'SettingsController'
-                }
+        }
+    })
+    .state('tabs.settings', {
+        url: '/settings',
+        views: {
+            'settings-tab': {
+                templateUrl: 'views/settings/settings.html',
+                controller: 'SettingsController'
             }
-        })
-        .state('tabs.filter', {
-            url: '/filter',
-            views: {
-                'filter-tab': {
-                    templateUrl: 'views/filter/filter.html',
-                    controller: 'FilterController'
-                }
+        }
+    })
+    .state('tabs.filter', {
+        url: '/filter',
+        views: {
+            'filter-tab': {
+                templateUrl: 'views/filter/filter.html',
+                controller: 'FilterController'
             }
-        });
+        }
+    });
     $urlRouterProvider.otherwise('/tabs/decks');
 })
 
@@ -95,6 +130,7 @@ angular.module('app', ['ionic', 'utils'])
 //         }
 //     }
 // })
+
 /**
  * Use x name as tag, attribute, class name, or after directive in comment.
  * The associated element is removed.
@@ -108,18 +144,14 @@ angular.module('app', ['ionic', 'utils'])
     };
 })
 
-.run(function ($ionicPlatform, $rootScope, $state, $log, getData,
-    restoreSettings) {
-    getData('config.json', function (config) {
-        $rootScope.config = config;
-    });
-
+.run(function ($ionicPlatform, $rootScope, restoreSettings) {
     // https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions\
     // #issue-im-getting-a-blank-screen-and-there-are-no-errors
     // REVIEW $log.log instead of console?
     $rootScope.$on('$stateChangeError', console.log.bind(console));
 
     $ionicPlatform.ready(function () {
+        // From ionic starter
         // Hide the accessory bar by default (remove this to show the
         // accessory bar above the keyboard for form inputs)
         if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -128,8 +160,6 @@ angular.module('app', ['ionic', 'utils'])
         if (window.StatusBar) {
             StatusBar.styleDefault();
         }
-        // XXX StatusBar.styleDefault(); // from ionic tabs starter
-        // XXX $state.go('tabs.decks', {});
     });
 
     restoreSettings();

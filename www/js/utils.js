@@ -28,29 +28,6 @@ angular.module('utils', ['ionic'])
 
 .constant('_', window._) // underscore.js access
 
-/**
- * @name getData
- * @param {string} path to file
- * @param {function} callback accepts data object
- * @param {function} optional callback accepts error object
- * @returns {object} value corresponding to json file contents
- */
-.service('getData', function ($rootScope, $http, $log) {
-    return function (path, success, failure) { // path is relative to www/data
-        $http.get('/data/' + path).then(
-            function (response) {
-                success(response.data);
-            },
-            function (error) {
-                if (failure) {
-                    return failure(error);
-                } else {
-                    $log.error('getData', JSON.stringify(error));
-                }
-            });
-    };
-})
-
 // TODO test media service: Adapted from
 // http://forum.ionicframework.com/t/how-to-play-local-audio-files/7479/5
 // for media plugin :
