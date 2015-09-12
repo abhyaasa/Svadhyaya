@@ -2,7 +2,29 @@
 
 angular.module('app', ['ionic', 'utils'])
 
-.config(function ($stateProvider, $urlRouterProvider, $logProvider) {
+/**
+ * @name getData
+ * @param {string} path to file, relative to www/data
+ * @param {function} optional callback accepts error object
+ * @returns {object} promise yielding json file contents
+ */
+.provider('getData', function ($logProvider) {
+    var $http = angular.injector(['ng']).get('$http');
+    this.$get = function () {
+        return function (path, failure) {
+            return $http.get('/data/' + path).catch(
+                function (error) {
+                    if (failure) {
+                        return failure(error);
+                    } else {
+                        $logProvider.get().error('getData', JSON.stringify(error));
+                    }
+                });
+        };
+    };
+})
+
+.config(function ($stateProvider, $urlRouterProvider, $logProvider, getDataProvider) {
     $logProvider.debugEnabled(true); // PUBLISH .debugEnabled(false)
 
     $stateProvider
@@ -11,8 +33,12 @@ angular.module('app', ['ionic', 'utils'])
         abstract: true,
         templateUrl: 'views/tabs.html',
         resolve: {
-            configPromise: function ($http) {
-                return $http.get('/data/config.json');
+            configPromise: function ($http) { // XXX $http
+                return getDataProvider.$get()('config.json',
+                    function (data) {
+                        return data;
+                    });
+                // return $http.get('/data/config.json');
             }},
         controller: function ($rootScope, configPromise, $log, $filter) {
             // configPromise is resolved: https://github.com/angular-ui/ui-router/wiki
