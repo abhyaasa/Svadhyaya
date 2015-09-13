@@ -149,13 +149,6 @@ gulp.task('jshint', 'Run jshint on all (non-lib) script files', function () {
         .pipe(jshint.reporter('default'));
 });
 
-gulp.task('kill', 'Kill all gulp and Terminal processes', function () {
-    sh.exec('killall gulp');
-    sh.exec('osascript -e \'quit app "Terminal"\'');
-    // Instead use the following if itest processs not in Terminal:
-    // sh.exec('kill -9 $(pgrep bash)'); // 'killall bash' does not work
-});
-
 gulp.task('install', ['git-check'], function () {
     return bower.commands.install()
         .on('log', function (data) {

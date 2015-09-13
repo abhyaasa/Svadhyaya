@@ -38,16 +38,22 @@ There must be a subdirectory of `www/data/` for every flavor in use, with struct
 
 ## Tools
 
-### Python tools
-
-Python 2.6+ (maybe earlier) is needed to run **tools/*.py** scripts. Use `-h` argument for usage information. `cdeck.py --format_help` provides documentation on deck and compact deck file formats.
-
-### Gulp
-
 Run `gulp help` for annotated list of gulp project management tasks.
 
-'gulp index' generates ./www/index.html from ./index.html, so edit only the latter. This avoids superfluous version control changes, as script injection order is unpredictable.
+`gulp index` generates `./www/index.html` from `./index.html`, so edit only the latter. This avoids superfluous version control changes, as script injection order is unpredictable.
+
+Python and bash scripts are in the `tools` directory.
+
+### Bash scripts
+
+- Run `psclean.sh` to remove stray processes that may be created by ionic development. If the message "An uncaught exception occurred and has been reported to Ionic" is seen, try running this script and confirm with the `ps` output that there are no stray processes. Kill them manually if need be.
+- Run `resources.sh` after icon or splash screen images in resources directory are changed.
+- `term.sh` is used by `gulp itest`.
+
+### Python scripts
+
+Python 2.6+ (maybe earlier) is needed to run `.py` scripts. Use `-h` argument for usage information. `cdeck.py --format_help` provides documentation on deck and compact deck file formats.
 
 ### jsdoc generated documentation
 
-The dgeni-generated `doc/build/` directory has jsdoc documentation.
+`gulp dengi` generates jsdoc documentation in the `doc/build/` directory.
