@@ -16,7 +16,6 @@ angular.module('app')
         });
         $scope.deckNames = $scope.allDeckNames;
 
-
         // TODO implement search, Ionic in action 6.3, p 140
         // try AngularJS cookbook p 64 http://jsfiddle.net/msfrisbie/ghsa3nym/
         angular.extend($scope, {

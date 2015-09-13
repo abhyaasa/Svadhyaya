@@ -2,28 +2,6 @@
 
 angular.module('app', ['ionic', 'utils'])
 
-/**
- * @name getData
- * @param {string} path to file, relative to www/data
- * @param {function} optional callback accepts error object
- * @returns {object} promise yielding json file contents
- */
-.provider('getData', function ($logProvider) {
-    var $http = angular.injector(['ng']).get('$http');
-    this.$get = function () {
-        return function (path, failure) {
-            return $http.get('/data/' + path).catch(
-                function (error) {
-                    if (failure) {
-                        return failure(error);
-                    } else {
-                        $logProvider.get().error('getData', JSON.stringify(error));
-                    }
-                });
-        };
-    };
-})
-
 .config(function ($stateProvider, $urlRouterProvider, $logProvider, getDataProvider) {
     $logProvider.debugEnabled(true); // PUBLISH .debugEnabled(false)
 
