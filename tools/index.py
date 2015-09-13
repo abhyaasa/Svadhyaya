@@ -13,8 +13,8 @@ The index is a list of names of files in the directory, excluding the index file
 """
 
 def main(args):
-    files = [file for file in os.listdir(args.directory)
-             if not file.startswith('.')]
+    files = [filename for filename in os.listdir(args.directory)
+             if not filename.startswith('.')]
     if args.output == '-':
         writer = sys.stdout
     else:
@@ -30,7 +30,7 @@ def get_args():
     formatter = argparse.RawDescriptionHelpFormatter
     p = argparse.ArgumentParser(
         description=__doc__,
-        epilog = EPILOG,
+        epilog=EPILOG,
         formatter_class=formatter)
     p.add_argument('directory', nargs='?', type=str, default='.',
                    help='directory to index, default is current directory')

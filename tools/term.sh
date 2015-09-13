@@ -1,5 +1,7 @@
-#!/bin/sh
-# from http://stackoverflow.com/questions/4404242/programmatically-launch-terminal-app-with-a-specified-command-and-custom-colors
+#!/usr/bin/env sh
+# Programmatically launch terminal app with a specified command and custom colors.
+# Used by gulp itest.
+# From http://stackoverflow.com/questions/4404242
 echo '
 on run argv
   if length of argv is equal to 0
