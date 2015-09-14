@@ -1,11 +1,11 @@
 'use strict';
+
 // TODO ibook 235 itest
-describe('Decks View', function () {
-    return;
+describe('Library View', function () {
     browser.get('http://localhost:8100/');
     var searchText = element(by.model('model.searchText'));
 
-    it('should open to the decks view', function () {
+    it('should open to the library view', function () {
         expect(searchText.getText()).toBe('');
     });
 });

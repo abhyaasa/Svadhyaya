@@ -24,12 +24,12 @@ angular.module('app', ['ionic', 'utils'])
             $log.debug($filter('json')($rootScope.config)); // PUBLISH remove
         }
     })
-    .state('tabs.decks', {
-        url: '/decks',
+    .state('tabs.library', {
+        url: '/library',
         views: {
-            'decks-tab': {
-                templateUrl: 'views/decks/decks.html',
-                controller: 'DecksController'
+            'library-tab': {
+                templateUrl: 'views/library/library.html',
+                controller: 'LibraryController'
             }
         }
     })
@@ -60,7 +60,7 @@ angular.module('app', ['ionic', 'utils'])
             }
         }
     });
-    $urlRouterProvider.otherwise('/tabs/decks');
+    $urlRouterProvider.otherwise('/tabs/library');
 })
 
 // .state('tabs.deck', {
