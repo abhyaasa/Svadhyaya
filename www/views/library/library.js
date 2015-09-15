@@ -2,9 +2,9 @@
 
 angular.module('app')
 
-.controller('DecksController', function ($rootScope, $scope, $log, getData, _) {
-    $log.debug('in DecksController'); // PUBLISH remove all $log.debug calls
-    var indexFile = $rootScope.config.flavor + '/decks/index.json';
+.controller('LibraryController', function ($rootScope, $scope, $log, getData, _) {
+    $log.debug('in LibraryController'); // PUBLISH remove all $log.debug calls
+    var indexFile = $rootScope.config.flavor + '/library/index.json';
     getData(indexFile).then(function (promise) {
         var fileNames = promise.data;
         $scope.allDeckNames = _.map(fileNames, function (name) {

@@ -3,25 +3,45 @@
 angular.module('utils', ['ionic'])
 
 /**
+ * Use x name as tag, attribute, class name, or after directive in comment.
+ * The associated element is removed.
+ */
+.directive('x', function () {
+    return {
+        restrict: 'AE',
+        compile: function (el) {
+            el.remove();
+        }
+    };
+})
+
+/**
  * @name getData
  * @param {string} path to file, relative to www/data
  * @param {function} optional callback accepts error object
  * @returns {object} promise yielding json file contents
  */
-.provider('getData', function ($logProvider) {
-    var $http = angular.injector(['ng']).get('$http');
+.provider('getData', function () {
+    var injector = angular.injector(['ng']);
+    var $http = injector.get('$http');
+    var $log = injector.get('$log');
     this.$get = function () {
         return function (path, failure) {
+            $log.debug('getData', path);
             return $http.get('/data/' + path).catch(
                 function (error) {
                     if (failure) {
                         return failure(error);
                     } else {
-                        $logProvider.get().error('getData', JSON.stringify(error));
+                        $log.error('getData', JSON.stringify(error));
                     }
                 });
         };
     };
+})
+
+.service('config', function ($rootScope) {
+    return $rootScope.config; // loaded in tabs state controller
 })
 
 // based on http://learn.ionicframework.com/formulas/localstorage/

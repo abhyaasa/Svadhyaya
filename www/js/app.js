@@ -11,25 +11,65 @@ angular.module('app', ['ionic', 'utils'])
         abstract: true,
         templateUrl: 'views/tabs.html',
         resolve: {
-            configPromise: function ($http) { // XXX $http
-                return getDataProvider.$get()('config.json',
-                    function (data) {
-                        return data;
-                    });
-                // return $http.get('/data/config.json');
+            configPromise: function ($http, _) {
+                return getDataProvider.$get()('config.json');
             }},
         controller: function ($rootScope, configPromise, $log, $filter) {
-            // configPromise is resolved: https://github.com/angular-ui/ui-router/wiki
+            // promise is resolved: https://github.com/angular-ui/ui-router/wiki
             $rootScope.config = configPromise.data;
-            $log.debug($filter('json')($rootScope.config)); // PUBLISH remove
         }
     })
-    .state('tabs.decks', {
-        url: '/decks',
+    .state('tabs.library', {
+        url: '/library',
         views: {
-            'decks-tab': {
-                templateUrl: 'views/decks/decks.html',
-                controller: 'DecksController'
+            'library-tab': {
+                templateUrl: 'views/library/library.html',
+                controller: 'LibraryController'
+            }
+        }
+    })
+    .state('tabs.deck', {
+        url: '/deck:deckId',
+        views: {
+            'deck-tab': {
+                templateUrl: 'views/deck/deck.html',
+                controller: 'DeckController'
+            }
+        }
+    })
+    .state('tabs.answer', {
+        url: '/answer',
+        views: {
+            'card-tab': {
+                templateUrl: 'views/answer/answer.html',
+                controller: 'AnswerController'
+            }
+        }
+    })
+    .state('tabs.about', {
+        url: '/about',
+        views: {
+            'settings-tab': {
+                templateUrl: 'views/about/about.html',
+                controller: 'AboutController'
+            }
+        }
+    })
+    .state('tabs.help', {
+        url: '/help',
+        views: {
+            'settings-tab': {
+                templateUrl: 'views/help/help.html',
+                controller: 'HelpController'
+            }
+        }
+    })
+    .state('tabs.reset', {
+        url: '/about',
+        views: {
+            'settings-tab': {
+                templateUrl: 'views/reset/reset.html',
+                controller: 'ResetController'
             }
         }
     })
@@ -60,66 +100,7 @@ angular.module('app', ['ionic', 'utils'])
             }
         }
     });
-    $urlRouterProvider.otherwise('/tabs/decks');
-})
-
-// .state('tabs.deck', {
-//     url: '/deck', // XXX /:deckId',
-//     views: {
-//         'deck-tab': {
-//             templateUrl: 'views/deck/deck.html',
-//             controller: 'DeckController'
-//         }
-//     }
-// })
-// .state('tabs.answer', {
-//     url: '/answer',
-//     views: {
-//         'card-tab': {
-//             templateUrl: 'views/answer/answer.html',
-//             controller: 'AnswerController'
-//         }
-//     }
-// })
-// .state('tabs.about', {
-//     url: '/about',
-//     views: {
-//         'settings-tab': {
-//             templateUrl: 'views/about/about.html',
-//             controller: 'AboutController'
-//         }
-//     }
-// })
-// .state('tabs.help', {
-//     url: '/help',
-//     views: {
-//         'settings-tab': {
-//             templateUrl: 'views/help/help.html',
-//             controller: 'HelpController'
-//         }
-//     }
-// })
-// .state('tabs.reset', {
-//     url: '/about',
-//     views: {
-//         'settings-tab': {
-//             templateUrl: 'views/reset/reset.html',
-//             controller: 'ResetController'
-//         }
-//     }
-// })
-
-/**
- * Use x name as tag, attribute, class name, or after directive in comment.
- * The associated element is removed.
- */
-.directive('x', function () {
-    return {
-        restrict: 'AE',
-        compile: function (el) {
-            el.remove();
-        }
-    };
+    $urlRouterProvider.otherwise('/tabs/library');
 })
 
 .run(function ($ionicPlatform, $rootScope, restoreSettings) {
