@@ -2,12 +2,28 @@
 
 angular.module('app')
 
-.controller('DeckController', function ($stateParams, $state, $log, getData, config) {
+.controller('DeckController', function ($stateParams, $rootScope, $scope, $log,
+    getData, config) {
     var id = $stateParams.deckId;
+    $log.debug('deck id', id);
+    if (!id) { return; }
+    $rootScope.deckEnabled = true;
     getData(config.flavor + '/library/' + id).then(function (promise) {
         var questions = promise.data;
-        $state.info = {
-            right: questions.length
+        $scope.deck = {
+            right: 0,
+            wrong: 0,
+            close: 0,
+            hints: 0,
+            skipped: 0,
+            remaining: questions.length,
+            filter: {
+                max: 50,
+                min: 50,
+                required: [],
+                exclude: [],
+                include: []
+            }
         };
         $log.debug(JSON.stringify(questions));
     });
