@@ -66,7 +66,20 @@ angular.module('utils', ['ionic'])
     this.getObject = function (key) {
         return JSON.parse($window.localStorage[key] || '{}');
     };
+    this.clear = function (key) {
+        window.localStorage.clear();
+    };
 }])
+
+.service('restoreSettings', function ($log, settings, localStorage, _) {
+    return function () {
+        var s = localStorage.getObject('settings');
+        if (s !== undefined) {
+            $log.debug('restored settings', JSON.stringify(s));
+            _.extendOwn(settings, s);
+        }
+    };
+})
 
 .constant('_', window._) // underscore.js access
 

@@ -72,7 +72,12 @@ angular.module('app', ['ionic', 'utils'])
                 templateUrl: 'views/settings/settings.html',
                 controller: 'SettingsController'
             }
-        }
+        },
+        onExit: ['settings', 'localStorage', '_', function (settings, localStorage, _) {
+            var s = {};
+            _.extendOwn(s, settings);
+            localStorage.setObject('settings', s);
+        }]
     })
     .state('tabs.about', {
         url: '/about',
