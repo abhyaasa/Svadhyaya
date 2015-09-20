@@ -3,10 +3,12 @@
 angular.module('app')
 
 .controller('DeckController', function ($stateParams, $rootScope, $scope, $log,
-    getData, config) {
+  getData, config) {
     var id = $stateParams.deckId;
-    $log.debug('deck id', id);
-    if (!id) { return; }
+    if (!id) {
+        $log.debug('deck no id');
+        return;
+    }
     $rootScope.deckEnabled = true;
     getData(config.flavor + '/library/' + id).then(function (promise) {
         var questions = promise.data;
@@ -25,6 +27,6 @@ angular.module('app')
                 include: []
             }
         };
-        $log.debug(JSON.stringify(questions));
+        $log.debug('deck questions', JSON.stringify(questions));
     });
 });
