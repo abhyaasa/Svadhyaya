@@ -89,7 +89,7 @@ angular.module('app', ['ionic', 'utils'])
         }
     })
     .state('tabs.reset', {
-        url: '/about',
+        url: '/reset',
         views: {
             'settings-tab': {
                 templateUrl: 'views/reset/reset.html',
