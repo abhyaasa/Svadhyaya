@@ -6,6 +6,7 @@ angular.module('app', ['ionic', 'utils'])
     $logProvider.debugEnabled(true); // PUBLISH .debugEnabled(false)
 
     $stateProvider
+    // .state('test', { url: '/test', template: '<h1>Testing</h1>' }) // XXX
     .state('tabs', {
         url: '/tabs',
         abstract: true,
@@ -37,39 +38,12 @@ angular.module('app', ['ionic', 'utils'])
             }
         }
     })
-    .state('tabs.answer', {
-        url: '/answer',
+    .state('tabs.filter', {
+        url: '/filter',
         views: {
-            'card-tab': {
-                templateUrl: 'views/answer/answer.html',
-                controller: 'AnswerController'
-            }
-        }
-    })
-    .state('tabs.about', {
-        url: '/about',
-        views: {
-            'settings-tab': {
-                templateUrl: 'views/about/about.html',
-                controller: 'AboutController'
-            }
-        }
-    })
-    .state('tabs.help', {
-        url: '/help',
-        views: {
-            'settings-tab': {
-                templateUrl: 'views/help/help.html',
-                controller: 'HelpController'
-            }
-        }
-    })
-    .state('tabs.reset', {
-        url: '/about',
-        views: {
-            'settings-tab': {
-                templateUrl: 'views/reset/reset.html',
-                controller: 'ResetController'
+            'deck-tab': {
+                templateUrl: 'views/filter/filter.html',
+                controller: 'FilterController'
             }
         }
     })
@@ -82,6 +56,15 @@ angular.module('app', ['ionic', 'utils'])
             }
         }
     })
+    .state('tabs.answer', {
+        url: '/answer',
+        views: {
+            'card-tab': {
+                templateUrl: 'views/answer/answer.html',
+                controller: 'AnswerController'
+            }
+        }
+    })
     .state('tabs.settings', {
         url: '/settings',
         views: {
@@ -89,17 +72,41 @@ angular.module('app', ['ionic', 'utils'])
                 templateUrl: 'views/settings/settings.html',
                 controller: 'SettingsController'
             }
+        },
+        onExit: ['settings', 'localStorage', '_', function (settings, localStorage, _) {
+            var s = {};
+            _.extendOwn(s, settings);
+            localStorage.setObject('settings', s);
+        }]
+    })
+    .state('tabs.about', {
+        url: '/about',
+        views: {
+            'settings-tab': {
+                templateUrl: 'views/about/about.html',
+                controller: 'AboutController'
+            }
         }
     })
-    .state('tabs.filter', {
-        url: '/filter',
+    .state('tabs.reset', {
+        url: '/reset',
         views: {
-            'filter-tab': {
-                templateUrl: 'views/filter/filter.html',
-                controller: 'FilterController'
+            'settings-tab': {
+                templateUrl: 'views/reset/reset.html',
+                controller: 'ResetController'
+            }
+        }
+    })
+    .state('tabs.help', {
+        url: '/help',
+        views: {
+            'settings-tab': {
+                templateUrl: 'views/help/help.html',
+                controller: 'HelpController'
             }
         }
     });
+    // $urlRouterProvider.otherwise('/test'); // XXX
     $urlRouterProvider.otherwise('/tabs/library');
 })
 

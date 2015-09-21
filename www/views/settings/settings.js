@@ -6,35 +6,23 @@ angular.module('app')
     $scope.settings = settings;
 })
 
-.value('settings', {
-    randomQuestions: false,
-    randomResponses: false,
-    devanagari: false,
-    hintPercent: 10,
-    filter: {
-        max: 50,
-        min: 50,
-        required: [],
-        exclude: [],
-        include: []
-    }
-})
+.value('settings', {})
 
-.service('restoreSettings', function (settings, localStorage, _) {
-    return function () {
-        var s = localStorage.getObject('settings');
-        if (s !== undefined) {
-            _.extendOwn(settings, s);
+.service('restoreSettings', function ($log, settings, localStorage, _) {
+    var defaultSettings = {
+        randomQuestions: false,
+        randomResponses: false,
+        devanagari: false,
+        hintPercent: 10
+    };
+    return function (reset) {
+        _.extendOwn(settings, defaultSettings);
+        if (!reset) {
+            var s = localStorage.getObject('settings');
+            if (s !== undefined) {
+                _.extendOwn(settings, s);
+            }
         }
+        $log.debug('restored settings', JSON.stringify(settings));
     };
-})
-
-.service('saveSettings', function ($state, settings, localStorage, _) {
-    var f = function () {
-        var s = {};
-        _.extendOwn(s, settings);
-        localStorage.setObject('settings', s);
-    };
-    $state.onExit = f;
-    return f;
 });

@@ -3,7 +3,7 @@ To Do List
 
 There is lots to do at this stage. A partial list follows:
 
-- [ ] open with decks tab
+- [ ] backbutton from help only from settings
 - [ ] add sound and image support
 - [ ] Coffee, jade, NOT stylus
 	- [ ] https://github.com/CaryLandholt/ng-classify
@@ -21,7 +21,6 @@ There is lots to do at this stage. A partial list follows:
 - [ ] tabs: decklist, deck, card, settings
 - [ ] disable inop tabs
 - [ ] deck tab: boxes, filter, resume, (re)start
-- [ ] backbutton from help on from settings
 - [ ] backbutton with inverted svg font possible?
 - [ ] help content context sensitive
 - [ ] version in data/config.json, bower.json, package.json, and config.xml

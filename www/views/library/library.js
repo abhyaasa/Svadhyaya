@@ -7,6 +7,7 @@ angular.module('app')
     var indexFile = $rootScope.config.flavor + '/library/index.json';
     getData(indexFile).then(function (promise) {
         var fileNames = promise.data;
+        $log.debug('fileNames', fileNames);
         $scope.allDeckNames = _.map(fileNames, function (name) {
             return {
                 fullName: name,

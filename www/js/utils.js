@@ -66,6 +66,9 @@ angular.module('utils', ['ionic'])
     this.getObject = function (key) {
         return JSON.parse($window.localStorage[key] || '{}');
     };
+    this.clear = function (key) { // TODO use localStorage clear
+        window.localStorage.clear();
+    };
 }])
 
 .constant('_', window._) // underscore.js access
