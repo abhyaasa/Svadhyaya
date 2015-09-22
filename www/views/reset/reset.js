@@ -2,7 +2,7 @@
 
 angular.module('app')
 
-.controller('ResetController', function ($log, $scope, restoreSettings) {
+.controller('ResetController', function ($log, $scope, $state, restoreSettings) {
     this.hideConfirm = true;
     this.hideWarning = true;
     this.selection = undefined;
@@ -21,5 +21,6 @@ angular.module('app')
             restoreSettings(true);
         }
         // TODO reset deck(s)
+        $state.go('tabs.settings');
     };
 });

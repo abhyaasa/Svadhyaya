@@ -38,15 +38,6 @@ angular.module('app', ['ionic', 'utils'])
             }
         }
     })
-    .state('tabs.filter', {
-        url: '/filter',
-        views: {
-            'deck-tab': {
-                templateUrl: 'views/filter/filter.html',
-                controller: 'FilterController'
-            }
-        }
-    })
     .state('tabs.card', {
         url: '/card',
         views: {

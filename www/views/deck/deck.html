@@ -1,24 +1,42 @@
 <ion-view>
     <ion-content padding="true" class="has-header">
-        <div>
-            <p>
-                <strong>Right:</strong> {{ deck.right }}</p>
-
-            <p>
-                <strong>Wrong:</strong> {{ deck.wrong }}</p>
-
-            <p>
-                <strong>Close:</strong> {{ deck.close }}</p>
-
-            <p>
-                <strong>Hints:</strong> {{ deck.hints }}</p>
-
-            <p>
-                <strong>Skipped:</strong> {{ deck.skipped }}</p>
-
-            <p>
-                <strong>Remaining:</strong> {{ deck.remaining }}</p>
+        <div class="deck-table">
+            <table>
+                <tr>
+                    <td>Right</td> <td>{{ deck.right }}</td>
+                    <td>Wrong</td> <td>{{ deck.wrong }}</td>
+                    <td>Close</td> <td>{{ deck.close }}</td>
+                </tr>
+                <tr>
+                    <td>Hints</td> <td>{{ deck.hints }}</td>
+                    <td>Skipped</td> <td>{{ deck.skipped }}</td>
+                    <td>Remaining</td> <td>{{ deck.remaining }}</td>
+                </tr>
+            </table>
+            <p />
         </div>
+        <ion-list>
+            <ion-item class="range range-positive">Max
+                <input type="range" value="50" min="0" max="100">
+            </ion-item>
+            <ion-item class="range range-positive">Min
+                <input type="range" value="50" min="0" max="100">
+            </ion-item>
+            <ion-item>Tag 1</ion-item>
+            <ion-item>Tag 2</ion-item>
+            <label class="item item-select">
+                <span class="input-label">And</span>
+                <select></select>
+            </label>
+            <label class="item item-select">
+                <span class="input-label">And_not</span>
+                <select></select>
+            </label>
+            <label class="item item-select">
+                <span class="input-label">Or</span>
+                <select></select>
+            </label>
+        </ion-list>
         <div class="button-bar">
             <button class="button button-stable button-block">Done</button>
         </div>

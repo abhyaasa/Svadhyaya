@@ -1,5 +1,4 @@
 /* gulp-processed, with output to www/scss/ionic.app.css */
-/* app-specific variables */
 /*!
   Ionicons, v2.0.1
   Created by Ben Sperry for the Ionic Framework, http://ionicons.com/
@@ -7660,12 +7659,26 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
-/* app-specific scss other than variables */
-#about-view {
+.major-text {
   font-size: 120%; }
 
-.about-minor {
+.minor-text {
   font-size: 90%; }
 
+.fine-print {
+  font-size: 80%; }
+
 .warning {
-  color: red; }
+  color: #f00; }
+
+div.deck-table {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto; }
+
+td {
+  padding-left: 10px;
+  padding-right: 5px; }
+
+tr td:nth-child(odd) {
+  font-weight: bold; }
