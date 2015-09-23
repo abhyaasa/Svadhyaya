@@ -2,12 +2,8 @@
 
 angular.module('app')
 
-.controller('LibraryController', function ($rootScope, $scope, $state, $log, getData, _) {
+.controller('LibraryController', function ($rootScope, $scope, $log, getData, _) {
     $log.debug('in LibraryController'); // PUBLISH remove all $log.debug calls
-    $rootScope.help = function () {
-        $log.debug('LIBRARY HELP');
-        $state.go('tabs.library-help');
-    };
     var indexFile = 'flavors/' + $rootScope.config.flavor + '/library/index.json';
     getData(indexFile).then(function (promise) {
         var fileNames = promise.data;

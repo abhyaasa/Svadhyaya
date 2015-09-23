@@ -2,7 +2,7 @@
 
 angular.module('app')
 
-.controller('DeckController', function ($stateParams, $rootScope, $scope, $log,
+.controller('DeckController', function ($stateParams, $rootScope, $scope, $state, $log,
   getData, config) {
     var id = $stateParams.deckId;
     if (!id) {
@@ -29,4 +29,6 @@ angular.module('app')
         };
         $log.debug('deck questions', JSON.stringify(questions));
     });
-});
+})
+
+.controller('DeckHelpController', function ($scope, $rootScope) {});

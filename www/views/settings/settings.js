@@ -2,7 +2,7 @@
 
 angular.module('app')
 
-.controller('SettingsController', function ($scope, settings) {
+.controller('SettingsController', function ($scope, $rootScope, $state, settings) {
     $scope.settings = settings;
 })
 
