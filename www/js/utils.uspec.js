@@ -21,7 +21,7 @@ xdescribe('getData', function () {
         // FIXME fails, if success, test failure also
         inject(function (getData) {
             var handler = jasmine.createSpy('success');
-            getData('test/test.json').then(handler);
+            getData('flavors/test/test.json').then(handler);
             scope.$digest();
             expect(handler).toHaveBeenCalledWith(['data', 'for unit test']);
         }));

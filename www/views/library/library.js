@@ -2,9 +2,13 @@
 
 angular.module('app')
 
-.controller('LibraryController', function ($rootScope, $scope, $log, getData, _) {
+.controller('LibraryController', function ($rootScope, $scope, $state, $log, getData, _) {
     $log.debug('in LibraryController'); // PUBLISH remove all $log.debug calls
-    var indexFile = $rootScope.config.flavor + '/library/index.json';
+    $rootScope.help = function () {
+        $log.debug('LIBRARY HELP');
+        $state.go('tabs.library-help');
+    };
+    var indexFile = 'flavors/' + $rootScope.config.flavor + '/library/index.json';
     getData(indexFile).then(function (promise) {
         var fileNames = promise.data;
         $log.debug('fileNames', fileNames);
@@ -36,4 +40,6 @@ angular.module('app')
         // http://learn.ionicframework.com/formulas/navigation-and-routing-part-2/
         // or Ionic book 5.2
     });
-});
+})
+
+.controller('LibraryHelpController', function ($scope, $rootScope) {});

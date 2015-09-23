@@ -6,6 +6,8 @@ angular.module('app')
     $scope.settings = settings;
 })
 
+.controller('SettingsHelpController', function ($scope, $rootScope) {})
+
 .value('settings', {})
 
 .service('restoreSettings', function ($log, settings, localStorage, _) {

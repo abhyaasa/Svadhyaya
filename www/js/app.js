@@ -15,10 +15,7 @@ angular.module('app', ['ionic', 'utils'])
             configPromise: function ($http, _) {
                 return getDataProvider.$get()('config.json');
             }},
-        controller: function ($rootScope, configPromise, $log, $filter) {
-            // promise is resolved: https://github.com/angular-ui/ui-router/wiki
-            $rootScope.config = configPromise.data;
-        }
+        controller: 'TabsController'
     })
     .state('tabs.library', {
         url: '/library',
@@ -26,6 +23,15 @@ angular.module('app', ['ionic', 'utils'])
             'library-tab': {
                 templateUrl: 'views/library/library.html',
                 controller: 'LibraryController'
+            }
+        }
+    })
+    .state('tabs.library-help', {
+        url: '/libraryHelp',
+        views: {
+            'settings-tab': {
+                templateUrl: 'views/library/help.html',
+                controller: 'LibraryHelpController'
             }
         }
     })
@@ -88,18 +94,29 @@ angular.module('app', ['ionic', 'utils'])
             }
         }
     })
-    .state('tabs.help', {
-        url: '/help',
+    .state('tabs.settings-help', {
+        url: '/settingsHelp',
         views: {
             'settings-tab': {
-                templateUrl: 'views/help/help.html',
-                controller: 'HelpController'
+                templateUrl: 'views/settings/help.html',
+                controller: 'SettingsHelpController'
             }
         }
     });
     // $urlRouterProvider.otherwise('/test'); // XXX
     $urlRouterProvider.otherwise('/tabs/library');
 })
+
+.controller('TabsController', function ($rootScope, configPromise, $log, $state) {
+    // promise is resolved: https://github.com/angular-ui/ui-router/wiki
+    $rootScope.config = configPromise.data;
+})
+
+// .service('help', function ($log, $state) { // XXX
+//     return function () {
+//         $log.debug('HELP', $state);
+//     };
+// })
 
 .run(function ($ionicPlatform, $rootScope, restoreSettings) {
     // https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions\

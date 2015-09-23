@@ -32,9 +32,9 @@ $ npm list -g --depth=0
 
 You test and build with the current **flavor** of your choice. Change the flavor    with `gulp flavor --name NAME`. The distribution comes with support for the `test` flavor, but that may not be the current flavor of distribution branches.
 
-There must be a subdirectory of `www/data/` for every flavor in use, with structure similar to the test flavor.
+There must be a subdirectory of `www/data/flavors` for every flavor in use, with structure similar to the test flavor.
 
-`./resources` link points to `./data/<current flavor>/resources/` of the current flavor for to keep the `ionic resources` command happy.
+`./resources` link points to `./data/flavors/<current flavor>/resources/` of the current flavor for to keep the `ionic resources` command happy.
 
 ## Tools
 

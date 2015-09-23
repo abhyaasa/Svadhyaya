@@ -8,20 +8,19 @@
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/ionic.app.css" rel="stylesheet">
-
 </head>
 
 <body ng-app="app" animation="slide-left-right-ios7" ng-cloak="">
     <ion-nav-bar class="bar-positive">
         <ion-nav-title>
-            <img src="data/datta-deepam/img/logo-44.png" ng-if="config.flavor == &apos;datta-deepam&apos;">
+            <img src="data/flavors/datta-deepam/img/logo-44.png" ng-if="config.flavor == &apos;datta-deepam&apos;">
         </ion-nav-title>
         <ion-nav-back-button class="button-clear">
             <i class="ion-chevron-left"></i> Back
         </ion-nav-back-button>
         <ion-nav-buttons side="secondary">
-            <!-- <button class="button icon ios7-help-outline"></button> -->
-            <input type="image" src="data/img/ios7-help-outline-invert-32.png" ui-sref="tabs.help">
+            <input type="image" src="data/img/ios-help-outline-invert.svg" alt="Help" height="32" width="32" ng-click="help()">
+            <!-- <button class="button" ng-click="help()" width="0"><img src="data/img/ios-help-outline.svg" alt="Help" height="32" width="32" /></button> -->
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-nav-view></ion-nav-view>

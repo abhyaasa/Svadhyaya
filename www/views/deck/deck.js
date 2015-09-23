@@ -10,7 +10,7 @@ angular.module('app')
         return;
     }
     $rootScope.deckEnabled = true;
-    getData(config.flavor + '/library/' + id).then(function (promise) {
+    getData('flavors/' + config.flavor + '/library/' + id).then(function (promise) {
         var questions = promise.data;
         $scope.deck = {
             right: 0,

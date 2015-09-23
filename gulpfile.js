@@ -41,6 +41,8 @@ gulp.task('sass', function (done) {
 
 gulp.task('watch', function () {
     gulp.watch(paths.sass, ['sass']);
+    // XXX no such file or directory '/Users/home/DD/Svadhyaya/resources'...???
+    // gulp.watch(['./index.html'], ['index']);
 });
 
 gulp.task('install', ['git-check'], function () {
@@ -108,7 +110,7 @@ gulp.task('config',
 
 gulp.task('flavor',
     '--name FLAVOR argument required: inject FLAVOR into ' + configJsonFile +
-    ' and link ./resources to data/FLAVOR/resources',
+    ' and link ./resources to data/flavors/FLAVOR/resources',
     function () {
         var fs = require('fs');
         if (!argv.name) {
@@ -117,7 +119,7 @@ gulp.task('flavor',
             var configJson = JSON.parse(fs.readFileSync(configJsonFile).toString());
             configJson.flavor = argv.name;
             fs.writeFileSync(configJsonFile, JSON.stringify(configJson, null, 2));
-            sh.exec('ln -s -f data/' + argv.name + '/resources .');
+            sh.exec('ln -s -f data/flavors' + argv.name + '/resources .');
         }
     });
 
