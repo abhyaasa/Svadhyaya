@@ -12,6 +12,7 @@ angular.module('app')
 
 .service('restoreSettings', function ($log, settings, localStorage, _) {
     var defaultSettings = {
+        intro: true,
         randomQuestions: false,
         randomResponses: false,
         devanagari: false,

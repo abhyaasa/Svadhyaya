@@ -3,7 +3,6 @@ To Do List
 
 There is lots to do at this stage. A partial list follows:
 
-- [ ] backbutton from help only from settings
 - [ ] add sound and image support
 - [ ] Coffee, jade, NOT stylus
 	- [ ] https://github.com/CaryLandholt/ng-classify

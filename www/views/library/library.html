@@ -1,22 +1,24 @@
 <ion-view id="decks-view">
     <ion-content padding="true" class="has-header">
-        <ion-list>
-            <label class="item item-input">
-                <i class="icon ion-search placeholder-icon"></i>
-                <input type="search" placeholder="Deck name to search for"
-                  ng-model="model.searchText">
-                <i class="clear-search icon ion-ios7-close-empty" ng-click="clearSearch()"></i>
-                <button class="button button-small button-positive" ng-click="search()">
-                    Submit
-                </button>
-            </label>
-            <x>
-                FIXME Didn't work: ng-repeat="deck in deckNames | filter:search" with input ng-model="search.root" above
-            </x>
-            <ion-item ng-repeat="deck in deckNames"
-              ui-sref="tabs.deck({ deckId: deck.fullName })">
-                {{ deck.displayName }}
-            </ion-item>
-        </ion-list>
+        <div ng-show="settings.intro">
+        </div>
+        <div ng-hide="settings.intro">
+            <ion-list>
+                <label class="item item-input">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <input type="search" placeholder="Deck name to search for" ng-model="model.searchText">
+                    <i class="clear-search icon ion-ios7-close-empty" ng-click="clearSearch()"></i>
+                    <button class="button button-small button-positive" ng-click="search()">
+                        Submit
+                    </button>
+                </label>
+                <x>
+                    FIXME Didn't work: ng-repeat="deck in deckNames | filter:search" with input ng-model="search.root" above
+                </x>
+                <ion-item ng-repeat="deck in deckNames" ui-sref="tabs.deck({ deckId: deck.fullName })">
+                    {{ deck.displayName }}
+                </ion-item>
+            </ion-list>
+        </div>
     </ion-content>
 </ion-view>

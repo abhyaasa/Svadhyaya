@@ -6,7 +6,15 @@ angular.module('app', ['ionic', 'utils'])
     $logProvider.debugEnabled(true); // PUBLISH .debugEnabled(false)
 
     $stateProvider
-    // .state('test', { url: '/test', template: '<h1>Testing</h1>' }) // XXX
+    .state('intro', {
+        url: '/intro',
+        views: {
+            'intro': {
+                templateURL: 'views/intro/intro.html',
+                controller: 'IntroController'
+            }
+        }
+    })
     .state('tabs', {
         url: '/tabs',
         abstract: true,
@@ -173,7 +181,7 @@ angular.module('app', ['ionic', 'utils'])
 //     };
 // })
 
-.run(function ($ionicPlatform, $rootScope, restoreSettings) {
+.run(function ($ionicPlatform, $rootScope, $state, restoreSettings, settings) {
     // https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions\
     // #issue-im-getting-a-blank-screen-and-there-are-no-errors
     // REVIEW $log.log instead of console?
@@ -191,5 +199,7 @@ angular.module('app', ['ionic', 'utils'])
         }
     });
 
+    $rootScope.settings = settings;
     restoreSettings();
+    $state.go('intro');
 });
