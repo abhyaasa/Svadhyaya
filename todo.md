@@ -4,6 +4,7 @@ To Do List
 There is lots to do at this stage. A partial list follows:
 
 - [ ] add sound and image support
+- [ ] fix library search
 - [ ] Coffee, jade, NOT stylus
 	- [ ] https://github.com/CaryLandholt/ng-classify
 	- [ ] install https://www.npmjs.com/package/gulp-ng-classify#coffeescript
@@ -17,10 +18,7 @@ There is lots to do at this stage. A partial list follows:
 - [ ] todo-show hack
 - [ ] splash and icon http://learn.ionicframework.com/formulas/adding-an-icon/ and  http://blog.ionic.io/automating-icons-and-splash-screens/
 - [ ] flesh out jsdoc documentation and improve dgeni formatting
-- [ ] tabs: decklist, deck, card, settings
-- [ ] disable inop tabs
 - [ ] deck tab: boxes, filter, resume, (re)start
-- [ ] backbutton with inverted svg font possible?
 - [ ] help content context sensitive
 - [ ] version in data/config.json, bower.json, package.json, and config.xml
 - [ ] complete basic functionality

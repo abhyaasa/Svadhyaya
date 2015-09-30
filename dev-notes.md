@@ -1,3 +1,6 @@
+Notes for Developers
+--------------------
+
 ## Collaboration
 
 To open discussion of collaboration possibilities, please email <svadhyaya.app@gmail.com>.
@@ -27,6 +30,14 @@ $ npm list -g --depth=0
 ├── protractor@2.1.0
 └── xml2js@0.4.10$ npm list -g --depth=0
 ```
+
+## Config
+
+`gulp config` transfers name, email, href, and version attributes from `config.xml` to `www/data/config.json`.
+
+The `config.json` file also contains the flavor attribute, which is set by `gulp flavor`.
+
+Early in app initialization, the config object denoted by this file is stored in `$rootScope`.
 
 ## Flavors
 

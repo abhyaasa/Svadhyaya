@@ -2,19 +2,39 @@
 
 angular.module('app', ['ionic', 'utils'])
 
+.run(function ($ionicPlatform, $rootScope, $state, restoreSettings, settings) {
+    // https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions\
+    // #issue-im-getting-a-blank-screen-and-there-are-no-errors
+    $rootScope.$on('$stateChangeError', console.log.bind(console));
+
+    $ionicPlatform.ready(function () {
+        // From ionic starter
+        // Hide the accessory bar by default (remove this to show the
+        // accessory bar above the keyboard for form inputs)
+        if (window.cordova && window.cordova.plugins.Keyboard) {
+            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        }
+        if (window.StatusBar) {
+            StatusBar.styleDefault();
+        }
+    });
+
+    $rootScope.settings = settings;
+    restoreSettings();
+    if (settings.intro) {
+        $state.go('tabs.intro');
+    }
+})
+
+.controller('TabsController', function ($rootScope, configPromise, $log, $state) {
+    // promise is resolved: https://github.com/angular-ui/ui-router/wiki
+    $rootScope.config = configPromise.data;
+})
+
 .config(function ($stateProvider, $urlRouterProvider, $logProvider, getDataProvider) {
     $logProvider.debugEnabled(true); // PUBLISH .debugEnabled(false)
 
     $stateProvider
-    .state('intro', {
-        url: '/intro',
-        views: {
-            'intro': {
-                templateURL: 'views/intro/intro.html',
-                controller: 'IntroController'
-            }
-        }
-    })
     .state('tabs', {
         url: '/tabs',
         abstract: true,
@@ -24,6 +44,18 @@ angular.module('app', ['ionic', 'utils'])
                 return getDataProvider.$get()('config.json');
             }},
         controller: 'TabsController'
+    })
+    .state('tabs.intro', {
+        url: '/intro',
+        views: {
+            'intro-tab': {
+                templateUrl: 'views/intro/intro.html',
+                controller: 'IntroController'
+            }
+        },
+        onEnter: ['$rootScope', '$state', function ($rootScope, $state) {
+            $rootScope.help = function () { $state.go('tabs.intro'); };
+        }]
     })
     .state('tabs.library', {
         url: '/library',
@@ -120,11 +152,9 @@ angular.module('app', ['ionic', 'utils'])
         onEnter: ['$rootScope', '$state', function ($rootScope, $state) {
             $rootScope.help = function () { $state.go('tabs.settings-help'); };
         }],
-        onExit: ['settings', 'localStorage', '_', function (settings, localStorage, _) {
-            var s = {};
-            _.extendOwn(s, settings);
-            localStorage.setObject('settings', s);
-        }]
+        onExit: function (saveSettings) {
+            saveSettings();
+        }
     })
     .state('tabs.about', {
         url: '/about',
@@ -148,11 +178,9 @@ angular.module('app', ['ionic', 'utils'])
                 controller: 'ResetController'
             }
         },
-        onExit: ['settings', 'localStorage', '_', function (settings, localStorage, _) {
-            var s = {};
-            _.extendOwn(s, settings);
-            localStorage.setObject('settings', s);
-        }]
+        onExit: function (saveSettings) {
+            saveSettings();
+        }
     })
     .state('tabs.settings-help', {
         url: '/settingsHelp',
@@ -166,40 +194,5 @@ angular.module('app', ['ionic', 'utils'])
             $rootScope.help = function () { $state.go('tabs.settings-help'); };
         }]
     });
-    // $urlRouterProvider.otherwise('/test'); // XXX
     $urlRouterProvider.otherwise('/tabs/library');
-})
-
-.controller('TabsController', function ($rootScope, configPromise, $log, $state) {
-    // promise is resolved: https://github.com/angular-ui/ui-router/wiki
-    $rootScope.config = configPromise.data;
-})
-
-// .service('help', function ($log, $state) { // XXX
-//     return function () {
-//         $log.debug('HELP', $state);
-//     };
-// })
-
-.run(function ($ionicPlatform, $rootScope, $state, restoreSettings, settings) {
-    // https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions\
-    // #issue-im-getting-a-blank-screen-and-there-are-no-errors
-    // REVIEW $log.log instead of console?
-    $rootScope.$on('$stateChangeError', console.log.bind(console));
-
-    $ionicPlatform.ready(function () {
-        // From ionic starter
-        // Hide the accessory bar by default (remove this to show the
-        // accessory bar above the keyboard for form inputs)
-        if (window.cordova && window.cordova.plugins.Keyboard) {
-            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-        }
-        if (window.StatusBar) {
-            StatusBar.styleDefault();
-        }
-    });
-
-    $rootScope.settings = settings;
-    restoreSettings();
-    $state.go('intro');
 });

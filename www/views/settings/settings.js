@@ -10,6 +10,15 @@ angular.module('app')
 
 .value('settings', {})
 
+.service('saveSettings', function ($log, settings, localStorage, _) {
+    return function () {
+        var s = {};
+        _.extendOwn(s, settings);
+        localStorage.setObject('settings', s);
+        $log.debug('SAVED SETTINGS'); // TODO confirm saveSettings works
+    };
+})
+
 .service('restoreSettings', function ($log, settings, localStorage, _) {
     var defaultSettings = {
         intro: true,
