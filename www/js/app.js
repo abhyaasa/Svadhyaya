@@ -82,7 +82,7 @@ angular.module('app', ['ionic', 'utils'])
         }]
     })
     .state('tabs.deck', {
-        url: '/deck:deckId',
+        url: '/deck?fullName&displayName',
         views: {
             'deck-tab': {
                 templateUrl: 'views/deck/deck.html',

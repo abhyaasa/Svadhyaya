@@ -12,7 +12,7 @@
             <x>
                 FIXME Didn't work: ng-repeat="deck in deckNames | filter:search" with input ng-model="search.root" above
             </x>
-            <ion-item ng-repeat="deck in deckNames" ui-sref="tabs.deck({ deckId: deck.fullName })">
+            <ion-item ng-repeat="deck in deckNames" ui-sref="tabs.deck(deck)">
                 {{ deck.displayName }}
             </ion-item>
         </ion-list>

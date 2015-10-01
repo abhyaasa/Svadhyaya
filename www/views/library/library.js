@@ -15,7 +15,7 @@ angular.module('app')
                 displayName: name.match(/.*(?=\.)/)[0].replace(/_/g, ' ')
             };
         });
-        $scope.deckNames = $scope.allDeckNames;
+        $scope.deckNames = $scope.allDeckNames; // TODO filtering here
 
         // TODO implement search, Ionic in action 6.3, p 140
         // try AngularJS cookbook p 64 http://jsfiddle.net/msfrisbie/ghsa3nym/
