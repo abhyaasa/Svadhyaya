@@ -106,7 +106,7 @@ Use --test_input argument to display input demonstrating the above options.
 JSON FORMAT
 
 Quiz questions json format is list of question dictionaries with keys:
-id: question order number (1-based)
+id: question order number (0-based)
 type: string = text, true-false, multiiple-choice, multiple-choices,
         sequence, matching, or mind
 text: text of question
@@ -145,7 +145,7 @@ def main(args):
     """Command line invocation with argparse args."""
     tags = set()
     line_num = 1
-    id_num = 1
+    id_num = 0
     matching_start = None
     quiz = []
 

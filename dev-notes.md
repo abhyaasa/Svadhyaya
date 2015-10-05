@@ -5,7 +5,7 @@ Notes for Developers
 
 To open discussion of collaboration possibilities, please email <svadhyaya.app@gmail.com>.
 
-## Development tasks
+## Tasks
 
 This app is early in development, with plenty to do. See
 
@@ -13,31 +13,100 @@ This app is early in development, with plenty to do. See
 - tags listed in `.todo` througout source files
 - GitHub [Issues](https://github.com/vasudeva-chaynes/Svadhyaya/issues) list
 
-## Global installs
+## Environment
+
+TODO: document setup for development environment
+
+Development tools
+
+- `git`: version control
+- `ionic`: top-level app framework
+- `AngularJS`: base app framework
+- `angular-ui-router`: improved state management
+- `underscore`: Javascript utility library
+- `cordova`: cross-platform app framework
+- `gulp`: development task manager
+- `node`: development Javascript interpreter
+- `python`: preferred language for stand-alone development tools
+- `bower`: app package manager
+- `karma`: test runner
+- `protractor`: integration text manager
+- `chrome`: development test browser (`Chrome Canary` preferred)
+- `css` and `scss`: HTML style manager, and syntactically-superior development-time variant
+- `coffee`: (coming soon) cleaner development syntax for Javascript
+- `markdown`: preprocessor for simplified html markup
+- `npm`: development package manager
+- `nvm`: node and nvm version manager
+
+Recommended development environment
+
+- `OSX`: e.g. Yosemite on Macbook Pro
+- `GitHub Desktop`: makes routine git operations convenient
+- `iTerm`: better terminal emulator
+- `atom`: preferred for most text editing
+
+### Modules
+
+TODO npm globals also
+
+`npm` managed:
 
 ```
-$ npm list -g --depth=0
-/Users/home/.nvm/versions/node/v0.12.7/lib
-├── coffee-script@1.9.3
-├── coffeelint@1.10.1
-├── cordova@5.1.1
-├── ionic@1.6.4
-├── ios-deploy@1.7.0
-├── ios-sim@4.1.1
-├── karma-cli@0.1.0
-├── node-inspector@0.12.2
-├── npm@2.13.1
-├── protractor@2.1.0
-└── xml2js@0.4.10$ npm list -g --depth=0
+$ /bin/ls node_modules
+angular-jsdoc		gulp-jshint		karma
+angular-marked		gulp-karma		karma-chrome-launcher
+bower			gulp-minify-css		karma-jasmine
+canonical-path		gulp-ngdocs		karma-requirejs
+dgeni			gulp-rename		minimist
+dgeni-packages		gulp-sass		requirejs
+gulp			gulp-task-listing	scsslint
+gulp-concat		gulp-util		shelljs
+gulp-help		jasmine-core		xml2js
+gulp-inject		jsdoc
 ```
+
+`bower` managed:
+
+```
+$ /bin/ls www/lib
+angular			angular-sanitize	underscore
+angular-animate		angular-ui-router
+angular-mocks		ionic
+```
+
+These lists may be a bit out of date, but they indicate most of the modules in use.
+
+### atom
+
+Atom plugins are indicated by the following list
+```
+~/.atom/packages$ /bin/ls
+README.md		docblockr		linter-htmlhint
+atom-beautify		editor-settings		linter-jscs
+atom-html-preview	emmet			linter-pylint
+atom-material-syntax	file-icons		linter-scss-lint
+atom-material-ui	file-types		linter-xmllint
+atomic-emacs		highlight-line		local-history
+autocomplete-python	jshint			merge-conflicts
+autoprefixer		jsonlint		pretty-json
+color-picker		linter			select-rectangle
+csscomb			linter-coffeelint	todo-show
+csslint			linter-coffeescript	xml-formatter
+```
+
+`config.cson` links to `~/.atom/config.cson` for version control.
+
+The atom config files, including those of the plugins, indicates preferred coding and formatting styles.
 
 ## Config
 
-`gulp config` transfers name, email, href, and version attributes from `config.xml` to `www/data/config.json`.
+The `www/data/config.json` file object has the following attributes, managed as indicated:
 
-The `config.json` file also contains the flavor attribute, which is set by `gulp flavor`.
+- `name`, `email`, `href`, and `version`: transferred from `config.xml` by
+`gulp config`
+- `flavor`: set by `gulp flavor`
 
-Early in app initialization, the config object denoted by this file is stored in `$rootScope`.
+Early in app initialization, the config object is stored stored as `$rootScope.config`.
 
 ## Flavors
 
@@ -65,6 +134,16 @@ Python and bash scripts are in the `tools` directory.
 
 Python 2.6+ (maybe earlier) is needed to run `.py` scripts. Use `-h` argument for usage information. `cdeck.py --format_help` provides documentation on deck and compact deck file formats.
 
-### jsdoc generated documentation
+### jsdoc documentation
 
 `gulp dengi` generates jsdoc documentation in the `doc/build/` directory.
+
+TODO: flesh out this documentation
+
+## `$rootScope` variables
+
+- `config`: copy of configuration represented by `www/data/config.json`
+- `settings`: copy of settings data saved in localStorage
+- `questions`: array represented by the current deck's json question file
+- `deck`: the current deck's state
+- `card`: the current card from data from the `questions` array

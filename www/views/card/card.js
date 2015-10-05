@@ -2,16 +2,17 @@
 
 angular.module('app')
 
-.controller('CardController', function ($rootScope, $scope, $log) {
-    var deck = $rootScope.deck;
-    this.next = function () {
-        $scope.card = deck.remaining.shift();
-    };
-    $scope.haveCard = !!deck;
-    $log.debug('Card', deck, $scope.haveCard);
-    if (haveCard) {
-        this.next();
-    }
+.controller('CardController', function ($rootScope, debug) {
+    debug('Card');
 })
 
-.controller('CardHelpController', function ($scope, $rootScope) {});
+.controller('CardHelpController', function ($scope, $rootScope) {})
+
+.service('nextCard', function (debug, $rootScope, $state) {
+    return function () {
+        var remaining = $rootScope.deck.remaining;
+        if (remaining.length === 0) { $state.go('tabs.deck'); }
+        $rootScope.card = $rootScope.questions[remaining.shift()];
+        debug('nextCard', JSON.stringify($rootScope.card));
+    };
+});

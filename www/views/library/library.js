@@ -2,12 +2,12 @@
 
 angular.module('app')
 
-.controller('LibraryController', function ($rootScope, $scope, $log, getData, _) {
-    $log.debug('in LibraryController'); // PUBLISH remove all $log.debug calls
+.controller('LibraryController', function ($rootScope, $scope, debug, getData, _) {
+    debug('in LibraryController'); // PUBLISH remove all $log.debug and debug calls
     var indexFile = 'flavors/' + $rootScope.config.flavor + '/library/index.json';
     getData(indexFile).then(function (promise) {
         var fileNames = promise.data;
-        $log.debug('fileNames', fileNames);
+        debug('fileNames', fileNames);
         $scope.allDeckNames = _.map(fileNames, function (name) {
             return {
                 fullName: name,
