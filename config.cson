@@ -114,3 +114,4 @@
   autoprefixer: {}
   "linter-htmlhint":
     executablePath: "/Users/home/.nvm/versions/node/v0.12.7/bin/htmlhint"
+  "color-picker": {}

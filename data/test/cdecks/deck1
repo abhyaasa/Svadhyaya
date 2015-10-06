@@ -1,5 +1,17 @@
 ;foo
 ;;qtext =a /b
+;;some longer text for a multiple choice question with lots of answers to see if it confuses things a lot or not
+/a
+/b
+/c
+=d
+/e
+/f
+/g
+/h
+/i
+/j
+;;multiple-choices on this one =a =b /c
 ;bar;q =t
 ;a,1;qt
 ;;q with

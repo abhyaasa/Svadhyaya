@@ -2,7 +2,20 @@
 
 angular.module('app')
 
-.controller('CardController', function ($rootScope, debug) {
+.controller('CardController', function ($rootScope, debug, _) {
+    var responses;
+    this.multipleChoice = function () {
+        responses = $rootScope.cardresponses;
+        this.style = _.map(_.constant(undefined), _.range(responses.length));
+    };
+    this.response = function (item) {
+        if (responses[item.index][0]) {
+            this.style[item.index] = 'right-response';
+        } else {
+            this.style[item.index] = 'wrong-response';
+            // TODO this.style[??] = 'right-response';
+        };
+    };
     debug('Card');
 })
 

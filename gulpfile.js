@@ -170,6 +170,18 @@ gulp.task('dgeni', 'Generate jsdoc documentation.', function () {
     }
 });
 
+var commands = {
+    default: 'cd data/test/cdecks; update.sh deck1'
+};
+
+gulp.task('cmd', '[alias] Execute shell command named alias (default "default")',
+  function () {
+    var alias = argv._[1] ? argv._[1] : 'default';
+    var cmd = commands[alias];
+    console.log('cmd', cmd);
+    sh.exec(cmd);
+});
+
 // ------------------ Testing tasks follow -------------------------------------
 // utest and karma tasks adapted from https://www.npmjs.com/package/gulp-karma,
 // but can't find angular if files provided in gulp.src instead of karma.conf.

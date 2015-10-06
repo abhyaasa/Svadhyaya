@@ -1,4 +1,4 @@
-<ion-view ng-controller="DeckController as ctrl">
+<ion-view ng-controller="CardController as ctrl">
     <ion-content padding="true" class="has-header">
         <div ng-hide="card">
             First please select a deck in the library.
@@ -8,7 +8,8 @@
             <div ng-switch="card.type">
                 <div ng-switch-when="multiple-choice">
                     <ion-list>
-                        <ion-item ng-repeat="resp in card.responses" ng-click="ctrl.response({{ resp[0] }})">
+                        <ion-item ng-repeat="resp in card.responses" index="$index"
+                        ng-style="ctrl.style[$index]" ng-click="ctrl.response({{ resp[0] }})">
                             {{ resp[1] }}
                         </ion-item>
                     </ion-list>
