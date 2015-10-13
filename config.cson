@@ -32,6 +32,7 @@
       "language-ruby-on-rails"
       "metrics"
       "language-todo"
+      "deprecation-cop"
     ]
   "exception-reporting":
     userId: "95b677a0-dd5e-13f8-96b1-35a26a66a99a"

@@ -7659,6 +7659,15 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
+.no-response {
+  background-color: #fff; }
+
+.right-response {
+  background-color: #fb7575; }
+
+.wrong-response {
+  background-color: #abff78; }
+
 .major-text {
   font-size: 120%; }
 

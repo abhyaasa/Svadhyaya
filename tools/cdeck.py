@@ -41,22 +41,11 @@ BOL/EOL beginning/end of line. EOF end of file.
 INPUT -> { QUESTION | TAG_RANGE } +
 
 QUESTION -> BOL ; [ TAG,.. ] ; TEXT
-                { <ws>= ANSWER } | <ws>/ DISTRACTOR } *
-                { <ws>? HINT } *
-where
-
-TEXT, ANSWER, DISTRACTOR, and HINT are strings in which the <ws> prefixed
+            { <ws>= ANSWER } | <ws>/ DISTRACTOR } *
+            { <ws>? HINT } *
+where TEXT, ANSWER, DISTRACTOR, and HINT are strings in which the <ws> prefixed
 sequences above may not appear. This may be avoided by using \?, \=, or \/,
 with the backslash escape characters removed after parsing.
-
-
-SEMANTIC NOTES
-
-If no answer or distractors, then it is a sequence question, whose mind answer
-is the next question. If multiple answers, then multiple-choices question.
-Otherwise, if one or more distractors, then multiple-choice question.
-If one answer and no distractors, then if answer is True, False, T or F
-(case insensitive), then true/false question, and otherwise mind answer question.
 
 TAG is a sequence of letter (case insensitive), digit, dash, dot, underscore, or
 space characters. Spaces are trimmed at both ends.
@@ -69,13 +58,19 @@ Questions in a tag range all have its tags.
 A numeric tag has the form of an unsigned non-negataive number with optional decimal
 point. A question may not have more than one numeric tag.
 
+SEMANTIC NOTES
+
+If no answer or distractors, then it is a sequence question, whose mind answer
+is the next question. Otherwise, if one or more distractors, then multiple-choice question. If one answer and no distractors, then if answer is True, False, T or F
+(case insensitive), then true/false question, and otherwise mind answer question.
+
 
 SPECIAL TAGS
 
 .lineseq : all but last line of question text is a sequence question.
            At least two lines required, no responses or hints allowed,
            and all questions in a sequence share the same tags.
-.text : question of "text" type, for preferatory text (not a question_
+.text : question of "text" type, for preferatory text (not a question)
 .md : question, response, and hints text is in ascii markdown format
       (requires markdown module and associated python version)
 .html : text is in html format
@@ -87,7 +82,8 @@ SPECIAL TAGS
 .harvard-kyoto : Harvard-Kyoto source for transliteration
 .slp1 : SLP1 source for transliteration
 .velthuis : Velthuis source for transliteration
-case_sensitive : response is case sensitive
+cs : response is case sensitive
+ma : multiple right answer (multiple choices) question
 matching : only meaningful as a range tag, indicating questions in the range
     belong belong to a matching group.  Questions in a matching group must each have
     a single answer and no distractors. User preferences may indicate options for
@@ -95,7 +91,7 @@ matching : only meaningful as a range tag, indicating questions in the range
     where distractors are chosen randomly from answers of other questions in the group.
 
 Tags beginning with . effect the preprocessor only: they are not included in the
-json output. The matching tag effects both the preprocessor and interpreting app.
+json output. The ma and matching tag effects both the preprocessor and interpreting app.
 
 Text is in HTML format. The characters <, >, &, ', and " are automatically escaped in
 text unless the .md or .html tags are active.
@@ -107,8 +103,7 @@ JSON FORMAT
 
 Quiz questions json format is list of question dictionaries with keys:
 id: question order number (0-based)
-type: string = text, true-false, multiiple-choice, multiple-choices,
-        sequence, matching, or mind
+type: string = text, true-false, multiiple-choice, sequence, matching, or mind
 text: text of question
 responses (absent in text, t/f, sequence and mind question types):
           list of [is_answer, response_text] pairs, where is_answer is boolean
@@ -116,8 +111,8 @@ answer (t/f, matching or mind type): boolean (t/f) or text (mind)
 tags (optional): list of tag strings
 hints (optional): list of hint strings
 number (optional): difficulty number
-matching_begin (only if .matching in tags): id of first question in matching range
-matching_end (only if .matching in tags): id of last question in matching range
+matching_begin (only if matching in tags): id of first question in matching range
+matching_end (only if matching in tags): id of last question in matching range
 
 The "text" of a question, response, answer, or hint may be a unicode string or a
 [trans_to-text, devanagari] pair of unicode strings, where the trans_to program
@@ -303,10 +298,10 @@ def main(args):
                     q['answer'] = response
             else:
                 q['responses'] = responses
-                if len(filter(None, map(lambda r: r[0], responses))) == 1:
-                    q['type'] = 'multiple-choice'
-                else:
-                    q['type'] = 'multiple-choices'
+                q['type'] = 'multiple-choices'
+                if len(filter(None, map(lambda r: r[0], responses))) != 1:
+                    if 'ma' not in qtags:
+                        error('"ma" tag required if not one answer')
             q['tags'] = tag_filter(qtags)
             q['id'] = id_num
             id_num += 1
@@ -338,7 +333,7 @@ def get_args():
     args = p.parse_args()
     return args
 
-test = u""";foo,case_sensitive,bar
+test = u""";foo,cs,bar
 ;;qtext =a /b
 ;baz;q =t
 ;a,1;qt

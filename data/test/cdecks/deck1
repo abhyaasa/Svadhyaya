@@ -11,7 +11,8 @@
 /h
 /i
 /j
-;;multiple-choices on this one =a =b /c
+;ma;multiple answers on this one =a =b /c
+;cs;case sensitive =Cs
 ;bar;q =t
 ;a,1;qt
 ;;q with

@@ -14,7 +14,7 @@ angular.module('app')
         } else {
             this.style[item.index] = 'wrong-response';
             // TODO this.style[??] = 'right-response';
-        };
+        }
     };
     debug('Card');
 })
