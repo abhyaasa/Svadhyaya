@@ -11,8 +11,8 @@
 /h
 /i
 /j
-;ma;multiple answers on this one =a =b /c
-;cs;case sensitive =Cs
+;.ma;multiple answers on this one =a =b /c
+;.cs;case sensitive =Cs
 ;bar;q =t
 ;a,1;qt
 ;;q with
@@ -32,3 +32,8 @@ three
 ;/.devanagari
 ;.iast,.tr;pranava =om
 ;.md;*emphasis* =**bold**
+;.matching
+;;a =1
+;;b =2
+;;c =3
+;/.matching

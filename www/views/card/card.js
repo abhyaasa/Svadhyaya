@@ -27,5 +27,6 @@ angular.module('app')
         if (remaining.length === 0) { $state.go('tabs.deck'); }
         $rootScope.card = $rootScope.questions[remaining.shift()];
         debug('nextCard', JSON.stringify($rootScope.card));
+        debug('config', JSON.stringify($rootScope.config));
     };
 });

@@ -34,7 +34,7 @@ angular.module('app')
                 remaining: filter($rootScope.questions),
                 filter_settings: filter_settings
             };
-            debug('deck questions', JSON.stringify($rootScope.questions));
+            debug('deck num questions', $rootScope.questions.length);
             nextCard();
         });
     }

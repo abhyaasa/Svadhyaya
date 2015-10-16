@@ -142,7 +142,9 @@ TODO: flesh out this documentation
 
 ## `$rootScope` variables
 
-- `config`: copy of configuration represented by `www/data/config.json`
+- `config`: configuration represented by `www/data/config.json`, with the following possible attributes:
+  - `hideLibrary`: true if just one library element
+- `hideTabs`: false until tabs bar configured after library index loaded
 - `settings`: copy of settings data saved in localStorage
 - `questions`: array represented by the current deck's json question file
 - `deck`: the current deck's state

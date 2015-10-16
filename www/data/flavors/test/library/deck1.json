@@ -85,7 +85,7 @@
   ], 
   "tags": [
    "foo", 
-   "ma"
+   ".ma"
   ], 
   "text": "multiple answers on this one", 
   "type": "multiple-choices"
@@ -94,7 +94,7 @@
   "answer": "Cs", 
   "id": 3, 
   "tags": [
-   "cs", 
+   ".cs", 
    "foo"
   ], 
   "text": "case sensitive", 
@@ -198,8 +198,37 @@
  {
   "answer": "&lt;p&gt;&lt;strong&gt;bold&lt;/strong&gt;&lt;/p&gt;", 
   "id": 14, 
+  "matching_begin": 15, 
+  "matching_end": 18, 
   "tags": [], 
   "text": "&lt;p&gt;&lt;em&gt;emphasis&lt;/em&gt;&lt;/p&gt;", 
   "type": "mind"
+ }, 
+ {
+  "answer": "1", 
+  "id": 15, 
+  "matching_begin": 15, 
+  "matching_end": 18, 
+  "tags": [], 
+  "text": "a", 
+  "type": "matching"
+ }, 
+ {
+  "answer": "2", 
+  "id": 16, 
+  "matching_begin": 15, 
+  "matching_end": 18, 
+  "tags": [], 
+  "text": "b", 
+  "type": "matching"
+ }, 
+ {
+  "answer": "3", 
+  "id": 17, 
+  "matching_begin": 15, 
+  "matching_end": 18, 
+  "tags": [], 
+  "text": "c", 
+  "type": "matching"
  }
 ]

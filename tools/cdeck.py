@@ -19,7 +19,7 @@ try:
 except:
     pass
 
-# debug_mode = False
+debug_mode = False
 
 UTF8READER = codecs.getreader('utf8')
 UTF8WRITER = codecs.getwriter('utf8')
@@ -67,6 +67,8 @@ is the next question. Otherwise, if one or more distractors, then multiple-choic
 
 SPECIAL TAGS
 
+Tags interpreted by this program and removed from output:
+
 .lineseq : all but last line of question text is a sequence question.
            At least two lines required, no responses or hints allowed,
            and all questions in a sequence share the same tags.
@@ -82,16 +84,16 @@ SPECIAL TAGS
 .harvard-kyoto : Harvard-Kyoto source for transliteration
 .slp1 : SLP1 source for transliteration
 .velthuis : Velthuis source for transliteration
-cs : response is case sensitive
-ma : multiple right answer (multiple choices) question
-matching : only meaningful as a range tag, indicating questions in the range
-    belong belong to a matching group.  Questions in a matching group must each have
+.matching : only meaningful as a range tag, indicating questions in the range
+    belong to a matching group.  Questions in a matching group must each have
     a single answer and no distractors. User preferences may indicate options for
     displaying matching questions, which may include visual pairing or multiple choice,
     where distractors are chosen randomly from answers of other questions in the group.
 
-Tags beginning with . effect the preprocessor only: they are not included in the
-json output. The ma and matching tag effects both the preprocessor and interpreting app.
+Tags retained in output, for use by the app, and in the special_apptime_tags list:
+
+.cs : response is case sensitive
+.ma : multiple right answer (multiple choices) question
 
 Text is in HTML format. The characters <, >, &, ', and " are automatically escaped in
 text unless the .md or .html tags are active.
@@ -111,8 +113,8 @@ answer (t/f, matching or mind type): boolean (t/f) or text (mind)
 tags (optional): list of tag strings
 hints (optional): list of hint strings
 number (optional): difficulty number
-matching_begin (only if matching in tags): id of first question in matching range
-matching_end (only if matching in tags): id of last question in matching range
+matching_begin (only if .matching in tags): id of first question in matching range
+matching_end (only if .matching in tags): id of last question in matching range
 
 The "text" of a question, response, answer, or hint may be a unicode string or a
 [trans_to-text, devanagari] pair of unicode strings, where the trans_to program
@@ -132,12 +134,20 @@ def html_escape(text):
 number_cre = re.compile(r'.\d+|\d+.\d*|\d+')
 isnumber = number_cre.match
 from_tags = set('.iast .harvard-kyoto .itrans .velthuis .slp1 .devanagari'.split())
+special_apptime_tags = '.cs .ma'.split()
 
 def istag(string):
     return filter(None, [c.isalnum() or c in '._ -' for c in string])
 
+def isapptime(tag):
+    return not isnumber(tag) and (not tag.startswith('.') or tag in special_apptime_tags)
+
+def tag_filter(tags):
+    return list(filter(isapptime, tags))
+
 def main(args):
     """Command line invocation with argparse args."""
+    global debug_mode
     tags = set()
     line_num = 1
     id_num = 0
@@ -170,9 +180,6 @@ def main(args):
         for i in range(matching_start - 1, len(quiz)):
             quiz[i]['matching_begin'] = matching_start
             quiz[i]['matching_end'] = len(quiz)
-
-    def tag_filter(tags):
-        return list(filter(lambda t: not isnumber(t) and not t.startswith('.'), tags))
 
     if args.format_help:
         print FORMAT_HELP
@@ -213,14 +220,14 @@ def main(args):
             if not_tags:
                 if not all([tag in tags for tag in range_tags]):
                     error('closing tag without opening')
-                if 'matching' in range_tags:
+                if '.matching' in range_tags:
                     end_matching()
                 tags.difference_update(range_tags)
             else:
                 if not all([tag not in tags for tag in range_tags]):
                     error('tag already active')
                 tags.update(range_tags)
-                if 'matching' in tags:
+                if '.matching' in tags:
                     matching_start = id_num
         else:
             q = {}
@@ -294,20 +301,20 @@ def main(args):
                     q['type'] = 'true-false'
                     q['answer'] = response.lower() in ['t', 'true']
                 else:
-                    q['type'] = 'matching' if 'matching' in tags else 'mind'
+                    q['type'] = 'matching' if '.matching' in tags else 'mind'
                     q['answer'] = response
             else:
                 q['responses'] = responses
                 q['type'] = 'multiple-choices'
                 if len(filter(None, map(lambda r: r[0], responses))) != 1:
-                    if 'ma' not in qtags:
+                    if '.ma' not in qtags:
                         error('"ma" tag required if not one answer')
             q['tags'] = tag_filter(qtags)
             q['id'] = id_num
             id_num += 1
             quiz.append(q)
         line_num += len(elt.split('\n')) + 1
-    if 'matching' in tags:
+    if '.matching' in tags:
         end_matching()
     json.dump(quiz, writer, indent=1, sort_keys=True)
 
@@ -349,17 +356,17 @@ test = u""";foo,cs,bar
 one
 two
 three
-;matching
+;.matching
 ;;a =A
 ;;b =B
 ;;c =C
-;/matching
+;/.matching
 ;.devanagari
 ;.tq;श्रद्धावाँल्ल =f
 ;/.devanagari
 ;.iast,.tr;pranava =om
 ;.md;*emphasis* =**bold**
-;matching
+;.matching
 ;;a =A
 ;;b =B
 """

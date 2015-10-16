@@ -21,6 +21,8 @@ angular.module('app', ['ionic', 'utils'])
 
     $rootScope.debug = true; // REVIEW better way to control debug setting?
 
+    $rootScope.hideTabs = true;
+
     $rootScope.settings = settings;
     restoreSettings();
     if (settings.intro) {

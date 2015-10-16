@@ -2,7 +2,8 @@
 
 angular.module('app')
 
-.controller('LibraryController', function ($rootScope, $scope, debug, getData, _) {
+.controller('LibraryController', function ($rootScope, $scope, $state,
+  debug, getData, _) {
     debug('in LibraryController'); // PUBLISH remove all $log.debug and debug calls
     var indexFile = 'flavors/' + $rootScope.config.flavor + '/library/index.json';
     getData(indexFile).then(function (promise) {
@@ -16,7 +17,13 @@ angular.module('app')
             };
         });
         $scope.deckNames = $scope.allDeckNames; // TODO filtering here
-
+        if ($scope.deckNames.length === 1) {
+            $rootScope.config.hideLibrary = true;
+            $rootScope.hideTabs = false;
+            $state.go('tabs.deck', $scope.deckNames[0]);
+        } else {
+            $rootScope.hideTabs = false;
+        }
         // TODO implement search, Ionic in action 6.3, p 140
         // try AngularJS cookbook p 64 http://jsfiddle.net/msfrisbie/ghsa3nym/
         angular.extend($scope, {
