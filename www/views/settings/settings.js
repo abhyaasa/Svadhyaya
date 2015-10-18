@@ -10,16 +10,16 @@ angular.module('app')
 
 .value('settings', {})
 
-.service('saveSettings', function ($log, settings, localStorage, _) {
+.service('saveSettings', function (debug, settings, localStorage, _) {
     return function () {
         var s = {};
         _.extendOwn(s, settings);
         localStorage.setObject('settings', s);
-        $log.debug('SAVED SETTINGS'); // TODO confirm saveSettings works
+        debug('SAVED SETTINGS'); // TODO confirm saveSettings works
     };
 })
 
-.service('restoreSettings', function ($log, settings, localStorage, _) {
+.service('restoreSettings', function (debug, settings, localStorage, _) {
     var defaultSettings = {
         intro: true,
         randomQuestions: false,
@@ -35,6 +35,6 @@ angular.module('app')
                 _.extendOwn(settings, s);
             }
         }
-        $log.debug('restored settings', JSON.stringify(settings));
+        debug('restored settings', JSON.stringify(settings));
     };
 });

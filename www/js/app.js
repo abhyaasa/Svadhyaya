@@ -19,6 +19,10 @@ angular.module('app', ['ionic', 'utils'])
         }
     });
 
+    $rootScope.debug = true; // REVIEW better way to control debug setting?
+
+    $rootScope.hideTabs = true;
+
     $rootScope.settings = settings;
     restoreSettings();
     if (settings.intro) {
@@ -113,9 +117,9 @@ angular.module('app', ['ionic', 'utils'])
                 controller: 'CardController'
             }
         },
-        onEnter: ['$rootScope', '$state', function ($rootScope, $state) {
+        onEnter: function ($rootScope, $state) {
             $rootScope.help = function () { $state.go('tabs.card-help'); };
-        }]
+        }
     })
     .state('tabs.answer', {
         url: '/answer',

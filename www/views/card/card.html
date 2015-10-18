@@ -1,17 +1,19 @@
-<ion-view>
+<ion-view ng-controller="CardController as ctrl">
     <ion-content padding="true" class="has-header">
-        <div ng-hide="haveCard">
+        <div ng-hide="card">
             First please select a deck in the library.
         </div>
-        <div ng-show="haveCard">
-            <label class="item item-input">
-                <span class="input-label">Text</span>
-                <textarea placeholder=""> </textarea>
-            </label>
-            <div class="button-bar">
-                <button class="button button-stable button-block">Back</button>
-                <button class="button button-stable button-block">Skip</button>
-                <button class="button button-stable button-block">Hint</button>
+        <div ng-show="card">
+            <p>{{ card.text }}</p>
+            <div ng-switch="card.type">
+                <div ng-switch-when="multiple-choice">
+                    <ion-list>
+                        <ion-item ng-repeat="resp in card.responses" index="$index"
+                        ng-style="ctrl.style[$index]" ng-click="ctrl.response({{ resp[0] }})">
+                            {{ resp[1] }}
+                        </ion-item>
+                    </ion-list>
+                </div>
             </div>
         </div>
     </ion-content>

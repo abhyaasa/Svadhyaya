@@ -3,6 +3,7 @@ To Do List
 
 There is lots to do at this stage. A partial list follows:
 
+- [ ] deck filtering to subtab
 - [ ] add sound and image support
 - [ ] fix library search
 - [ ] Coffee, jade, NOT stylus

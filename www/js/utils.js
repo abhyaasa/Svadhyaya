@@ -15,6 +15,14 @@ angular.module('utils', ['ionic'])
     };
 })
 
+.service('debug', function ($log, $rootScope) {
+    return function () {
+        if ($rootScope.debug) {
+            $log.debug.apply(this, arguments);
+        }
+    };
+})
+
 /**
  * @name getData
  * @param {string} path to file, relative to www/data
@@ -27,7 +35,6 @@ angular.module('utils', ['ionic'])
     var $log = injector.get('$log');
     this.$get = function () {
         return function (path, failure) {
-            $log.debug('getData', path);
             return $http.get('/data/' + path).catch(
                 function (error) {
                     if (failure) {

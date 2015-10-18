@@ -2,11 +2,11 @@
 
 angular.module('app')
 
-.controller('DeckController', function ($stateParams, $rootScope, $scope, $state, $log,
-    getData, config, _) {
+.controller('DeckController', function ($stateParams, $rootScope, $scope, $state, debug,
+    getData, config, _, nextCard) {
     var fullName = $stateParams.fullName;
     var displayName = $stateParams.displayName;
-    $log.debug('DeckController', JSON.stringify($stateParams), fullName);
+    debug('DeckController', JSON.stringify($stateParams), fullName);
     var filter_settings = {
         max: 50,
         min: 50,
@@ -22,20 +22,21 @@ angular.module('app')
     if ($scope.haveDeck) {
         getData('flavors/' + config.flavor + '/library/' + fullName)
         .then(function (promise) {
-            var questions = promise.data;
+            $rootScope.questions = promise.data;
             $rootScope.deck = {
                 fullName: fullName,
                 displayName: displayName,
-                questions: questions,
                 right: [],
                 wrong: [],
                 close: [],
                 hints: 0,
                 skipped: [],
-                remaining: filter(questions),
+                remaining: filter($rootScope.questions),
                 filter_settings: filter_settings
             };
-            $log.debug('deck questions', JSON.stringify(questions));
+            debug('deck num questions', $rootScope.questions.length);
+            nextCard();
+            $state.go('tabs.card');
         });
     }
 })
