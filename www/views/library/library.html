@@ -1,4 +1,4 @@
-<ion-view>
+<ion-view ng-controller="LibraryController as ctrl">
     <ion-content padding="true" class="has-header">
         <ion-list>
             <label class="item item-input">
@@ -10,9 +10,9 @@
                 </button>
             </label>
             <x>
-                FIXME Didn't work: ng-repeat="deck in deckNames | filter:search" with input ng-model="search.root" above
+                FIXME Didn't work: ng-repeat="deckName in deckList | filter:search" with input ng-model="search.root" above
             </x>
-            <ion-item ng-repeat="deck in deckNames" ui-sref="tabs.deck(deck)">
+            <ion-item ng-repeat="deckName in deckList" ng-click="ctrl.deckSetup(deckName)">
                 {{ deck.displayName }}
             </ion-item>
         </ion-list>

@@ -2,13 +2,12 @@
 
 angular.module('app')
 
-.controller('LibraryController', function ($rootScope, $scope, $state,
-  debug, getData, _) {
+.controller('LibraryController', function ($rootScope, $scope, $state, config,
+  debug, getData, deckSetup, _) {
     debug('in LibraryController'); // PUBLISH remove all $log.debug and debug calls
     var indexFile = 'flavors/' + $rootScope.config.flavor + '/library/index.json';
 
-    this.select = function (item) {
-    };
+    this.deckSetup = deckSetup;
 
     getData(indexFile).then(function (promise) {
         var fileNames = promise.data;
@@ -20,11 +19,11 @@ angular.module('app')
                 displayName: name.match(/.*(?=\.)/)[0].replace(/_/g, ' ')
             };
         });
-        $scope.deckNames = $scope.allDeckNames; // TODO filtering here
-        if ($scope.deckNames.length === 1) {
+        $scope.deckList = $scope.allDeckNames; // TODO filtering here
+        if ($scope.deckList.length === 1) {
             $rootScope.config.hideLibrary = true;
             $rootScope.hideTabs = false;
-            $state.go('tabs.deck', $scope.deckNames[0]);
+            deckSetup($scope.deckList[0]);
         } else {
             $rootScope.hideTabs = false;
         }
