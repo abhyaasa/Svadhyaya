@@ -305,7 +305,7 @@ def main(args):
                     q['answer'] = response
             else:
                 q['responses'] = responses
-                q['type'] = 'multiple-choices'
+                q['type'] = 'multiple-choice'
                 if len(filter(None, map(lambda r: r[0], responses))) != 1:
                     if '.ma' not in qtags:
                         error('"ma" tag required if not one answer')

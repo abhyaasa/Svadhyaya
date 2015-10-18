@@ -15,7 +15,7 @@
    "foo"
   ], 
   "text": "qtext", 
-  "type": "multiple-choices"
+  "type": "multiple-choice"
  }, 
  {
   "id": 1, 
@@ -65,7 +65,7 @@
    "foo"
   ], 
   "text": "some longer text for a multiple choice question with lots of answers to see if it confuses things a lot or not", 
-  "type": "multiple-choices"
+  "type": "multiple-choice"
  }, 
  {
   "id": 2, 
@@ -88,7 +88,7 @@
    ".ma"
   ], 
   "text": "multiple answers on this one", 
-  "type": "multiple-choices"
+  "type": "multiple-choice"
  }, 
  {
   "answer": "Cs", 
@@ -145,7 +145,7 @@
   ], 
   "tags": [], 
   "text": "mq", 
-  "type": "multiple-choices"
+  "type": "multiple-choice"
  }, 
  {
   "id": 8, 

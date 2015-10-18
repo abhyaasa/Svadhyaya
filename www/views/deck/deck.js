@@ -36,6 +36,7 @@ angular.module('app')
             };
             debug('deck num questions', $rootScope.questions.length);
             nextCard();
+            $state.go('tabs.card');
         });
     }
 })

@@ -5,7 +5,7 @@ angular.module('app')
 .controller('CardController', function ($rootScope, debug, _) {
     var responses;
     this.multipleChoice = function () {
-        responses = $rootScope.cardresponses;
+        responses = $rootScope.card.responses;
         this.style = _.map(_.constant(undefined), _.range(responses.length));
     };
     this.response = function (item) {

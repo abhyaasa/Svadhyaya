@@ -6,6 +6,10 @@ angular.module('app')
   debug, getData, _) {
     debug('in LibraryController'); // PUBLISH remove all $log.debug and debug calls
     var indexFile = 'flavors/' + $rootScope.config.flavor + '/library/index.json';
+
+    this.select = function (item) {
+    };
+
     getData(indexFile).then(function (promise) {
         var fileNames = promise.data;
         debug('fileNames', fileNames);
