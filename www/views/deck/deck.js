@@ -2,43 +2,47 @@
 
 angular.module('app')
 
-.controller('DeckController', function ($stateParams, $rootScope, $scope, $state, debug,
+.controller('DeckController', function ($rootScope, $scope, $state, debug,
     getData, config, _, nextCard) {
-    var fullName = $stateParams.fullName;
-    var displayName = $stateParams.displayName;
-    debug('DeckController', JSON.stringify($stateParams), fullName);
-    var filter_settings = {
-        max: 50,
-        min: 50,
-        required: [],
-        exclude: [],
-        include: []
-    };
-    var filter = function (questions) {
+})
+
+.controller('DeckHelpController', function ($scope, $rootScope) {})
+
+.service('deckFilter', function (_) {
+    return function (questions) {
         // TODO use filter settings
         return _.range(0, questions.length);
     };
-    $scope.haveDeck = !!fullName;
-    if ($scope.haveDeck) {
-        getData('flavors/' + config.flavor + '/library/' + fullName)
+})
+
+.service('deckSetup', function ($rootScope, $state, debug, getData, deckFilter, config,
+  nextCard) {
+    return function (deckName) {
+        debug('DeckController', JSON.stringify(deckName));
+        var filter_settings = {
+            max: 50,
+            min: 50,
+            required: [],
+            exclude: [],
+            include: []
+        };
+        getData('flavors/' + config.flavor + '/library/' + deckName.fullName)
         .then(function (promise) {
             $rootScope.questions = promise.data;
             $rootScope.deck = {
-                fullName: fullName,
-                displayName: displayName,
+                fullName: deckName.fullName,
+                displayName: deckName.displayName,
                 right: [],
                 wrong: [],
                 close: [],
                 hints: 0,
                 skipped: [],
-                remaining: filter($rootScope.questions),
+                remaining: deckFilter($rootScope.questions),
                 filter_settings: filter_settings
             };
             debug('deck num questions', $rootScope.questions.length);
             nextCard();
             $state.go('tabs.card');
         });
-    }
-})
-
-.controller('DeckHelpController', function ($scope, $rootScope) {});
+    };
+});
