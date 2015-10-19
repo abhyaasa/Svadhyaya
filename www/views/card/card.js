@@ -2,13 +2,16 @@
 
 angular.module('app')
 
-.controller('CardController', function ($rootScope, debug, _) {
+.controller('CardController', function ($rootScope, $scope, debug, _, nextCard) {
     var responses;
-    this.multipleChoice = function () {
-        responses = $rootScope.card.responses;
-        this.style = _.map(_.constant(undefined), _.range(responses.length));
-    };
-    this.response = function (item) {
+    debug('in CardController');
+    // $scope.multipleChoice = function () {
+    //     responses = $rootScope.card.responses;
+    //     this.style = _.map(_.constant(undefined), _.range(responses.length));
+    // };
+    $scope.response = function (item) {
+        nextCard(); // XXX
+        return;
         if (responses[item.index][0]) {
             this.style[item.index] = 'right-response';
         } else {
@@ -19,7 +22,7 @@ angular.module('app')
     debug('Card');
 })
 
-.controller('CardHelpController', function ($scope, $rootScope) {})
+.controller('CardHelpController', function () {})
 
 .service('nextCard', function (debug, $rootScope, $state) {
     return function () {
@@ -27,6 +30,6 @@ angular.module('app')
         if (remaining.length === 0) { $state.go('tabs.deck'); }
         $rootScope.card = $rootScope.questions[remaining.shift()];
         debug('nextCard', JSON.stringify($rootScope.card));
-        debug('config', JSON.stringify($rootScope.config));
+        $state.go('tabs.card');
     };
 });

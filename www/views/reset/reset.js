@@ -3,21 +3,21 @@
 angular.module('app')
 
 .controller('ResetController', function ($log, $scope, $state, restoreSettings) {
-    this.hideConfirm = true;
-    this.hideWarning = true;
-    this.selection = undefined;
-    this.options = [
+    $scope.hideConfirm = true;
+    $scope.hideWarning = true;
+    $scope.selection = undefined;
+    $scope.options = [
         { text: 'Reset current deck', value: 'deck' },
         { text: 'Reset all decks', value: 'all decks' },
         { text: 'Reset settings to defaults', value: 'settings' }
     ];
-    this.selected = function(item) {
-        this.selection = item.value;
-        this.hideWarning = this.selection.indexOf('deck') === -1;
-        this.hideConfirm = false;
+    $scope.selected = function(item) {
+        $scope.selection = item.value;
+        $scope.hideWarning = $scope.selection.indexOf('deck') === -1;
+        $scope.hideConfirm = false;
     };
-    this.confirmed = function () {
-        if (this.selection === 'settings') {
+    $scope.confirmed = function () {
+        if ($scope.selection === 'settings') {
             restoreSettings(true);
         }
         // TODO reset deck(s)

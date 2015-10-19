@@ -30,9 +30,10 @@ angular.module('app', ['ionic', 'utils'])
     }
 })
 
-.controller('TabsController', function ($rootScope, configPromise, $log, $state) {
+.controller('TabsController', function ($rootScope, configPromise, $log, $state, debug) {
     // promise is resolved: https://github.com/angular-ui/ui-router/wiki
     $rootScope.config = configPromise.data;
+    debug('config', JSON.stringify($rootScope.config));
 })
 
 .config(function ($stateProvider, $urlRouterProvider, $logProvider, getDataProvider) {
