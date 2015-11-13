@@ -102,11 +102,17 @@ The atom config files, including those of the plugins, indicates preferred codin
 
 The `www/data/config.json` file object has the following attributes, managed as indicated:
 
-- `name`, `email`, `href`, and `version`: transferred from `config.xml` by
-`gulp config`
+- `name`, `email`, `href`, and `version`: transferred from `config.xml` by `gulp config`
 - `flavor`: set by `gulp flavor`
 
 Early in app initialization, the config object is stored stored as `$rootScope.config`.
+
+## Debugging
+
+The `debug` constant in `util.js` enables debug mode, in which
+
+- the `$log.debug` is enabled
+- the library tab is always enabled to permit the browser debug console to be enabled (cmd-opt-I in chrome)
 
 ## Flavors
 
@@ -142,9 +148,10 @@ TODO: flesh out this documentation
 
 ## `$rootScope` variables
 
-- `config`: configuration represented by `www/data/config.json`, with the following possible attributes:
+- `config`: configuration represented by `www/data/config.json`, with the following possible additional attributes:
   - `hideLibrary`: true if just one library element
 - `hideTabs`: false until tabs bar configured after library index loaded
+- `debug`: the debug constant
 - `settings`: copy of settings data saved in localStorage
 - `questions`: array represented by the current deck's json question file
 - `deck`: the current deck's state

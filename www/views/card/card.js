@@ -2,34 +2,45 @@
 
 angular.module('app')
 
-.controller('CardController', function ($rootScope, $scope, debug, _, nextCard) {
-    var responses;
-    debug('in CardController');
-    // $scope.multipleChoice = function () {
-    //     responses = $rootScope.card.responses;
-    //     this.style = _.map(_.constant(undefined), _.range(responses.length));
-    // };
-    $scope.response = function (item) {
-        nextCard(); // XXX
-        return;
-        if (responses[item.index][0]) {
-            this.style[item.index] = 'right-response';
-        } else {
-            this.style[item.index] = 'wrong-response';
-            // TODO this.style[??] = 'right-response';
-        }
+.controller('CardController', function ($rootScope, $scope, $log, _, nextCard) {
+    var isRight = function (response) {
+        return response[0];
     };
-    debug('Card');
+    $log.debug('CardController');
+    $scope.nextCard = function () { // XXX simplify
+        $log.debug('scope nextCard');
+        nextCard();
+    };
+    $scope.response = function (index) {
+        var card = $rootScope.card;
+        var items = card.responseItems;
+        if (_.contains(card.tags, '.ma')) {
+            $log.debug('nothing'); // XXX do something
+        } else {
+            var rightIndex = _.findIndex(card.responses, isRight);
+            items[rightIndex].style = 'right-response';
+            if (index != rightIndex) {
+                items[index].style = 'wrong-response';
+            }
+        }
+        $log.debug('response items', JSON.stringify(items));
+    };
 })
 
 .controller('CardHelpController', function () {})
 
-.service('nextCard', function (debug, $rootScope, $state) {
+.service('nextCard', function ($log, $rootScope, $state, _) {
+    var makeItem = function (response) {
+        return { text: response[1], style: 'no-response' };
+    };
     return function () {
         var remaining = $rootScope.deck.remaining;
         if (remaining.length === 0) { $state.go('tabs.deck'); }
-        $rootScope.card = $rootScope.questions[remaining.shift()];
-        debug('nextCard', JSON.stringify($rootScope.card));
-        $state.go('tabs.card');
+        var card = $rootScope.questions[remaining.shift()];
+        if (card.type === 'multiple-choice') {
+            card.responseItems = _.map(card.responses, makeItem);
+        }
+        $rootScope.card = card;
+        $log.debug('nextCard', JSON.stringify($rootScope.card));
     };
 });

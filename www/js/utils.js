@@ -15,13 +15,7 @@ angular.module('utils', ['ionic'])
     };
 })
 
-.service('debug', function ($log, $rootScope) {
-    return function () {
-        if ($rootScope.debug) {
-            $log.debug.apply(this, arguments);
-        }
-    };
-})
+.constant('debug', true)
 
 /**
  * @name getData

@@ -12,8 +12,8 @@
             <x>
                 FIXME Didn't work: ng-repeat="deckName in deckList | filter:search" with input ng-model="search.root" above
             </x>
-            <ion-item ng-repeat="deckName in deckList" ng-click="deckSetup(deckName)">
-                {{ deck.displayName }}
+            <ion-item ng-repeat="deckNames in deckList" ng-click="deckSetup(deckNames)">
+                {{ deckNames.displayName }}
             </ion-item>
         </ion-list>
     </ion-content>

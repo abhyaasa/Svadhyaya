@@ -2,11 +2,10 @@
 
 angular.module('app')
 
-.controller('DeckController', function ($rootScope, $scope, $state, debug,
-    getData, config, _, nextCard) {
+.controller('DeckController', function () {
 })
 
-.controller('DeckHelpController', function ($scope, $rootScope) {})
+.controller('DeckHelpController', function () {})
 
 .service('deckFilter', function (_) {
     return function (questions) {
@@ -15,11 +14,11 @@ angular.module('app')
     };
 })
 
-.service('deckSetup', function ($rootScope, $state, debug, getData, deckFilter, config,
+.service('deckSetup', function ($rootScope, $state, $log, getData, deckFilter, config,
   nextCard) {
     return function (deckName) {
-        debug('DeckController', JSON.stringify(deckName));
-        var filter_settings = {
+        $log.debug('DeckController', JSON.stringify(deckName));
+        var filterSettings = {
             max: 50,
             min: 50,
             required: [],
@@ -38,9 +37,9 @@ angular.module('app')
                 hints: 0,
                 skipped: [],
                 remaining: deckFilter($rootScope.questions),
-                filter_settings: filter_settings
+                filterSettings: filterSettings
             };
-            debug('deck num questions', $rootScope.questions.length);
+            $log.debug('deck num questions', $rootScope.questions.length);
             nextCard();
             $state.go('tabs.card');
         });

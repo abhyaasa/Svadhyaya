@@ -2,7 +2,8 @@
 
 angular.module('app', ['ionic', 'utils'])
 
-.run(function ($ionicPlatform, $rootScope, $state, restoreSettings, settings) {
+.run(function ($ionicPlatform, $rootScope, $state, restoreSettings, settings, debug) {
+
     // https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions\
     // #issue-im-getting-a-blank-screen-and-there-are-no-errors
     $rootScope.$on('$stateChangeError', console.log.bind(console));
@@ -19,25 +20,25 @@ angular.module('app', ['ionic', 'utils'])
         }
     });
 
-    $rootScope.debug = true; // REVIEW better way to control debug setting?
-
     $rootScope.hideTabs = true;
-
+    $rootScope.debug = debug;
     $rootScope.settings = settings;
+
     restoreSettings();
     if (settings.intro) {
         $state.go('tabs.intro');
     }
 })
 
-.controller('TabsController', function ($rootScope, configPromise, $log, $state, debug) {
+.controller('TabsController', function ($rootScope, configPromise, $log) {
     // promise is resolved: https://github.com/angular-ui/ui-router/wiki
     $rootScope.config = configPromise.data;
-    debug('config', JSON.stringify($rootScope.config));
+    $log.debug('config', JSON.stringify($rootScope.config));
 })
 
-.config(function ($stateProvider, $urlRouterProvider, $logProvider, getDataProvider) {
-    $logProvider.debugEnabled(true); // PUBLISH .debugEnabled(false)
+.config(function ($stateProvider, $urlRouterProvider, $logProvider, getDataProvider,
+  debug) {
+    $logProvider.debugEnabled(debug);
 
     $stateProvider
     .state('tabs', {
@@ -45,7 +46,7 @@ angular.module('app', ['ionic', 'utils'])
         abstract: true,
         templateUrl: 'views/tabs.html',
         resolve: {
-            configPromise: function ($http, _) {
+            configPromise: function () {
                 return getDataProvider.$get()('config.json');
             }},
         controller: 'TabsController'

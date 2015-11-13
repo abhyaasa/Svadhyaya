@@ -2,16 +2,17 @@
 
 angular.module('app')
 
-.controller('LibraryController', function ($rootScope, $scope, $state, config,
-  debug, getData, deckSetup, _) {
-    debug('in LibraryController'); // PUBLISH remove all $log.debug and debug calls
-    var indexFile = 'flavors/' + $rootScope.config.flavor + '/library/index.json';
+.controller('LibraryController', function ($rootScope, $scope, $state, configPromise,
+  $log, debug, getData, deckSetup, _) {
+    // PUBLISH remove all $log.debug calls
+    $log.debug('LibraryController', JSON.stringify(configPromise.data));
+    var indexFile = 'flavors/' + configPromise.data.flavor + '/library/index.json';
 
     $scope.deckSetup = deckSetup;
 
     getData(indexFile).then(function (promise) {
         var fileNames = promise.data;
-        debug('fileNames', fileNames);
+        $log.debug('fileNames', fileNames);
         $scope.allDeckNames = _.map(fileNames, function (name) {
             return {
                 fullName: name,
@@ -20,7 +21,7 @@ angular.module('app')
             };
         });
         $scope.deckList = $scope.allDeckNames; // TODO filtering here
-        if ($scope.deckList.length === 1) {
+        if ($scope.deckList.length === 1 && !debug) {
             $rootScope.config.hideLibrary = true;
             $rootScope.hideTabs = false;
             deckSetup($scope.deckList[0]);
@@ -38,7 +39,7 @@ angular.module('app')
                 });
             },
             clearSearch: function () {
-                $scope.deckNames = $scope.allDeckNames;
+                $log.deckNames = $scope.allDeckNames;
                 $scope.model.searchText = '';
             }
         });
@@ -48,4 +49,4 @@ angular.module('app')
     });
 })
 
-.controller('LibraryHelpController', function ($scope, $rootScope) {});
+.controller('LibraryHelpController', function () {});
