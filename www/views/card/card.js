@@ -2,15 +2,19 @@
 
 angular.module('app')
 
-.controller('CardController', function ($rootScope, $scope, $log, _, nextCard) {
+.controller('CardController', function ($rootScope, $scope, $log, _, nextCard,
+  $ionicGesture) {
+    $log.debug('CardController');
+    var element = angular.element(document.querySelector('#content'));
     var isRight = function (response) {
         return response[0];
     };
-    $log.debug('CardController');
     $scope.nextCard = function () { // XXX simplify
         $log.debug('scope nextCard');
         nextCard();
     };
+    $ionicGesture.on('swipeleft', $scope.nextCard, element);
+
     $scope.response = function (index) {
         var card = $rootScope.card;
         var items = card.responseItems;
@@ -19,7 +23,7 @@ angular.module('app')
         } else {
             var rightIndex = _.findIndex(card.responses, isRight);
             items[rightIndex].style = 'right-response';
-            if (index != rightIndex) {
+            if (index !== rightIndex) {
                 items[index].style = 'wrong-response';
             }
         }
