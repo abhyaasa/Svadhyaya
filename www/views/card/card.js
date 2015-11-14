@@ -9,11 +9,7 @@ angular.module('app')
     var isRight = function (response) {
         return response[0];
     };
-    $scope.nextCard = function () { // XXX simplify
-        $log.debug('scope nextCard');
-        nextCard();
-    };
-    $ionicGesture.on('swipeleft', $scope.nextCard, element);
+    $ionicGesture.on('swipeleft', nextCard, element);
 
     $scope.response = function (index) {
         var card = $rootScope.card;
@@ -46,5 +42,6 @@ angular.module('app')
         }
         $rootScope.card = card;
         $log.debug('nextCard', JSON.stringify($rootScope.card));
+        $state.go('tabs.card');
     };
 });
