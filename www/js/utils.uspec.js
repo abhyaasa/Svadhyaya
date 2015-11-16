@@ -6,42 +6,42 @@
 // See http://stackoverflow.com/questions/26612156
 // and https://www.airpair.com/angularjs/posts/unit-testing-angularjs-applications
 // and http://gonehybrid.com/how-to-write-automated-tests-for-your-ionic-app-part-2/
-xdescribe('getData', function () {
+xdescribe('GetData', function () {
     var scope;
-    var getData;
-    beforeEach(module('utils'));
+    var GetData;
+    beforeEach(module('services'));
     beforeEach(function () {
         inject(function ($rootScope, $provider) {
             scope = $rootScope.$new();
-            // getData = $provider('getData', ... TODO finish
+            // GetData = $provider('GetData', ... TODO finish
         });
     });
 
     it('invokes success handler with object represented in json file',
         // FIXME fails, if success, test failure also
-        inject(function (getData) {
+        inject(function (GetData) {
             var handler = jasmine.createSpy('success');
-            getData('flavors/test/test.json').then(handler);
+            GetData('flavors/test/test.json').then(handler);
             scope.$digest();
             expect(handler).toHaveBeenCalledWith(['data', 'for unit test']);
         }));
 
     it('invokes fail handler when local json file does not exist',
         // FIXME fails, if success, test failure also
-        inject(function ($log, getData) {
+        inject(function ($log, GetData) {
             var handler = jasmine.createSpy('success');
-            getData('bogus.json', handler);
+            GetData('bogus.json', handler);
             scope.$digest();
             expect(handler).toHaveBeenCalledWith('XX');
         }));
 });
 
-describe('localStorage', function () {
-    beforeEach(module('utils'));
+describe('LocalStorage', function () {
+    beforeEach(module('services'));
     it('stores and retrieves the same thing using the same test key',
-        inject(function (localStorage) {
-            localStorage.set('test key', 'test value');
-            expect(localStorage.get('test key')).toEqual('test value');
-            expect(localStorage.get('bogus key')).not.toBeDefined();
+        inject(function (LocalStorage) {
+            LocalStorage.set('test key', 'test value');
+            expect(LocalStorage.get('test key')).toEqual('test value');
+            expect(LocalStorage.get('bogus key')).not.toBeDefined();
         }));
 });

@@ -3,14 +3,14 @@
 angular.module('app')
 
 .controller('LibraryController', function ($rootScope, $scope, $state, configPromise,
-  $log, mode, getData, deckSetup, _) {
+  $log, mode, GetData, deckSetup, _) {
     // PUBLISH remove all $log.debug calls
     $log.debug('LibraryController', JSON.stringify(configPromise.data));
     var indexFile = 'flavors/' + configPromise.data.flavor + '/library/index.json';
 
     $scope.deckSetup = deckSetup;
 
-    getData(indexFile).then(function (promise) {
+    GetData(indexFile).then(function (promise) {
         var fileNames = promise.data;
         $log.debug('fileNames', fileNames);
         $scope.allDeckNames = _.map(fileNames, function (name) {

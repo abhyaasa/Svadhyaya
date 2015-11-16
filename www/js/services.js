@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('utils', ['ionic'])
+angular.module('services', ['ionic'])
+
+// TODO add Scopes service
 
 /**
  * Use x name as tag, attribute, class name, or after directive in comment.
@@ -17,15 +19,15 @@ angular.module('utils', ['ionic'])
 
 .constant('mode', 'debug') // 'debug', 'build', or 'normal'
 
-// TODO refactor following service names to start uppercase
+.constant('_', window._) // underscore.js access
 
 /**
- * @name getData
+ * @name GetData
  * @param {string} path to file, relative to www/data
  * @param {function} optional callback accepts error object
  * @returns {object} promise yielding json file contents
  */
-.provider('getData', function () {
+.provider('GetData', function () {
     var injector = angular.injector(['ng']);
     var $http = injector.get('$http');
     var $log = injector.get('$log');
@@ -36,7 +38,7 @@ angular.module('utils', ['ionic'])
                     if (failure) {
                         return failure(error);
                     } else {
-                        $log.error('getData', JSON.stringify(error));
+                        $log.error('GetData', JSON.stringify(error));
                     }
                 });
         };
@@ -49,9 +51,9 @@ angular.module('utils', ['ionic'])
 
 // based on http://learn.ionicframework.com/formulas/localstorage/
 /**
- * @name localStorage
+ * @name LocalStorage
  */
-.service('localStorage', ['$window', function ($window) {
+.service('LocalStorage', ['$window', function ($window) {
     /**
      * set value
      * @param {string} key
@@ -69,12 +71,10 @@ angular.module('utils', ['ionic'])
     this.getObject = function (key) {
         return JSON.parse($window.localStorage[key] || '{}');
     };
-    this.clear = function (key) { // TODO use localStorage clear
+    this.clear = function (key) { // TODO use LocalStorage clear
         window.localStorage.clear();
     };
 }])
-
-.constant('_', window._) // underscore.js access
 
 // TODO test media service: Adapted from
 // http://forum.ionicframework.com/t/how-to-play-local-audio-files/7479/5

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app', ['ionic', 'utils'])
+angular.module('app', ['ionic', 'services'])
 
 .run(function ($ionicPlatform, $rootScope, $state, restoreSettings, settings, mode) {
 
@@ -36,7 +36,7 @@ angular.module('app', ['ionic', 'utils'])
     $log.debug('config', JSON.stringify($rootScope.config));
 })
 
-.config(function ($stateProvider, $urlRouterProvider, $logProvider, getDataProvider,
+.config(function ($stateProvider, $urlRouterProvider, $logProvider, GetDataProvider,
   mode, $compileProvider) {
     $logProvider.debugEnabled(mode === 'debug');
     $compileProvider.debugInfoEnabled(mode !== 'build');
@@ -48,7 +48,7 @@ angular.module('app', ['ionic', 'utils'])
         templateUrl: 'views/tabs.html',
         resolve: {
             configPromise: function () {
-                return getDataProvider.$get()('config.json');
+                return GetDataProvider.$get()('config.json');
             }},
         controller: 'TabsController'
     })
@@ -171,10 +171,10 @@ angular.module('app', ['ionic', 'utils'])
                 controller: 'AboutController'
             }
         },
-        onExit: ['settings', 'localStorage', '_', function (settings, localStorage, _) {
+        onExit: ['settings', 'LocalStorage', '_', function (settings, LocalStorage, _) {
             var s = {};
             _.extendOwn(s, settings);
-            localStorage.setObject('settings', s);
+            LocalStorage.setObject('settings', s);
         }]
     })
     .state('tabs.reset', {

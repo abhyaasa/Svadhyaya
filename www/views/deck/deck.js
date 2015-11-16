@@ -14,7 +14,7 @@ angular.module('app')
     };
 })
 
-.service('deckSetup', function ($rootScope, $state, $log, getData, deckFilter, config,
+.service('deckSetup', function ($rootScope, $state, $log, GetData, deckFilter, config,
   nextCard) {
     return function (deckName) {
         $log.debug('DeckController', JSON.stringify(deckName));
@@ -25,7 +25,7 @@ angular.module('app')
             exclude: [],
             include: []
         };
-        getData('flavors/' + config.flavor + '/library/' + deckName.fullName)
+        GetData('flavors/' + config.flavor + '/library/' + deckName.fullName)
         .then(function (promise) {
             $rootScope.questions = promise.data;
             $rootScope.deck = {
