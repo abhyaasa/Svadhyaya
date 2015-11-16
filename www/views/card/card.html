@@ -1,4 +1,5 @@
 <ion-view>
+    <x>on-swipe-left="nextCard()" does not work in <ion-content...></x>
     <ion-content id="content" padding="true" class="has-header">
         <div ng-hide="card">
             First please select a deck in the library.
@@ -12,6 +13,9 @@
                             {{ item.text }}
                         </ion-item>
                     </ion-list>
+                    <button class="button button-stable button-block" ng-if="card.isMA" ng-click="maDone()">
+                        Done
+                    </button>
                 </div>
             </div>
         </div>

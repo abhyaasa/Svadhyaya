@@ -2,7 +2,7 @@
 
 angular.module('app', ['ionic', 'utils'])
 
-.run(function ($ionicPlatform, $rootScope, $state, restoreSettings, settings, debug) {
+.run(function ($ionicPlatform, $rootScope, $state, restoreSettings, settings, mode) {
 
     // https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions\
     // #issue-im-getting-a-blank-screen-and-there-are-no-errors
@@ -21,7 +21,7 @@ angular.module('app', ['ionic', 'utils'])
     });
 
     $rootScope.hideTabs = true;
-    $rootScope.debug = debug;
+    $rootScope.debug = mode === 'debug';
     $rootScope.settings = settings;
 
     restoreSettings();
@@ -37,8 +37,9 @@ angular.module('app', ['ionic', 'utils'])
 })
 
 .config(function ($stateProvider, $urlRouterProvider, $logProvider, getDataProvider,
-  debug) {
-    $logProvider.debugEnabled(debug);
+  mode, $compileProvider) {
+    $logProvider.debugEnabled(mode === 'debug');
+    $compileProvider.debugInfoEnabled(mode !== 'build');
 
     $stateProvider
     .state('tabs', {

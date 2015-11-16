@@ -76,7 +76,7 @@ angular-mocks		ionic
 
 These lists may be a bit out of date, but they indicate most of the modules in use.
 
-### atom
+### atom editor
 
 Atom plugins are indicated by the following list
 ```
@@ -107,12 +107,18 @@ The `www/data/config.json` file object has the following attributes, managed as 
 
 Early in app initialization, the config object is stored stored as `$rootScope.config`.
 
-## Debugging
+## Debugging and building
 
-The `debug` constant in `util.js` enables debug mode, in which
+The `mode` constant in `util.js` may be set to `'debug'`, `'build'`, or `'normal'`.
+
+In debug mode:
 
 - the `$log.debug` is enabled
 - the library tab is always enabled to permit the browser debug console to be enabled (cmd-opt-I in chrome)
+
+In build mode:
+
+- the angular compiler is told not to include debug information, such as dom state links
 
 ## Flavors
 
@@ -151,7 +157,7 @@ TODO: flesh out this documentation
 - `config`: configuration represented by `www/data/config.json`, with the following possible additional attributes:
   - `hideLibrary`: true if just one library element
 - `hideTabs`: false until tabs bar configured after library index loaded
-- `debug`: the debug constant
+- `debug`: true when `mode` is `'debug'`
 - `settings`: copy of settings data saved in localStorage
 - `questions`: array represented by the current deck's json question file
 - `deck`: the current deck's state

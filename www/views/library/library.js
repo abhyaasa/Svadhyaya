@@ -3,7 +3,7 @@
 angular.module('app')
 
 .controller('LibraryController', function ($rootScope, $scope, $state, configPromise,
-  $log, debug, getData, deckSetup, _) {
+  $log, mode, getData, deckSetup, _) {
     // PUBLISH remove all $log.debug calls
     $log.debug('LibraryController', JSON.stringify(configPromise.data));
     var indexFile = 'flavors/' + configPromise.data.flavor + '/library/index.json';
@@ -21,7 +21,7 @@ angular.module('app')
             };
         });
         $scope.deckList = $scope.allDeckNames; // TODO filtering here
-        if ($scope.deckList.length === 1 && !debug) {
+        if ($scope.deckList.length === 1 && mode !== 'debug') {
             $rootScope.config.hideLibrary = true;
             $rootScope.hideTabs = false;
             deckSetup($scope.deckList[0]);

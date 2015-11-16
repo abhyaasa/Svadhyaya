@@ -15,7 +15,9 @@ angular.module('utils', ['ionic'])
     };
 })
 
-.constant('debug', true)
+.constant('mode', 'debug') // 'debug', 'build', or 'normal'
+
+// TODO refactor following service names to start uppercase
 
 /**
  * @name getData
