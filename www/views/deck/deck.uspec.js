@@ -2,35 +2,31 @@
 
 // Jasmine unit tests
 
-// TODO need to create mock for $hhtp.
-// See http://stackoverflow.com/questions/26612156
-// and https://www.airpair.com/angularjs/posts/unit-testing-angularjs-applications
-// and http://gonehybrid.com/how-to-write-automated-tests-for-your-ionic-app-part-2/
-xdescribe('GetData', function () {
-    var scope;
-    var GetData;
-    beforeEach(module('services'));
+describe('Deck', function () {
+    var deck;
+    beforeEach(module('app'));
     beforeEach(function () {
-        inject(function ($rootScope, $provider) {
-            scope = $rootScope.$new();
-            // GetData = $provider('GetData', ... TODO finish
+        inject(function (Deck) {
+            deck = Deck;
         });
     });
 
+    // TODO complete rewrite of following borrowed from services.uspec.js
+
     it('invokes success handler with object represented in json file',
         // FIXME fails, if success, test failure also
-        inject(function (GetData) {
+        inject(function (getData) {
             var handler = jasmine.createSpy('success');
-            GetData('flavors/test/test.json').then(handler);
+            getData('flavors/test/test.json').then(handler);
             scope.$digest();
             expect(handler).toHaveBeenCalledWith(['data', 'for unit test']);
         }));
 
     it('invokes fail handler when local json file does not exist',
         // FIXME fails, if success, test failure also
-        inject(function ($log, GetData) {
+        inject(function ($log, getData) {
             var handler = jasmine.createSpy('success');
-            GetData('bogus.json', handler);
+            getData('bogus.json', handler);
             scope.$digest();
             expect(handler).toHaveBeenCalledWith('XX');
         }));

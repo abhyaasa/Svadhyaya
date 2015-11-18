@@ -158,7 +158,8 @@ TODO: flesh out this documentation
   - `hideLibrary`: true if just one library element
 - `hideTabs`: false until tabs bar configured after library index loaded
 - `debug`: true when `mode` is `'debug'`
-- `settings`: copy of settings data saved in LocalStorage
+
+TODO move the following to Deck service
 - `questions`: array represented by the current deck's json question file
 - `deck`: the current deck's state
 - `card`: the current card from data from the `questions` array

@@ -36,7 +36,7 @@ angular.module('app', ['ionic', 'services'])
     $log.debug('config', JSON.stringify($rootScope.config));
 })
 
-.config(function ($stateProvider, $urlRouterProvider, $logProvider, GetDataProvider,
+.config(function ($stateProvider, $urlRouterProvider, $logProvider, getDataProvider,
   mode, $compileProvider) {
     $logProvider.debugEnabled(mode === 'debug');
     $compileProvider.debugInfoEnabled(mode !== 'build');
@@ -48,7 +48,7 @@ angular.module('app', ['ionic', 'services'])
         templateUrl: 'views/tabs.html',
         resolve: {
             configPromise: function () {
-                return GetDataProvider.$get()('config.json');
+                return getDataProvider.$get()('config.json');
             }},
         controller: 'TabsController'
     })
@@ -60,9 +60,9 @@ angular.module('app', ['ionic', 'services'])
                 controller: 'IntroController'
             }
         },
-        onEnter: ['$rootScope', '$state', function ($rootScope, $state) {
+        onEnter: function ($rootScope, $state) {
             $rootScope.help = function () { $state.go('tabs.intro'); };
-        }]
+        }
     })
     .state('tabs.library', {
         url: '/library',
@@ -72,9 +72,9 @@ angular.module('app', ['ionic', 'services'])
                 controller: 'LibraryController'
             }
         },
-        onEnter: ['$rootScope', '$state', function ($rootScope, $state) {
+        onEnter: function ($rootScope, $state) {
             $rootScope.help = function () { $state.go('tabs.library-help'); };
-        }]
+        }
     })
     .state('tabs.library-help', {
         url: '/libraryHelp',
@@ -84,9 +84,9 @@ angular.module('app', ['ionic', 'services'])
                 controller: 'LibraryHelpController'
             }
         },
-        onEnter: ['$rootScope', '$state', function ($rootScope, $state) {
+        onEnter: function ($rootScope, $state) {
             $rootScope.help = function () { $state.go('tabs.library-help'); };
-        }]
+        }
     })
     .state('tabs.deck', {
         url: '/deck',
@@ -96,9 +96,9 @@ angular.module('app', ['ionic', 'services'])
                 controller: 'DeckController'
             }
         },
-        onEnter: ['$rootScope', '$state', function ($rootScope, $state) {
+        onEnter: function ($rootScope, $state) {
             $rootScope.help = function () { $state.go('tabs.deck-help'); };
-        }]
+        }
     })
     .state('tabs.deck-help', {
         url: '/deckHelp',
@@ -108,9 +108,9 @@ angular.module('app', ['ionic', 'services'])
                 controller: 'DeckHelpController'
             }
         },
-        onEnter: ['$rootScope', '$state', function ($rootScope, $state) {
+        onEnter: function ($rootScope, $state) {
             $rootScope.help = function () { $state.go('tabs.deck-help'); };
-        }]
+        }
     })
     .state('tabs.card', {
         url: '/card',
@@ -132,9 +132,9 @@ angular.module('app', ['ionic', 'services'])
                 controller: 'AnswerController'
             }
         },
-        onEnter: ['$rootScope', '$state', function ($rootScope, $state) {
+        onEnter: function ($rootScope, $state) {
             $rootScope.help = function () { $state.go('tabs.card-help'); };
-        }]
+        }
     })
     .state('tabs.card-help', {
         url: '/cardHelp',
@@ -144,9 +144,9 @@ angular.module('app', ['ionic', 'services'])
                 controller: 'CardHelpController'
             }
         },
-        onEnter: ['$rootScope', '$state', function ($rootScope, $state) {
+        onEnter: function ($rootScope, $state) {
             $rootScope.help = function () { $state.go('tabs.card-help'); };
-        }]
+        }
     })
     .state('tabs.settings', {
         url: '/settings',
@@ -156,9 +156,9 @@ angular.module('app', ['ionic', 'services'])
                 controller: 'SettingsController'
             }
         },
-        onEnter: ['$rootScope', '$state', function ($rootScope, $state) {
+        onEnter: function ($rootScope, $state) {
             $rootScope.help = function () { $state.go('tabs.settings-help'); };
-        }],
+        },
         onExit: function (saveSettings) {
             saveSettings();
         }
@@ -171,11 +171,11 @@ angular.module('app', ['ionic', 'services'])
                 controller: 'AboutController'
             }
         },
-        onExit: ['settings', 'LocalStorage', '_', function (settings, LocalStorage, _) {
+        onExit: function (settings, LocalStorage, _) {
             var s = {};
             _.extendOwn(s, settings);
             LocalStorage.setObject('settings', s);
-        }]
+        }
     })
     .state('tabs.reset', {
         url: '/reset',
@@ -197,9 +197,9 @@ angular.module('app', ['ionic', 'services'])
                 controller: 'SettingsHelpController'
             }
         },
-        onEnter: ['$rootScope', '$state', function ($rootScope, $state) {
+        onEnter: function ($rootScope, $state) {
             $rootScope.help = function () { $state.go('tabs.settings-help'); };
-        }]
+        }
     });
     $urlRouterProvider.otherwise('/tabs/library');
 });

@@ -22,12 +22,12 @@ angular.module('services', ['ionic'])
 .constant('_', window._) // underscore.js access
 
 /**
- * @name GetData
+ * @name getData
  * @param {string} path to file, relative to www/data
  * @param {function} optional callback accepts error object
  * @returns {object} promise yielding json file contents
  */
-.provider('GetData', function () {
+.provider('getData', function () {
     var injector = angular.injector(['ng']);
     var $http = injector.get('$http');
     var $log = injector.get('$log');
@@ -38,7 +38,7 @@ angular.module('services', ['ionic'])
                     if (failure) {
                         return failure(error);
                     } else {
-                        $log.error('GetData', JSON.stringify(error));
+                        $log.error('getData', JSON.stringify(error));
                     }
                 });
         };
@@ -71,7 +71,7 @@ angular.module('services', ['ionic'])
     this.getObject = function (key) {
         return JSON.parse($window.localStorage[key] || '{}');
     };
-    this.clear = function (key) { // TODO use LocalStorage clear
+    this.clear = function () { // TODO use LocalStorage clear
         window.localStorage.clear();
     };
 }])

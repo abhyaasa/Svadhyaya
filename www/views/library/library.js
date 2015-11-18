@@ -3,14 +3,16 @@
 angular.module('app')
 
 .controller('LibraryController', function ($rootScope, $scope, $state, configPromise,
-  $log, mode, GetData, deckSetup, _) {
+  $log, mode, getData, Deck, _) {
     // PUBLISH remove all $log.debug calls
     $log.debug('LibraryController', JSON.stringify(configPromise.data));
     var indexFile = 'flavors/' + configPromise.data.flavor + '/library/index.json';
 
-    $scope.deckSetup = deckSetup;
+    $scope.selectDeck = function(deckNames) {
+        Deck.setup(deckNames);
+    };
 
-    GetData(indexFile).then(function (promise) {
+    getData(indexFile).then(function (promise) {
         var fileNames = promise.data;
         $log.debug('fileNames', fileNames);
         $scope.allDeckNames = _.map(fileNames, function (name) {
@@ -24,7 +26,7 @@ angular.module('app')
         if ($scope.deckList.length === 1 && mode !== 'debug') {
             $rootScope.config.hideLibrary = true;
             $rootScope.hideTabs = false;
-            deckSetup($scope.deckList[0]);
+            Deck.setup($scope.deckList[0]);
         } else {
             $rootScope.hideTabs = false;
         }

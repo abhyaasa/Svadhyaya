@@ -40,6 +40,7 @@ angular.module('app')
 
 .controller('CardHelpController', function () {})
 
+// TODO turn this into a function invoked when Deck.card not defined on state entry
 .service('nextCard', function ($log, $rootScope, $state, _) {
     var makeItem = function (response) {
         return { text: response[1], style: 'no-response' };
