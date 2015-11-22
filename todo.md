@@ -3,6 +3,7 @@ To Do List
 
 There is lots to do at this stage. A partial list follows:
 
+- [ ] markdown directive
 - [ ] navbar back on startup
 - [ ] show scrollbar when full text not visible
 - [ ] deck filtering to subtab
@@ -29,7 +30,6 @@ There is lots to do at this stage. A partial list follows:
 - [ ] ios and android device testing
 - [ ] consider adding other features, as in notes/features.txt
 - [ ] Chrome developer > angularjs > hints
-- [ ] remove unused injections (spotted by .jshintrc unused=true)
 - [ ] make injected functions minifiable, e.g. function (a, b){} => ['a', 'b', function (a, b){}, use ng-strict-di: AngularJS Web Application Development Cookbook p 281
 - [ ] todo-show publish
 - [ ] publish app

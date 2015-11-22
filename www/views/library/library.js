@@ -7,22 +7,23 @@ angular.module('app')
     // PUBLISH remove all $log.debug calls
     $log.debug('LibraryController', JSON.stringify(configPromise.data));
     var indexFile = 'flavors/' + configPromise.data.flavor + '/library/index.json';
+    var allDeckNames;
 
-    $scope.selectDeck = function(deckNames) {
-        Deck.setup(deckNames);
+    $scope.selectDeck = function(deckName) {
+        Deck.setup(deckName);
     };
 
     getData(indexFile).then(function (promise) {
         var fileNames = promise.data;
         $log.debug('fileNames', fileNames);
-        $scope.allDeckNames = _.map(fileNames, function (name) {
+        allDeckNames = _.map(fileNames, function (name) {
             return {
-                fullName: name,
+                full: name,
                 // discard suffix and replace _ characters with spaces
-                displayName: name.match(/.*(?=\.)/)[0].replace(/_/g, ' ')
+                display: name.match(/.*(?=\.)/)[0].replace(/_/g, ' ')
             };
         });
-        $scope.deckList = $scope.allDeckNames; // TODO filtering here
+        $scope.deckList = allDeckNames; // TODO filtering here
         if ($scope.deckList.length === 1 && mode !== 'debug') {
             $rootScope.config.hideLibrary = true;
             $rootScope.hideTabs = false;
@@ -35,13 +36,13 @@ angular.module('app')
         angular.extend($scope, {
             model: {searchText: ''}, // used in itest
             search: function () {
-                $scope.deckNames = _.filter($scope.allDeckNames, function(deck) {
-                    var name = deck.displayName.toLowerCase;
+                $scope.deckList = _.filter(allDeckNames, function(deckName) {
+                    var name = deckName.display.toLowerCase;
                     return name.indexOf($scope.model.searchText.toLowerCase) !== -1;
                 });
             },
             clearSearch: function () {
-                $log.deckNames = $scope.allDeckNames;
+                $scope.deckList = allDeckNames;
                 $scope.model.searchText = '';
             }
         });
@@ -51,4 +52,5 @@ angular.module('app')
     });
 })
 
-.controller('LibraryHelpController', function () {});
+.controller('LibraryHelpController', function () {})
+;

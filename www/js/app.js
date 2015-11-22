@@ -202,4 +202,5 @@ angular.module('app', ['ionic', 'services'])
         }
     });
     $urlRouterProvider.otherwise('/tabs/library');
-});
+})
+;

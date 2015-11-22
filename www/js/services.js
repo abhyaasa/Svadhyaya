@@ -157,4 +157,5 @@ angular.module('services', ['ionic'])
     };
 
     return service;
-});
+})
+;

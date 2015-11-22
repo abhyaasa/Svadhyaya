@@ -1,19 +1,19 @@
 <ion-view>
-    <x>on-swipe-left="nextCard()" does not work in <ion-content...></x>
+    <x>on-swipe-left="next()" does not work in <ion-content...></x>
     <ion-content id="content" padding="true" class="has-header">
-        <div ng-hide="card">
+        <div ng-hide="Deck.card">
             First please select a deck in the library.
         </div>
-        <div ng-show="card">
-            <p>{{ card.text }}</p>
-            <div ng-switch="card.type">
+        <div ng-show="Deck.card">
+            <p>{{ Deck.card.text }}</p>
+            <div ng-switch="Deck.card.type">
                 <div ng-switch-when="multiple-choice">
                     <ion-list>
-                        <ion-item ng-repeat="item in card.responseItems" ng-class="item.style" ng-click="response({{ $index }})">
+                        <ion-item ng-repeat="item in Deck.card.responseItems" ng-class="item.style" ng-click="response({{ $index }})">
                             {{ item.text }}
                         </ion-item>
                     </ion-list>
-                    <button class="button button-stable button-block" ng-if="card.isMA" ng-click="maDone()">
+                    <button ng-hide="done" class="button button-stable button-block" ng-if="Deck.card.isMA" ng-click="maDone()">
                         Done
                     </button>
                 </div>

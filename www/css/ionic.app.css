@@ -7663,10 +7663,13 @@ a.button {
   background-color: #fff; }
 
 .right-response {
-  background-color: #abff78; }
+  background-color: #0f0; }
 
 .wrong-response {
-  background-color: #fb7575; }
+  background-color: #f00; }
+
+.missed-response {
+  background-color: #ff0; }
 
 .major-text {
   font-size: 120%; }

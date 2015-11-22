@@ -2,5 +2,6 @@
 
 angular.module('app')
 
-.controller('AboutController', function ($scope, $rootScope) {
-});
+.controller('AboutController', function () {
+})
+;
