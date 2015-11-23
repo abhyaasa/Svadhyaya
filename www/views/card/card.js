@@ -10,13 +10,31 @@ angular.module('app')
     var next = function () {
         if ($scope.done) {
             $scope.done = false;
+            if (Deck.card.type === 'mind') {
+                Deck.outcome('right');
+            }
         } else {
             Deck.outcome('skipped');
         }
         Deck.next();
     };
+    var showAnswer = function () {
+        if (Deck.card.type === 'mind') {
+            $scope.done = true;
+            $scope.$apply();
+        }
+    };
+    var wrong = function () {
+        if (Deck.card.type === 'mind') {
+            $scope.done = true;
+            Deck.outcome('wrong');
+        }
+        Deck.next();
+    };
     var element = angular.element(document.querySelector('#content'));
     $ionicGesture.on('swipeleft', next, element);
+    $ionicGesture.on('swipedown', wrong, element);
+    $ionicGesture.on('tap', showAnswer, element);
 
     var isRight = function (response) {
         return response[0];
@@ -51,8 +69,8 @@ angular.module('app')
         var items = Deck.card.responseItems;
         var responses = Deck.card.responses;
         for (var i = 0; i < items.length; i++) {
-            if (items[i] === 'no-response' && responses[i][0]) {
-                items[i] = 'missed-response';
+            if (items[i].style === 'no-response' && responses[i][0]) {
+                items[i].style = 'missed-response';
                 Deck.card.numWrong++;
             }
         }
@@ -64,6 +82,7 @@ angular.module('app')
             Deck.outcome('right');
         }
         $scope.done = true;
+        $log.debug('Done items', JSON.stringify(items));
         // TODO score and nextcard
     };
 })

@@ -13,6 +13,7 @@ The index is a list of names of files in the directory, excluding the index file
 """
 
 def main(args):
+    # use os.path.isfile or os.path.isdir to avoid directories
     files = [filename for filename in os.listdir(args.directory)
              if not filename.startswith('.')]
     if args.output == '-':

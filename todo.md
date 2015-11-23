@@ -3,11 +3,12 @@ To Do List
 
 There is lots to do at this stage. A partial list follows:
 
-- [ ] markdown directive
+- [ ] deck media directory
+- [ ] add sound directive
+- [ ] add image directive
 - [ ] navbar back on startup
 - [ ] show scrollbar when full text not visible
 - [ ] deck filtering to subtab
-- [ ] add sound and image support
 - [ ] fix library search
 - [ ] Coffee, jade, NOT stylus
 	- [ ] https://github.com/CaryLandholt/ng-classify

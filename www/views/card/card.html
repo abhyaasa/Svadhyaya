@@ -17,6 +17,9 @@
                         Done
                     </button>
                 </div>
+                <div ng-switch-when="mind">
+                    <div ng-show="done"> {{ Deck.card.answer }} </div>
+                </div>
             </div>
         </div>
     </ion-content>
