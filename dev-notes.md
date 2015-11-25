@@ -158,3 +158,4 @@ TODO: flesh out this documentation
   - `hideLibrary`: true if just one library element
 - `hideTabs`: false until tabs bar configured after library index loaded
 - `debug`: true when `mode` is `'debug'`
+- `help`: points to help controller of current context

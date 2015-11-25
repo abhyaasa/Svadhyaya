@@ -96,8 +96,9 @@ angular.module('app', ['ionic', 'services'])
                 controller: 'DeckController'
             }
         },
-        onEnter: function ($rootScope, $state) {
+        onEnter: function ($rootScope, $state, Deck) {
             $rootScope.help = function () { $state.go('tabs.deck-help'); };
+            Deck.setCount();
         }
     })
     .state('tabs.deck-help', {
