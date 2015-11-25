@@ -3,6 +3,7 @@
 angular.module('app')
 
 .controller('DeckController', function ($scope, Deck) {
+
     $scope.Deck = Deck;
     // TODO manage filter controls
 })
@@ -11,6 +12,8 @@ angular.module('app')
 
 .service('Deck', function ($log, $state, config, getData, _) {
     var Deck = this;
+    this.count = undefined; // maintained by this.setCount()
+
     var initialFilterSettings = {
         max: 50,
         min: 50,
@@ -18,36 +21,48 @@ angular.module('app')
         exclude: [],
         include: []
     };
+    var copy = function (obj) {
+        return _.mapObject(obj, function (val) { return _.clone(val); });
+    };
+    var filter = function (questions) {
+        // returns list of indices of questions that pass filter
         // TODO use filter settings
         return _.range(0, questions.length);
     };
-    Deck.setup = function (deckName) {
+
+    this.setup = function (deckName) {
         $log.debug('Deck setup', JSON.stringify(deckName));
         getData('flavors/' + config.flavor + '/library/' + deckName.full)
         .then(function (promise) {
             Deck.questions = promise.data;
+            Deck.data = {
+                name: deckName,
+                history: _.map(Deck.questions, function () { return []; }),
+                filter: copy(initialFilterSettings),
+                active: filter(Deck.questions), // indices of active quesitons
+                activeCardIndex: undefined // current card ref. into active index list
+            };
+            Deck.data.outcomes = new Array(Deck.data.active.length);
+            $state.go('tabs.card');
         });
     };
 
-    this.next = function () {
-            $state.go('tabs.deck');
-        }
-        Deck.cardIndex = Deck.remaining.shift();
-        Deck.card = Deck.questions[Deck.cardIndex];
-        if (Deck.card.type === 'multiple-choice') {
-            Deck.card.isMA = _.contains(Deck.card.tags, '.ma');
-            Deck.card.responseItems = _.map(Deck.card.responses, makeItem);
-            Deck.card.numWrong = 0;
-        }
-        $log.debug('next', JSON.stringify(Deck.card));
-        $state.go('tabs.card');
+    var multiset = function (array) {
+        var ms = {};
+        array.map(function (value) {
+            if (_.has(ms, value)) {
+                ms[value] += 1;
+            } else {
+                ms[value] = 1;
+            }
+        });
+        return ms;
     };
-
-    this.outcome = function (outcomeName) {
-        if (!_.contains(['right', 'wrong', 'close', 'skipped'], outcomeName)) {
-            $log.error('Bad outcome', outcomeName);
+    this.setCount = function () {
+        if (Deck.data) {
+            Deck.count = multiset(Deck.outcomes);
+            Deck.count.remaining = Deck.count[undefined];
         }
-        Deck[outcomeName].push(Deck.cardIndex);
     };
 })
 ;
