@@ -45,10 +45,6 @@ angular.module('services', ['ionic'])
     };
 })
 
-.service('config', function ($rootScope) {
-    return $rootScope.config; // loaded in tabs state controller
-})
-
 // based on http://learn.ionicframework.com/formulas/localstorage/
 /**
  * @name LocalStorage

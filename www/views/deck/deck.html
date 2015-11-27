@@ -8,14 +8,14 @@
             <div class="deck-table">
                 <table>
                     <tr>
-                        <td>Right</td> <td>{{ Deck.count.right }}</td>
-                        <td>Wrong</td> <td>{{ Deck.count.wrong }}</td>
-                        <td>Close</td> <td>{{ Deck.count.close }}</td>
+                        <td>Right</td> <td>{{ Deck.getCount('right') }}</td>
+                        <td>Wrong</td> <td>{{ Deck.getCount('wrong') }}</td>
+                        <td>Close</td> <td>{{ Deck.getCount('close') }}</td>
                     </tr>
                     <tr>
-                        <td>Hints</td> <td>{{ Deck.count.hints }}</td>
-                        <td>Skipped</td> <td>{{ Deck.count.skipped }}</td>
-                        <td>Remaining</td> <td>{{ Deck.count.remaining }}</td>
+                        <td>Hints</td> <td>{{ Deck.getCount('hints') }}</td>
+                        <td>Skipped</td> <td>{{ Deck.getCount('skipped') }}</td>
+                        <td>Remaining</td> <td>{{ Deck.getCount('remaining') }}</td>
                     </tr>
                 </table>
                 <p />

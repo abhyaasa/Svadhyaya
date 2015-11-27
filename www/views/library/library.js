@@ -3,7 +3,7 @@
 angular.module('app')
 
 .controller('LibraryController', function ($rootScope, $scope, $state, configPromise,
-  $log, mode, getData, Deck, _) {
+  $log, mode, getData, Deck, Card, _) {
     // PUBLISH remove all $log.debug calls
     $log.debug('LibraryController', JSON.stringify(configPromise.data));
     var indexFile = 'flavors/' + configPromise.data.flavor + '/library/index.json';
@@ -12,6 +12,9 @@ angular.module('app')
     $scope.selectDeck = function(deckName) {
         Deck.setup(deckName);
     };
+
+    debugger;
+    Deck.Card = Card;
 
     getData(indexFile).then(function (promise) {
         var fileNames = promise.data;

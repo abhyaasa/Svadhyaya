@@ -10,7 +10,7 @@ angular.module('app')
 
 .controller('DeckHelpController', function () {})
 
-.service('Deck', function ($log, $state, config, getData, _) {
+.service('Deck', function ($log, $state, $rootScope, getData, _) {
     var Deck = this;
     this.count = undefined; // maintained by this.setCount()
 
@@ -32,7 +32,7 @@ angular.module('app')
 
     this.setup = function (deckName) {
         $log.debug('Deck setup', JSON.stringify(deckName));
-        getData('flavors/' + config.flavor + '/library/' + deckName.full)
+        getData('flavors/' + $rootScope.config.flavor + '/library/' + deckName.full)
         .then(function (promise) {
             Deck.questions = promise.data;
             Deck.data = {
@@ -60,9 +60,12 @@ angular.module('app')
     };
     this.setCount = function () {
         if (Deck.data) {
-            Deck.count = multiset(Deck.outcomes);
-            Deck.count.remaining = Deck.count[undefined];
+            Deck.count = multiset(Deck.data.outcomes);
+            Deck.count.remaining = Deck.data.active.length - Deck.data.outcomes.length;
         }
+    };
+    this.getCount = function (key) {
+        return key in Deck.count ? Deck.count[key] : 0;
     };
 })
 ;
