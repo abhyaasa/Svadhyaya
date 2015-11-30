@@ -105,7 +105,7 @@ JSON FORMAT
 
 Quiz questions json format is list of question dictionaries with keys:
 id: question order number (0-based)
-type: string = text, true-false, multiiple-choice, sequence, matching, or mind
+type: string = text, true-false, multiiple-choice, matching, or mind
 text: text of question
 responses (absent in text, t/f, sequence and mind question types):
           list of [is_answer, response_text] pairs, where is_answer is boolean
@@ -282,7 +282,7 @@ def main(args):
                     aq = {'id': id_num,
                           'text': line,
                           'tags': tag_filter(qtags),
-                          'type': 'sequence'
+                          'type': 'mind'
                          }
                     if q.has_key('number'):
                         aq['number'] = q['number']
@@ -292,12 +292,10 @@ def main(args):
                 q['text'] = lines[-2]
                 q['answer'] = lines[-1]
             elif not responses:
-                q['type'] = 'sequence'
+                q['type'] = 'mind' # sequence question
             elif len(responses) == 1:
-                if not responses[0][0]:
-                    error('no answer')
                 response = responses[0][1]
-                if type(response) == str and response.lower() in ['t', 'f', 'true', 'false']:
+                if type(response) == unicode and response.lower() in ['t', 'f', 'true', 'false']:
                     q['type'] = 'true-false'
                     q['answer'] = response.lower() in ['t', 'true']
                 else:
@@ -370,6 +368,9 @@ three
 ;;a =A
 ;;b =B
 """
+
+test = u""";.text;some text
+;;t/f =t"""
 
 if __name__ == "__main__":
     main(get_args())

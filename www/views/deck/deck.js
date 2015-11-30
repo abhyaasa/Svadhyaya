@@ -48,7 +48,7 @@ angular.module('app')
     };
 
     var multiset = function (array) {
-        var ms = {};
+        var ms = {remaining: 0};
         array.map(function (value) {
             if (_.has(ms, value)) {
                 ms[value] += 1;
@@ -58,10 +58,13 @@ angular.module('app')
         });
         return ms;
     };
+    var isUndefined = function(value) {
+        return value === undefined;
+    };
     this.setCount = function () {
         if (Deck.data) {
             Deck.count = multiset(Deck.data.outcomes);
-            Deck.count.remaining = Deck.data.active.length - Deck.data.outcomes.length;
+            Deck.count.remaining = _.filter(Deck.data.outcomes, isUndefined).length;
         }
     };
     this.getCount = function (key) {

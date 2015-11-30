@@ -1,10 +1,10 @@
-/* gulp-processed, with output to www/scss/ionic.app.css */
+// gulp-processed, with output to www/scss/ionic.app.css
 
 // Include app-specific scss variables
-@import "app/variables";
+@import 'appvar';
 // The path for our ionicons font files, relative to the built CSS in www/css
-$ionicons-font-path: "../lib/ionic/fonts" !default;
+$ionicons-font-path: '../lib/ionic/fonts' !default;
 // Include all of Ionic
-@import "www/lib/ionic/scss/ionic";
+@import 'www/lib/ionic/scss/ionic';
 // Include app-specific non-variable scss
-@import "app/app";
+@import 'app';

@@ -6,11 +6,18 @@ angular.module('app')
 
     $scope.done = false;
     $scope.Card = Card;
+    $scope.Deck = Deck;
     $scope.$on('$ionicView.enter', function() {
         if (!Card.question) {
             Card.setup(0);
         }
     });
+
+    $scope.hint = function () {
+        Card.hint = Card.question.hints[Card.hintIndex];
+        Card.hintIndex++;
+        Card.haveHint = Card.hintIndex < Card.question.hints.length;
+    };
 
     var finish = function () {
         if ($scope.done) {
@@ -43,6 +50,7 @@ angular.module('app')
         }
         Card.next();
     };
+    // #question element fetch works, but gestures with it don't
     var element = angular.element(document.querySelector('#content'));
     $ionicGesture.on('swipeleft', next, element);
     $ionicGesture.on('swiperight', previous, element);
@@ -51,6 +59,11 @@ angular.module('app')
 
     var isRight = function (response) {
         return response[0];
+    };
+
+    $scope.isText = function () {
+        Card.outcome('text');
+        $scope.done = true;
     };
 
     $scope.response = function (index) {
@@ -111,11 +124,27 @@ angular.module('app')
     this.setup = function (activeCardIndex) {
         Deck.data.activeCardIndex = activeCardIndex;
         Card.question = Deck.questions[Deck.data.active[activeCardIndex]];
+        Card.hintIndex = Card.question.hints ? 0 : undefined;
+        if (Card.question.type === 'true-false') {
+            Card.question.responses = [[false, 'True'], [false, 'False']];
+            Card.question.responses[Card.question.answer ? 0 : 1][0] = true;
+            Card.question.type = 'multiple-choice';
+        }
         if (Card.question.type === 'multiple-choice') {
             Card.isMA = _.contains(Card.question.tags, '.ma');
             Card.responseItems = _.map(Card.question.responses, makeItem);
             Card.numWrong = 0;
+        } else if (Card.question.type === 'mind' && !Card.question.answer) {
+            // sequence question
+            var answerIndex = Card.question.id + 1;
+            if (answerIndex === Deck.questions.length) {
+                $state.go('tab.deck'); // card is last in sequence at end of deck
+            } else {
+                Card.question.answer = Deck.questions[answerIndex].text;
+            }
         }
+        Card.haveHint = Card.question.hints !== undefined;
+        Card.hint = null;
         $log.debug('Card.setup', JSON.stringify(Card));
     };
 
