@@ -13,7 +13,6 @@ angular.module('app')
         Deck.setup(deckName);
     };
 
-    debugger;
     Deck.Card = Card;
 
     getData(indexFile).then(function (promise) {

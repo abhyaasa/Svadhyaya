@@ -13,21 +13,11 @@ angular.module('app')
         }
     });
 
-    $scope.hint = function () {
-        Card.hint = Card.question.hints[Card.hintIndex];
-        Card.hintIndex++;
-        Card.haveHint = Card.hintIndex < Card.question.hints.length;
-    };
-
     var finish = function () {
-        if ($scope.done) {
-            $scope.done = false;
-            if (Card.question.type === 'mind') {
-                Card.outcome('right');
-            }
-        } else {
+        if (!$scope.done) {
             Card.outcome('skipped');
         }
+        $scope.done = false;
     };
     var next = function () {
         finish();
@@ -37,28 +27,33 @@ angular.module('app')
         finish();
         Card.previousCard();
     };
-    var showAnswer = function () {
-        if (Card.question.type === 'mind') {
-            $scope.done = true;
-            $scope.$apply();
-        }
+    var discard = function () {
+        $scope.done = false;
+        Card.outcome('discarded');
+        Card.discardCard();
     };
-    var wrong = function () {
-        if (Card.question.type === 'mind') {
-            $scope.done = true;
-            Card.outcome('wrong');
-        }
-        Card.next();
-    };
-    // #question element fetch works, but gestures with it don't
     var element = angular.element(document.querySelector('#content'));
     $ionicGesture.on('swipeleft', next, element);
     $ionicGesture.on('swiperight', previous, element);
-    $ionicGesture.on('swipedown', wrong, element);
-    $ionicGesture.on('tap', showAnswer, element);
+    $ionicGesture.on('swipeup', discard, element);
 
-    var isRight = function (response) {
-        return response[0];
+    $scope.hint = function () {
+        Card.hint = Card.question.hints[Card.hintIndex];
+        Card.hintIndex++;
+        Card.haveHint = Card.hintIndex < Card.question.hints.length;
+    };
+
+    $scope.setOutcome = function (outcome) {
+        Card.outcome(outcome);
+        $scope.done = false;
+        Card.nextCard();
+    };
+
+    $scope.showAnswer = function () {
+        if (Card.question.type === 'mind') {
+            $scope.done = true;
+            // XXX $scope.$apply();
+        }
     };
 
     $scope.isText = function () {
@@ -66,6 +61,9 @@ angular.module('app')
         $scope.done = true;
     };
 
+    var isRight = function (response) {
+            return response[0];
+        };
     $scope.response = function (index) {
         var card = Card.question;
         var items = Card.responseItems;
@@ -115,7 +113,7 @@ angular.module('app')
 
 .controller('CardHelpController', function () {})
 
-.service('Card', function ($log, $state, Deck, _) {
+.service('Card', function ($log, $state, Deck, settings, _) {
     var Card = this;
 
     var makeItem = function (response) {
@@ -124,16 +122,16 @@ angular.module('app')
     this.setup = function (activeCardIndex) {
         Deck.data.activeCardIndex = activeCardIndex;
         Card.question = Deck.questions[Deck.data.active[activeCardIndex]];
+        Card.isMA = _.contains(Card.question.tags, '.ma');
+        Card.text = Card.question.text;
+        if (_.isArray(Card.text)) {
+            Card.text = Card.text[settings.devanagari ? 1 : 0];
+        }
         Card.hintIndex = Card.question.hints ? 0 : undefined;
         if (Card.question.type === 'true-false') {
             Card.question.responses = [[false, 'True'], [false, 'False']];
             Card.question.responses[Card.question.answer ? 0 : 1][0] = true;
             Card.question.type = 'multiple-choice';
-        }
-        if (Card.question.type === 'multiple-choice') {
-            Card.isMA = _.contains(Card.question.tags, '.ma');
-            Card.responseItems = _.map(Card.question.responses, makeItem);
-            Card.numWrong = 0;
         } else if (Card.question.type === 'mind' && !Card.question.answer) {
             // sequence question
             var answerIndex = Card.question.id + 1;
@@ -142,6 +140,23 @@ angular.module('app')
             } else {
                 Card.question.answer = Deck.questions[answerIndex].text;
             }
+        } else if (Card.question.type === 'matching') {
+            var q = Card.question;
+            var responses = [];
+            for (var i = q.matchingBegin; i <= q.matchingEnd; i++) {
+                if (i !== q.id) {
+                    responses.push([false, Deck.questions[i].answer]);
+                }
+            }
+            var numResponses = 5;
+            responses = _.sample(responses, numResponses - 1).push([true, q.answer]);
+            responses = _.sample(responses, numResponses);
+            Card.question.responses = responses;
+            Card.question.type = 'multiple-choice';
+        }
+        if (Card.question.type === 'multiple-choice') {
+            Card.responseItems = _.map(Card.question.responses, makeItem);
+            Card.numWrong = 0;
         }
         Card.haveHint = Card.question.hints !== undefined;
         Card.hint = null;

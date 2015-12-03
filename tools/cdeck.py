@@ -113,8 +113,8 @@ answer (t/f, matching or mind type): boolean (t/f) or text (mind)
 tags (optional): list of tag strings
 hints (optional): list of hint strings
 number (optional): difficulty number
-matching_begin (only if .matching in tags): id of first question in matching range
-matching_end (only if .matching in tags): id of last question in matching range
+matchingBegin (only if .matching in tags): id of first question in matching range
+matchingEnd (only if .matching in tags): id of last question in matching range
 
 The "text" of a question, response, answer, or hint may be a unicode string or a
 [trans_to-text, devanagari] pair of unicode strings, where the trans_to program
@@ -177,9 +177,9 @@ def main(args):
             return html_escape(text)
 
     def end_matching():
-        for i in range(matching_start - 1, len(quiz)):
-            quiz[i]['matching_begin'] = matching_start
-            quiz[i]['matching_end'] = len(quiz)
+        for i in range(matching_start, len(quiz)):
+            quiz[i]['matchingBegin'] = matching_start
+            quiz[i]['matchingEnd'] = len(quiz) - 1
 
     if args.format_help:
         print FORMAT_HELP

@@ -5,46 +5,55 @@
         </div>
         <div ng-show="Deck.data">
             <h2>{{ Deck.data.name.display }}</h2>
-            <div class="deck-table">
+            <div class="deck-table" align="center">
+                <x>REVIEW scss better for alignment</x>
                 <table>
                     <tr>
-                        <td>Right</td> <td>{{ Deck.getCount('right') }}</td>
-                        <td>Wrong</td> <td>{{ Deck.getCount('wrong') }}</td>
-                        <td>Close</td> <td>{{ Deck.getCount('close') }}</td>
+                        <td>Right</td>
+                        <td>{{ Deck.getCount('right') }}</td>
+                        <td>Wrong</td>
+                        <td>{{ Deck.getCount('wrong') }}</td>
+                        <td>Close</td>
+                        <td>{{ Deck.getCount('close') }}</td>
                     </tr>
                     <tr>
-                        <td>Hints</td> <td>{{ Deck.getCount('hints') }}</td>
-                        <td>Skipped</td> <td>{{ Deck.getCount('skipped') }}</td>
-                        <td>Remaining</td> <td>{{ Deck.getCount('remaining') }}</td>
+                        <td>Hints</td>
+                        <td>{{ Deck.getCount('hints') }}</td>
+                        <td>Skipped</td>
+                        <td>{{ Deck.getCount('skipped') }}</td>
+                        <td>Remaining</td>
+                        <td>{{ Deck.getCount('remaining') }}</td>
                     </tr>
                 </table>
                 <p />
             </div>
-            <ion-list>
-                <ion-item class="range range-positive">Max
-                    <input type="range" value="50" min="0" max="100">
-                </ion-item>
-                <ion-item class="range range-positive">Min
-                    <input type="range" value="50" min="0" max="100">
-                </ion-item>
-                <ion-item>Tag 1</ion-item>
-                <ion-item>Tag 2</ion-item>
-                <label class="item item-select">
-                    <span class="input-label">And</span>
-                    <select></select>
-                </label>
-                <label class="item item-select">
-                    <span class="input-label">And_not</span>
-                    <select></select>
-                </label>
-                <label class="item item-select">
-                    <span class="input-label">Or</span>
-                    <select></select>
-                </label>
-            </ion-list>
-            <div class="button-bar">
-                <button class="button button-stable button-block">Done</button>
-            </div>
+            <x> TODO implemement question filtering
+                <ion-list>
+                    <ion-item class="range range-positive">Max
+                        <input type="range" value="50" min="0" max="100">
+                    </ion-item>
+                    <ion-item class="range range-positive">Min
+                        <input type="range" value="50" min="0" max="100">
+                    </ion-item>
+                    <ion-item>Tag 1</ion-item>
+                    <ion-item>Tag 2</ion-item>
+                    <label class="item item-select">
+                        <span class="input-label">And</span>
+                        <select></select>
+                    </label>
+                    <label class="item item-select">
+                        <span class="input-label">And_not</span>
+                        <select></select>
+                    </label>
+                    <label class="item item-select">
+                        <span class="input-label">Or</span>
+                        <select></select>
+                    </label>
+                </ion-list>
+                <div class="button-bar">
+                    <button class="button button-stable button-block">Done</button>
+                </div>
+            </x>
         </div>
     </ion-content>
 </ion-view>

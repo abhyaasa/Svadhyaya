@@ -1,4 +1,12 @@
-;.text;Some text: not a question
+;.matching
+;;a =1
+;;b =2
+;;c =3
+;;d =4
+;;e =5
+;;f =6
+;/.matching;.text
+;Some text: not a question
 ;foo
 ;bar;true/false is true =t
 ;.text;Some more text with two outcomes?
@@ -34,8 +42,3 @@ three
 ;/.devanagari
 ;.iast,.tr;pranava =om
 ;.md;*emphasis* =**bold**
-;.matching
-;;a =1
-;;b =2
-;;c =3
-;/.matching

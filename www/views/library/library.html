@@ -1,16 +1,18 @@
 <ion-view>
     <ion-content padding="true" class="has-header">
         <ion-list>
-            <label class="item item-input">
-                <i class="icon ion-search placeholder-icon"></i>
-                <input type="search" placeholder="Deck name to search for" ng-model="model.searchText">
-                <i class="clear-search icon ion-ios7-close-empty" ng-click="clearSearch()"></i>
-                <button class="button button-small button-positive" ng-click="search()">
-                    Submit
-                </button>
-            </label>
-            <x>
-                FIXME Didn't work: ng-repeat="deckName in deckList | filter:search" with input ng-model="search.root" above
+            <x> TODO Search not fully implemented
+                <label class="item item-input">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <input type="search" placeholder="Deck name to search for" ng-model="model.searchText">
+                    <i class="clear-search icon ion-ios7-close-empty" ng-click="clearSearch()"></i>
+                    <button class="button button-small button-positive" ng-click="search()">
+                        Submit
+                    </button>
+                </label>
+                <x>
+                    FIXME Didn't work: ng-repeat="deckName in deckList | filter:search" with input ng-model="search.root" above
+                </x>
             </x>
             <ion-item ng-repeat="deckName in deckList" ng-click="selectDeck(deckName)">
                 {{ deckName.display }}
