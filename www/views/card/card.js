@@ -38,6 +38,7 @@ angular.module('app')
     $ionicGesture.on('swipeup', discard, element);
 
     $scope.hint = function () {
+        // TODO add mc and auto mind hints using settings.hintPercent
         Card.hint = Card.question.hints[Card.hintIndex];
         Card.hintIndex++;
         Card.haveHint = Card.hintIndex < Card.question.hints.length;
@@ -124,16 +125,18 @@ angular.module('app')
         Card.question = Deck.questions[Deck.data.active[activeCardIndex]];
         Card.isMA = _.contains(Card.question.tags, '.ma');
         Card.text = Card.question.text;
+        var responses = Card.question.responses;
         if (_.isArray(Card.text)) {
             Card.text = Card.text[settings.devanagari ? 1 : 0];
         }
         Card.hintIndex = Card.question.hints ? 0 : undefined;
         if (Card.question.type === 'true-false') {
+            // Rewrite true-false as multiple-choice
             Card.question.responses = [[false, 'True'], [false, 'False']];
             Card.question.responses[Card.question.answer ? 0 : 1][0] = true;
             Card.question.type = 'multiple-choice';
         } else if (Card.question.type === 'mind' && !Card.question.answer) {
-            // sequence question
+            // Sequence question
             var answerIndex = Card.question.id + 1;
             if (answerIndex === Deck.questions.length) {
                 $state.go('tab.deck'); // card is last in sequence at end of deck
@@ -141,21 +144,29 @@ angular.module('app')
                 Card.question.answer = Deck.questions[answerIndex].text;
             }
         } else if (Card.question.type === 'matching') {
+            // Rewrite matching as multiple-choice, including random order, this
+            // question's answer with a random selection of other answers in this
+            // random sequence.
             var q = Card.question;
-            var responses = [];
+            if (!q.matchingEnd) {
+                $log.error('No matchingEnd attribute with type matching');
+            }
+            responses = [];
             for (var i = q.matchingBegin; i <= q.matchingEnd; i++) {
                 if (i !== q.id) {
                     responses.push([false, Deck.questions[i].answer]);
                 }
             }
             var numResponses = 5;
-            responses = _.sample(responses, numResponses - 1).push([true, q.answer]);
-            responses = _.sample(responses, numResponses);
+            responses = _.sample(responses, numResponses - 1).concat([[true, q.answer]]);
             Card.question.responses = responses;
             Card.question.type = 'multiple-choice';
         }
         if (Card.question.type === 'multiple-choice') {
-            Card.responseItems = _.map(Card.question.responses, makeItem);
+            if (settings.randomResponses) {
+                responses = _.sample(responses, responses.length);
+            }
+            Card.responseItems = _.map(responses, makeItem);
             Card.numWrong = 0;
         }
         Card.haveHint = Card.question.hints !== undefined;

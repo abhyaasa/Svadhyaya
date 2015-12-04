@@ -2,6 +2,8 @@
  {
   "answer": "1", 
   "id": 0, 
+  "matchingBegin": 0, 
+  "matchingEnd": 5, 
   "tags": [], 
   "text": "a", 
   "type": "matching"
@@ -9,6 +11,8 @@
  {
   "answer": "2", 
   "id": 1, 
+  "matchingBegin": 0, 
+  "matchingEnd": 5, 
   "tags": [], 
   "text": "b", 
   "type": "matching"
@@ -16,6 +20,8 @@
  {
   "answer": "3", 
   "id": 2, 
+  "matchingBegin": 0, 
+  "matchingEnd": 5, 
   "tags": [], 
   "text": "c", 
   "type": "matching"
@@ -23,6 +29,8 @@
  {
   "answer": "4", 
   "id": 3, 
+  "matchingBegin": 0, 
+  "matchingEnd": 5, 
   "tags": [], 
   "text": "d", 
   "type": "matching"
@@ -30,6 +38,8 @@
  {
   "answer": "5", 
   "id": 4, 
+  "matchingBegin": 0, 
+  "matchingEnd": 5, 
   "tags": [], 
   "text": "e", 
   "type": "matching"
@@ -37,23 +47,22 @@
  {
   "answer": "6", 
   "id": 5, 
+  "matchingBegin": 0, 
+  "matchingEnd": 5, 
   "tags": [], 
   "text": "f", 
   "type": "matching"
  }, 
  {
   "id": 6, 
-  "tags": [
-   "/.matching"
-  ], 
-  "text": ".text", 
-  "type": "mind"
+  "tags": [], 
+  "text": "Some text: not a question", 
+  "type": "text"
  }, 
  {
   "answer": true, 
   "id": 7, 
   "tags": [
-   "Some text: not a question", 
    "foo", 
    "bar"
   ], 
@@ -63,7 +72,6 @@
  {
   "id": 8, 
   "tags": [
-   "Some text: not a question", 
    "foo"
   ], 
   "text": "Some more text with two outcomes?", 
@@ -82,7 +90,6 @@
    ]
   ], 
   "tags": [
-   "Some text: not a question", 
    "foo"
   ], 
   "text": "qtext", 
@@ -133,7 +140,6 @@
    ]
   ], 
   "tags": [
-   "Some text: not a question", 
    "foo"
   ], 
   "text": "some longer text for a multiple choice question with lots of answers to see if it confuses things a lot or not", 
@@ -156,7 +162,6 @@
    ]
   ], 
   "tags": [
-   "Some text: not a question", 
    "foo", 
    ".ma"
   ], 
@@ -167,20 +172,18 @@
   "answer": "Cs", 
   "id": 12, 
   "tags": [
-   "Some text: not a question", 
    ".cs", 
    "foo"
   ], 
   "text": "case sensitive", 
-  "type": "matching"
+  "type": "mind"
  }, 
  {
   "id": 13, 
   "number": 1.0, 
   "tags": [
    "a", 
-   "foo", 
-   "Some text: not a question"
+   "foo"
   ], 
   "text": "qt", 
   "type": "mind"
@@ -191,7 +194,6 @@
   ], 
   "id": 14, 
   "tags": [
-   "Some text: not a question", 
    "foo"
   ], 
   "text": "q with", 
@@ -209,16 +211,13 @@
     "b"
    ]
   ], 
-  "tags": [
-   "Some text: not a question"
-  ], 
+  "tags": [], 
   "text": "mq", 
   "type": "multiple-choice"
  }, 
  {
   "id": 16, 
   "tags": [
-   "Some text: not a question", 
    "c"
   ], 
   "text": "mcq", 
@@ -227,37 +226,27 @@
  {
   "answer": "answer a = b", 
   "id": 17, 
-  "tags": [
-   "Some text: not a question"
-  ], 
+  "tags": [], 
   "text": "mind", 
-  "type": "matching"
+  "type": "mind"
  }, 
  {
   "id": 18, 
-  "tags": [
-   "Some text: not a question"
-  ], 
+  "tags": [], 
   "text": "one", 
   "type": "mind"
  }, 
  {
   "answer": "three", 
   "id": 19, 
-  "tags": [
-   "Some text: not a question"
-  ], 
+  "tags": [], 
   "text": "two", 
   "type": "mind"
  }, 
  {
   "answer": false, 
   "id": 20, 
-  "matchingBegin": 20, 
-  "matchingEnd": 22, 
-  "tags": [
-   "Some text: not a question"
-  ], 
+  "tags": [], 
   "text": [
    "\u015braddh\u0101v\u0101~lla", 
    "\u0936\u094d\u0930\u0926\u094d\u0927\u093e\u0935\u093e\u0901\u0932\u094d\u0932"
@@ -270,23 +259,15 @@
    "\u0950"
   ], 
   "id": 21, 
-  "matchingBegin": 20, 
-  "matchingEnd": 22, 
-  "tags": [
-   "Some text: not a question"
-  ], 
+  "tags": [], 
   "text": "pranava", 
-  "type": "matching"
+  "type": "mind"
  }, 
  {
   "answer": "&lt;p&gt;&lt;strong&gt;bold&lt;/strong&gt;&lt;/p&gt;", 
   "id": 22, 
-  "matchingBegin": 20, 
-  "matchingEnd": 22, 
-  "tags": [
-   "Some text: not a question"
-  ], 
+  "tags": [], 
   "text": "&lt;p&gt;&lt;em&gt;emphasis&lt;/em&gt;&lt;/p&gt;", 
-  "type": "matching"
+  "type": "mind"
  }
 ]

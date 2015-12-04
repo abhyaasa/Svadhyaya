@@ -10,7 +10,7 @@ angular.module('app')
 
 .controller('DeckHelpController', function () {})
 
-.service('Deck', function ($log, $state, $rootScope, getData, _) {
+.service('Deck', function ($log, $state, $rootScope, settings, getData, _) {
     var Deck = this;
     this.count = undefined; // maintained by this.setCount()
 
@@ -27,7 +27,11 @@ angular.module('app')
     var filter = function (questions) {
         // returns list of indices of questions that pass filter
         // TODO use filter settings
-        return _.range(0, questions.length);
+        var indices = _.range(0, questions.length);
+        if (settings.randomQuestions) {
+            indices = _.sample(indices, indices.length);
+        }
+        return indices;
     };
 
     this.setup = function (deckName) {

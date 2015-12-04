@@ -10,6 +10,9 @@
             <p>{{ Card.question.text }}</p>
             <div ng-switch="Card.question.type">
                 <div ng-switch-when="multiple-choice">
+                    <div ng-show="Card.question.matchingEnd">
+                        is best associated with
+                    </div>
                     <ion-list>
                         <ion-item ng-repeat="item in Card.responseItems" ng-class="item.style" ng-click="response({{ $index }})">
                             {{ item.text }}
