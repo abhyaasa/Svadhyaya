@@ -15,7 +15,7 @@ angular.module('app')
         var s = {};
         _.extendOwn(s, settings);
         LocalStorage.setObject('settings', s);
-        $log.debug('SAVED SETTINGS'); // TODO confirm saveSettings works
+        $log.debug('SAVED SETTINGS');
     };
 })
 

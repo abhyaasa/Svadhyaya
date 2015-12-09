@@ -47,9 +47,7 @@ Recommended development environment
 
 ### Modules
 
-TODO npm globals also
-
-`npm` managed:
+`npm` development:
 
 ```
 $ /bin/ls node_modules
@@ -63,6 +61,28 @@ gulp			gulp-task-listing	scsslint
 gulp-concat		gulp-util		shelljs
 gulp-help		jasmine-core		xml2js
 gulp-inject		jsdoc
+```
+`npm` global:
+
+```
+~/f/s$ npm ls --depth=0 -g
+/Users/home/.nvm/versions/node/v0.12.7/lib
+├── bower@1.5.3
+├── coffee-script@1.9.3
+├── coffeelint@1.10.1
+├── cordova@5.1.1
+├── htmlhint@0.9.7
+├── ionic@1.6.4
+├── ios-deploy@1.7.0
+├── ios-sim@4.1.1
+├── jasmine@2.3.2
+├── karma-cli@0.1.0
+├── marked@0.3.5
+├── node-inspector@0.12.2
+├── npm@2.13.1
+├── protractor@2.1.0
+├── underscore@1.8.3
+└── xml2js@0.4.10
 ```
 
 `bower` managed:

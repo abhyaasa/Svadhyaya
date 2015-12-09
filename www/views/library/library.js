@@ -48,9 +48,6 @@ angular.module('app')
                 $scope.model.searchText = '';
             }
         });
-        // TODO implement deck button handler using state navigation, as in
-        // http://learn.ionicframework.com/formulas/navigation-and-routing-part-2/
-        // or Ionic book 5.2
     });
 })
 

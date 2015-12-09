@@ -2,8 +2,6 @@
 
 angular.module('services', ['ionic'])
 
-// TODO add Scopes service
-
 /**
  * Use x name as tag, attribute, class name, or after directive in comment.
  * The associated element is removed.
@@ -67,9 +65,10 @@ angular.module('services', ['ionic'])
     this.getObject = function (key) {
         return JSON.parse($window.localStorage[key] || '{}');
     };
-    this.clear = function () { // TODO use LocalStorage clear
-        window.localStorage.clear();
-    };
+    // for possible future use
+    // this.clear = function () {
+    //     window.localStorage.clear();
+    // };
 }])
 
 // TODO test media service: Adapted from
@@ -80,6 +79,10 @@ angular.module('services', ['ionic'])
 //   MediaSrv.loadMedia('sounds/mysound.mp3').then(function (media) {
 //    media.play();
 //   });
+// Also see mawarnes version in forum thread above
+// Alternatives: https://www.npmjs.com/package/cordova-plugin-nativeaudio or
+// http://goldfirestudios.com/blog/104/howler.js-Modern-Web-Audio-Javascript-Library
+// nativeAudio problem with volume control
 .factory('MediaSrv', function ($q, $ionicPlatform, $window, $log) {
     function loadMedia(src, onError, onStatus, onStop) {
         var defer = $q.defer();

@@ -3,7 +3,6 @@
 angular.module('app')
 
 .controller('DeckController', function ($scope, Deck) {
-
     $scope.Deck = Deck;
     // TODO manage filter controls
 })

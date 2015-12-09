@@ -1,6 +1,7 @@
 'use strict';
 
 // Jasmine unit tests
+// REVIEW use Google Chrome Canary instead of chrome in progractor.conf.js
 
 // TODO need to create mock for $hhtp.
 // See http://stackoverflow.com/questions/26612156
@@ -8,10 +9,9 @@
 // and http://gonehybrid.com/how-to-write-automated-tests-for-your-ionic-app-part-2/
 xdescribe('getData', function () {
     var scope;
-    var getData;
     beforeEach(module('services'));
     beforeEach(function () {
-        inject(function ($rootScope, $provider) {
+        inject(function ($rootScope) {
             scope = $rootScope.$new();
             // getData = $provider('getData', ... TODO finish
         });

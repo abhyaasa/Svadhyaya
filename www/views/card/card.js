@@ -53,7 +53,6 @@ angular.module('app')
     $scope.showAnswer = function () {
         if (Card.question.type === 'mind') {
             $scope.done = true;
-            // XXX $scope.$apply();
         }
     };
 
@@ -108,7 +107,7 @@ angular.module('app')
         }
         $scope.done = true;
         $log.debug('Done items', JSON.stringify(items));
-        // TODO score and nextcard
+        // FIXME score and nextcard
     };
 })
 

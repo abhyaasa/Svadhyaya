@@ -1,8 +1,13 @@
 To Do List
 ==========
 
-There is lots to do at this stage. A partial list follows:
+There is lots to do at this stage.
 
+Some are recorded as Atom todo-show (ctrl-shift-T) comments. The following tags are in use, in approximately decreasing order of priority: XX-X (meaning remove me, use w/o -), FIXME, TODO, HACK, REVIEW, ANDROID, PUBLISH, FUTURE.
+
+A partial list of additional items follows, in approximately order of decreasing priority:
+
+- [ ] abhyaasa app and project name
 - [ ] deck media directory
 - [ ] add sound directive
 - [ ] add image directive
@@ -10,6 +15,8 @@ There is lots to do at this stage. A partial list follows:
 - [ ] show scrollbar when full text not visible
 - [ ] deck filtering to subtab
 - [ ] fix library search
+- [ ] unit and integration tests
+  - [ ] remove .atom/config.cson>"todo-show">ignoreThesePaths>...spec.js
 - [ ] Coffee, jade, NOT stylus
 	- [ ] https://github.com/CaryLandholt/ng-classify
 	- [ ] install https://www.npmjs.com/package/gulp-ng-classify#coffeescript
@@ -17,10 +24,6 @@ There is lots to do at this stage. A partial list follows:
 	- [ ] install http://compass-style.org
 	- [ ] test angular-marked with coffee
 - [ ] document code, e.g. https://www.npmjs.com/package/gulp-ngdocs
-- [ ] todo-show TODO, FIXME, and XXX (remove me)
-- [ ] todo-show review
-- [ ] todo-show android
-- [ ] todo-show hack
 - [ ] splash and icon http://learn.ionicframework.com/formulas/adding-an-icon/ and  http://blog.ionic.io/automating-icons-and-splash-screens/
 - [ ] flesh out jsdoc documentation and improve dgeni formatting
 - [ ] deck tab: boxes, filter, resume, (re)start
@@ -32,5 +35,4 @@ There is lots to do at this stage. A partial list follows:
 - [ ] consider adding other features, as in notes/features.txt
 - [ ] Chrome developer > angularjs > hints
 - [ ] make injected functions minifiable, e.g. function (a, b){} => ['a', 'b', function (a, b){}, use ng-strict-di: AngularJS Web Application Development Cookbook p 281
-- [ ] todo-show publish
 - [ ] publish app

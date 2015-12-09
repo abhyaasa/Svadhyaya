@@ -39,10 +39,8 @@ gulp.task('sass', function (done) {
         .on('end', done);
 });
 
-gulp.task('watch', function () {
+gulp.task('watch', 'Only watches sass files.', function () {
     gulp.watch(paths.sass, ['sass']);
-    // XXX no such file or directory '/Users/home/DD/Svadhyaya/resources'...???
-    // gulp.watch(['./index.html'], ['index']);
 });
 
 gulp.task('install', ['git-check'], function () {
@@ -52,7 +50,8 @@ gulp.task('install', ['git-check'], function () {
         });
 });
 
-gulp.task('git-check', function (done) { // run by ionic
+gulp.task('git-check', 'Complain if git not installed.',
+  function (done) { // run by ionic
     if (!sh.which('git')) {
         console.log('  ' + gutil.colors.red('Git is not installed.') +
             '\n  Git, the version control system, is required to download Ionic.' +
@@ -92,7 +91,6 @@ gulp.task('config',
     function () {
         var fs = require('fs'),
             xml2js = require('xml2js'),
-            util = require('util'),
             parser = new xml2js.Parser(),
             xmlstr = fs.readFileSync(__dirname + '/config.xml').toString(),
             jsonFileName = __dirname + '/' + configJsonFile,
