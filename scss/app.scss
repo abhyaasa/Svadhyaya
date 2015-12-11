@@ -34,6 +34,9 @@
   margin: auto;
   width: 90%; }
 
+.em { // needed, since <em> and <i> are not recognized
+  font-style: italic; }
+
 td {
   padding-left: 10px;
   padding-right: 5px; }

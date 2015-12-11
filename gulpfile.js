@@ -8,11 +8,13 @@ var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+var typescript = require('gulp-tsc');
 
 var argv = require('minimist')(process.argv.slice(2)); // added
 
 var paths = {
     sass: ['./scss/**/*.scss'],
+    src: ['./src/*.ts'], // for typescript compilation
     indexScripts: [ // added for index task
         './www/**/*.js',
         '!./www/js/app.js',
@@ -62,6 +64,16 @@ gulp.task('git-check', 'Complain if git not installed.',
         process.exit(1);
     }
     done();
+});
+
+// For Ionic >= 1.2 http://www.typescriptlang.org
+
+gulp.task('compile', 'Typescript compilation', function() {
+    gulp.src(paths.src)
+    .pipe(typescript({
+        emitError: false
+    }))
+    .pipe(gulp.dest('www/js/'));
 });
 
 // The above is from the ionic starter execpt as indicated by 'added' comments.

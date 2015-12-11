@@ -1,38 +1,43 @@
-To Do List
-==========
+Things To Do
+============
 
 There is lots to do at this stage.
 
 Some are recorded as Atom todo-show (ctrl-shift-T) comments. The following tags are in use, in approximately decreasing order of priority: XX-X (meaning remove me, use w/o -), FIXME, TODO, HACK, REVIEW, ANDROID, PUBLISH, FUTURE.
 
-A partial list of additional items follows, in approximately order of decreasing priority:
+A partial list of additional items follows, in approximately order of decreasing priority with ? flagging questionable moves:
 
-- [ ] abhyaasa app and project name
-- [ ] deck media directory
-- [ ] add sound directive
-- [ ] add image directive
-- [ ] navbar back on startup
-- [ ] show scrollbar when full text not visible
-- [ ] deck filtering to subtab
-- [ ] fix library search
-- [ ] unit and integration tests
-  - [ ] remove .atom/config.cson>"todo-show">ignoreThesePaths>...spec.js
-- [ ] Coffee, jade, NOT stylus
-	- [ ] https://github.com/CaryLandholt/ng-classify
-	- [ ] install https://www.npmjs.com/package/gulp-ng-classify#coffeescript
-	- [ ] install https://github.com/js2coffee/js2coffee
-	- [ ] install http://compass-style.org
-	- [ ] test angular-marked with coffee
-- [ ] document code, e.g. https://www.npmjs.com/package/gulp-ngdocs
-- [ ] splash and icon http://learn.ionicframework.com/formulas/adding-an-icon/ and  http://blog.ionic.io/automating-icons-and-splash-screens/
-- [ ] flesh out jsdoc documentation and improve dgeni formatting
-- [ ] deck tab: boxes, filter, resume, (re)start
-- [ ] help content context sensitive
-- [ ] version in data/config.json, bower.json, package.json, and config.xml
-- [ ] complete basic functionality
-- [ ] ios and android simualtor testing
-- [ ] ios and android device testing
-- [ ] consider adding other features, as in notes/features.txt
-- [ ] Chrome developer > angularjs > hints
-- [ ] make injected functions minifiable, e.g. function (a, b){} => ['a', 'b', function (a, b){}, use ng-strict-di: AngularJS Web Application Development Cookbook p 281
-- [ ] publish app
+- html text markup not interpreted, strong and em markdown output not interpreted at all
+- answer html shown with markup
+- ionic 1.2 <label -> <ion-label
+- ? typescript http://blog.ionic.io/ionic-and-typescript-part-2/
+- readme features list
+- abhyaasa app and project name
+- deck media directory
+- add image directive and img tag support
+- add sound directive
+- navbar back on startup
+- show scrollbar when full text not visible
+- deck filtering to subtab
+- fix library search
+- unit and integration tests
+  - remove .atom/config.cson>"todo-show">ignoreThesePaths>...spec.js
+- ? Coffee, jade, NOT stylus
+	- https://github.com/CaryLandholt/ng-classify
+	- install https://www.npmjs.com/package/gulp-ng-classify#coffeescript
+	- install https://github.com/js2coffee/js2coffee
+	- install http://compass-style.org
+	- test angular-marked with coffee
+- document code, e.g. https://www.npmjs.com/package/gulp-ngdocs
+- splash and icon http://learn.ionicframework.com/formulas/adding-an-icon/ and  http://blog.ionic.io/automating-icons-and-splash-screens/
+- flesh out jsdoc documentation and improve dgeni formatting
+- deck tab: boxes, filter, resume, (re)start
+- help content context sensitive
+- version in data/config.json, bower.json, package.json, and config.xml
+- complete basic functionality
+- ios and android simualtor testing
+- ios and android device testing
+- consider adding other features, as in notes/features.txt
+- Chrome developer > angularjs > hints
+- make injected functions minifiable, e.g. function (a, b){} => ['a', 'b', function (a, b){}, use ng-strict-di: AngularJS Web Application Development Cookbook p 281
+- publish app

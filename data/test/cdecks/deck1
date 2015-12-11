@@ -1,3 +1,9 @@
+;.devanagari
+;.tq;श्रद्धावाँल्ल =f
+;/.devanagari
+;.iast,.tr;pranava =om
+;.html;<strong>bold html markup</strong>
+;.md;markdown *emphasis* **bold** =**bold answer**
 ;.matching
 ;;a =1
 ;;b =2
@@ -37,8 +43,3 @@
 one
 two
 three
-;.devanagari
-;.tq;श्रद्धावाँल्ल =f
-;/.devanagari
-;.iast,.tr;pranava =om
-;.md;*emphasis* =**bold**

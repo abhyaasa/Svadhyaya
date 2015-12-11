@@ -7692,6 +7692,9 @@ a.button {
   margin: auto;
   width: 90%; }
 
+.em {
+  font-style: italic; }
+
 td {
   padding-left: 10px;
   padding-right: 5px; }

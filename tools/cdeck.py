@@ -20,6 +20,7 @@ except:
     pass
 
 debug_mode = False
+# debug_mode = True
 
 UTF8READER = codecs.getreader('utf8')
 UTF8WRITER = codecs.getwriter('utf8')
@@ -74,8 +75,7 @@ Tags interpreted by this program and removed from output:
            and all questions in a sequence share the same tags.
 .text : question of "text" type, for preferatory text (not a question)
 .md : question, response, and hints text is in ascii markdown format
-      (requires markdown module and associated python version)
-.html : text is in html format
+      (requires markdown module and associated python version, implies .html tag)
 .tr : transliterate responses
 .tq : transliterate question
 .th : transliterate hints
@@ -93,6 +93,7 @@ Tags interpreted by this program and removed from output:
 Tags retained in output, for use by the app, and in the special_apptime_tags list:
 
 .cs : response is case sensitive
+.html : text is in html format
 .ma : multiple right answer (multiple choices) question
 
 Text is in HTML format. The characters <, >, &, ', and " are automatically escaped in
@@ -134,7 +135,7 @@ def html_escape(text):
 number_cre = re.compile(r'.\d+|\d+.\d*|\d+')
 isnumber = number_cre.match
 from_tags = set('.iast .harvard-kyoto .itrans .velthuis .slp1 .devanagari'.split())
-special_apptime_tags = '.cs .ma'.split()
+special_apptime_tags = '.cs .ma .html'.split()
 
 def istag(string):
     return filter(None, [c.isalnum() or c in '._ -' for c in string])
@@ -144,6 +145,10 @@ def isapptime(tag):
 
 def tag_filter(tags):
     return list(filter(isapptime, tags))
+
+def post_markdown(text):
+    # markdown generates <em>, which is not interpreted by browser
+    return text.replace('<em>', '<span class="em">').replace('</em>', '</span>')
 
 def main(args):
     """Command line invocation with argparse args."""
@@ -167,11 +172,11 @@ def main(args):
     def do_text(text, translit=False):
         text = unescape(text)
         if markdown_mode:
-            text = str(markdown(text))
+            text = str(post_markdown(markdown(text)))
         if translit:
             return (translate(text, trans_from, args.trans_to),
                     translate(text, trans_from, 'devanagari'))
-        elif tags.intersection(['.html', '.md']):
+        elif qtags.intersection(['.html', '.md']):
             return text
         else:
             return html_escape(text)
@@ -246,6 +251,7 @@ def main(args):
             qtags |= tags
             if '.md' in qtags:
                 markdown_mode = True
+                qtags.add('.html')
             q_from_tags = from_tags.intersection(qtags)
             if len(q_from_tags) > 1:
                 error('at most one from tag')

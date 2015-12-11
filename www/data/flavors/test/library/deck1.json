@@ -1,67 +1,104 @@
 [
  {
-  "answer": "1", 
+  "answer": false, 
   "id": 0, 
-  "matchingBegin": 0, 
-  "matchingEnd": 5, 
+  "tags": [], 
+  "text": [
+   "\u015braddh\u0101v\u0101~lla", 
+   "\u0936\u094d\u0930\u0926\u094d\u0927\u093e\u0935\u093e\u0901\u0932\u094d\u0932"
+  ], 
+  "type": "true-false"
+ }, 
+ {
+  "answer": [
+   "om", 
+   "\u0950"
+  ], 
+  "id": 1, 
+  "tags": [], 
+  "text": "pranava", 
+  "type": "mind"
+ }, 
+ {
+  "id": 2, 
+  "tags": [
+   ".html"
+  ], 
+  "text": "<strong>bold html markup</strong>", 
+  "type": "mind"
+ }, 
+ {
+  "answer": "<p><strong>bold answer</strong></p>", 
+  "id": 3, 
+  "tags": [
+   ".html"
+  ], 
+  "text": "<p>markdown <span class=\"em\">emphasis</span> <strong>bold</strong></p>", 
+  "type": "mind"
+ }, 
+ {
+  "answer": "1", 
+  "id": 4, 
+  "matchingBegin": 4, 
+  "matchingEnd": 9, 
   "tags": [], 
   "text": "a", 
   "type": "matching"
  }, 
  {
   "answer": "2", 
-  "id": 1, 
-  "matchingBegin": 0, 
-  "matchingEnd": 5, 
+  "id": 5, 
+  "matchingBegin": 4, 
+  "matchingEnd": 9, 
   "tags": [], 
   "text": "b", 
   "type": "matching"
  }, 
  {
   "answer": "3", 
-  "id": 2, 
-  "matchingBegin": 0, 
-  "matchingEnd": 5, 
+  "id": 6, 
+  "matchingBegin": 4, 
+  "matchingEnd": 9, 
   "tags": [], 
   "text": "c", 
   "type": "matching"
  }, 
  {
   "answer": "4", 
-  "id": 3, 
-  "matchingBegin": 0, 
-  "matchingEnd": 5, 
+  "id": 7, 
+  "matchingBegin": 4, 
+  "matchingEnd": 9, 
   "tags": [], 
   "text": "d", 
   "type": "matching"
  }, 
  {
   "answer": "5", 
-  "id": 4, 
-  "matchingBegin": 0, 
-  "matchingEnd": 5, 
+  "id": 8, 
+  "matchingBegin": 4, 
+  "matchingEnd": 9, 
   "tags": [], 
   "text": "e", 
   "type": "matching"
  }, 
  {
   "answer": "6", 
-  "id": 5, 
-  "matchingBegin": 0, 
-  "matchingEnd": 5, 
+  "id": 9, 
+  "matchingBegin": 4, 
+  "matchingEnd": 9, 
   "tags": [], 
   "text": "f", 
   "type": "matching"
  }, 
  {
-  "id": 6, 
+  "id": 10, 
   "tags": [], 
   "text": "Some text: not a question", 
   "type": "text"
  }, 
  {
   "answer": true, 
-  "id": 7, 
+  "id": 11, 
   "tags": [
    "foo", 
    "bar"
@@ -70,7 +107,7 @@
   "type": "true-false"
  }, 
  {
-  "id": 8, 
+  "id": 12, 
   "tags": [
    "foo"
   ], 
@@ -78,7 +115,7 @@
   "type": "text"
  }, 
  {
-  "id": 9, 
+  "id": 13, 
   "responses": [
    [
     true, 
@@ -96,7 +133,7 @@
   "type": "multiple-choice"
  }, 
  {
-  "id": 10, 
+  "id": 14, 
   "responses": [
    [
     false, 
@@ -146,7 +183,7 @@
   "type": "multiple-choice"
  }, 
  {
-  "id": 11, 
+  "id": 15, 
   "responses": [
    [
     true, 
@@ -170,7 +207,7 @@
  }, 
  {
   "answer": "Cs", 
-  "id": 12, 
+  "id": 16, 
   "tags": [
    ".cs", 
    "foo"
@@ -179,7 +216,7 @@
   "type": "mind"
  }, 
  {
-  "id": 13, 
+  "id": 17, 
   "number": 1.0, 
   "tags": [
    "a", 
@@ -192,7 +229,7 @@
   "hints": [
    "hint ?questionmark"
   ], 
-  "id": 14, 
+  "id": 18, 
   "tags": [
    "foo"
   ], 
@@ -200,7 +237,7 @@
   "type": "mind"
  }, 
  {
-  "id": 15, 
+  "id": 19, 
   "responses": [
    [
     false, 
@@ -216,7 +253,7 @@
   "type": "multiple-choice"
  }, 
  {
-  "id": 16, 
+  "id": 20, 
   "tags": [
    "c"
   ], 
@@ -225,49 +262,22 @@
  }, 
  {
   "answer": "answer a = b", 
-  "id": 17, 
+  "id": 21, 
   "tags": [], 
   "text": "mind", 
   "type": "mind"
  }, 
  {
-  "id": 18, 
+  "id": 22, 
   "tags": [], 
   "text": "one", 
   "type": "mind"
  }, 
  {
   "answer": "three", 
-  "id": 19, 
+  "id": 23, 
   "tags": [], 
   "text": "two", 
-  "type": "mind"
- }, 
- {
-  "answer": false, 
-  "id": 20, 
-  "tags": [], 
-  "text": [
-   "\u015braddh\u0101v\u0101~lla", 
-   "\u0936\u094d\u0930\u0926\u094d\u0927\u093e\u0935\u093e\u0901\u0932\u094d\u0932"
-  ], 
-  "type": "true-false"
- }, 
- {
-  "answer": [
-   "om", 
-   "\u0950"
-  ], 
-  "id": 21, 
-  "tags": [], 
-  "text": "pranava", 
-  "type": "mind"
- }, 
- {
-  "answer": "&lt;p&gt;&lt;strong&gt;bold&lt;/strong&gt;&lt;/p&gt;", 
-  "id": 22, 
-  "tags": [], 
-  "text": "&lt;p&gt;&lt;em&gt;emphasis&lt;/em&gt;&lt;/p&gt;", 
   "type": "mind"
  }
 ]

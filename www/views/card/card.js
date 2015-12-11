@@ -113,7 +113,16 @@ angular.module('app')
 
 .controller('CardHelpController', function () {})
 
-.service('Card', function ($log, $state, Deck, settings, _) {
+// http://creative-punch.net/2014/04/preserve-html-text-output-angularjs/
+// FIXME May generate Error: [$sce:itype] Attempted to trust a non-string value in a
+//   content requiring a string: Context: html
+.filter('unsafe', function($sce) {
+    return function(val) {
+        return $sce.trustAsHtml(val);
+    };
+})
+
+.service('Card', function ($sce, $log, $state, Deck, settings, _) {
     var Card = this;
 
     var makeItem = function (response) {
