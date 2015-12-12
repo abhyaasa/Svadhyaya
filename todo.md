@@ -7,8 +7,6 @@ Some are recorded as Atom todo-show (ctrl-shift-T) comments. The following tags 
 
 A partial list of additional items follows, in approximately order of decreasing priority with ? flagging questionable moves:
 
-- html text markup not interpreted, strong and em markdown output not interpreted at all
-- answer html shown with markup
 - ionic 1.2 <label -> <ion-label
 - ? typescript http://blog.ionic.io/ionic-and-typescript-part-2/
 - readme features list

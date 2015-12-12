@@ -92,12 +92,15 @@ Tags interpreted by this program and removed from output:
 
 Tags retained in output, for use by the app, and in the special_apptime_tags list:
 
-.cs : response is case sensitive
+.cs : case sensitive input responses
+.ci : case insensitive input response
 .html : text is in html format
 .ma : multiple right answer (multiple choices) question
 
 Text is in HTML format. The characters <, >, &, ', and " are automatically escaped in
 text unless the .md or .html tags are active.
+
+.cs and .ci tags are mutually exclusive. An input field is presented if either is present.
 
 Use --test_input argument to display input demonstrating the above options.
 
@@ -135,7 +138,7 @@ def html_escape(text):
 number_cre = re.compile(r'.\d+|\d+.\d*|\d+')
 isnumber = number_cre.match
 from_tags = set('.iast .harvard-kyoto .itrans .velthuis .slp1 .devanagari'.split())
-special_apptime_tags = '.cs .ma .html'.split()
+special_apptime_tags = '.cs .ci .ma .html'.split()
 
 def istag(string):
     return filter(None, [c.isalnum() or c in '._ -' for c in string])
@@ -249,6 +252,8 @@ def main(args):
             if intersection:
                 error('tag(s) in context: ' + str(intersection))
             qtags |= tags
+            if len(set(['.cs', '.ci']) & qtags) > 1:
+                error('.cs and .ci tags are mutually exclusive')
             if '.md' in qtags:
                 markdown_mode = True
                 qtags.add('.html')
@@ -294,7 +299,7 @@ def main(args):
                         aq['number'] = q['number']
                     quiz.append(aq)
                     id_num += 1
-                q['type'] = 'mind'
+                q['type'] = ''
                 q['text'] = lines[-2]
                 q['answer'] = lines[-1]
             elif not responses:

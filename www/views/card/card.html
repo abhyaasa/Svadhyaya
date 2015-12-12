@@ -26,9 +26,25 @@
                     <button ng-hide="done" class="button button-stable button-block" ng-click="showAnswer()">
                         Show answer
                     </button>
-                    <div ng-show="done" class="answer">
+
+                    <div ng-show="Card.isInput" class="list">
+                        <x>FIXME submit button on same line</x>
+                        <div class="item item-input-inset">
+                            <form ng-submit="submitAnswer(submittedAnswer)" name="inputForm">
+                                <label class="item-input-wrapper">
+                                    <input type="text" placeholder="Enter answer" ng-model="submittedAnswer" required>
+                                    </input>
+                                </label>
+                                <button class="button button-small" ng-disabled="inputForm.$invalid">
+                                    Submit
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div ng-show="done" ng-class="Card.answerClass">
                         <p ng-bind-html="Card.question.answer | unsafe"></p>
-                        <div class="button-bar">
+                        <div ng-hide="Card.isInput" class="button-bar">
                             <button class="button button-stable button-block" ng-click="setOutcome('right')">
                                 Right
                             </button>

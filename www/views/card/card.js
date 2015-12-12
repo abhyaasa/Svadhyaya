@@ -65,18 +65,18 @@ angular.module('app')
             return response[0];
         };
     $scope.response = function (index) {
-        var card = Card.question;
+        var q = Card.question;
         var items = Card.responseItems;
-        if (_.contains(card.tags, '.ma')) {
-            $log.debug('multiple answer', index, JSON.stringify(card.responses));
-            if (card.responses[index][0]) {
+        if (_.contains(q.tags, '.ma')) {
+            $log.debug('multiple answer', index, JSON.stringify(q.responses));
+            if (q.responses[index][0]) {
                 items[index].style = 'right-response';
             } else {
                 items[index].style = 'wrong-response';
-                card.numWrong += 1;
+                Card.numWrong += 1;
             }
         } else {
-            var rightIndex = _.findIndex(card.responses, isRight);
+            var rightIndex = _.findIndex(q.responses, isRight);
             items[rightIndex].style = 'right-response';
             if (index !== rightIndex) {
                 items[index].style = 'wrong-response';
@@ -87,6 +87,20 @@ angular.module('app')
             $scope.done = true;
         }
         $log.debug('response items', JSON.stringify(items));
+    };
+
+    $scope.submitAnswer = function (submittedAnswer) {
+        var answer = Card.question.answer;
+        if (_.contains(Card.question.tags, '.ci')) {
+            answer = answer.toUpperCase();
+            submittedAnswer = submittedAnswer.toUpperCase();
+        }
+        if (answer === submittedAnswer) {
+            Card.outcome('right');
+        } else {
+            Card.outcome('wrong');
+        }
+        $scope.done = true;
     };
 
     $scope.maDone = function () {
@@ -132,6 +146,9 @@ angular.module('app')
         Deck.data.activeCardIndex = activeCardIndex;
         Card.question = Deck.questions[Deck.data.active[activeCardIndex]];
         Card.isMA = _.contains(Card.question.tags, '.ma');
+        Card.answerClass = 'answer';
+        Card.isInput = (_.contains(Card.question.tags, '.cs') ||
+            _.contains(Card.question.tags, '.ci'));
         Card.text = Card.question.text;
         var responses = Card.question.responses;
         if (_.isArray(Card.text)) {
@@ -183,6 +200,9 @@ angular.module('app')
     };
 
     this.outcome = function (outcome) {
+        if (outcome === 'wrong') {
+            Card.answerClass = 'wrong-response';
+        }
         Deck.data.outcomes[Deck.data.activeCardIndex] = outcome;
         Deck.data.history[Card.question.id].push(outcome);
     };

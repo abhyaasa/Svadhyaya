@@ -1,6 +1,8 @@
 ;.devanagari
 ;.tq;श्रद्धावाँल्ल =f
 ;/.devanagari
+;.cs;case sensitive =Cs
+;.ci;case insensitive =Ci
 ;.iast,.tr;pranava =om
 ;.html;<strong>bold html markup</strong>
 ;.md;markdown *emphasis* **bold** =**bold answer**
@@ -29,7 +31,6 @@
 /i
 /j
 ;.ma;multiple answers on this one =a =b /c
-;.cs;case sensitive =Cs
 ;a,1;qt
 ;;q with
 ?    hint \?questionmark

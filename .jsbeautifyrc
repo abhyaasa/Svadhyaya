@@ -24,6 +24,7 @@
         "newline_between_rules": true
     },
     "html": {
+        "indent_size": 2,
         "eol": "\n",
         "end_with_newline": true,
         "preserve_newlines": true,
