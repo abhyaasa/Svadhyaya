@@ -7,35 +7,40 @@ angular.module('app')
     $scope.done = false;
     $scope.Card = Card;
     $scope.Deck = Deck;
-    $scope.$on('$ionicView.enter', function() {
+    $scope.$on('$ionicView.enter', function () {
         if (!Card.question) {
             Card.setup(0);
         }
     });
 
+    var element = angular.element(document.querySelector('#content'));
     var finish = function () {
         if (!$scope.done) {
             Card.outcome('skipped');
         }
         $scope.done = false;
     };
+
     var next = function () {
         finish();
         Card.nextCard();
     };
+    $ionicGesture.on('swipeleft', next, element);
+
     var previous = function () {
         finish();
         Card.previousCard();
     };
-    var discard = function () {
-        $scope.done = false;
-        Card.outcome('discarded');
-        Card.discardCard();
-    };
-    var element = angular.element(document.querySelector('#content'));
-    $ionicGesture.on('swipeleft', next, element);
     $ionicGesture.on('swiperight', previous, element);
-    $ionicGesture.on('swipeup', discard, element);
+
+    var remove = function () {
+        $scope.done = false;
+        Card.outcome('removed');
+        Card.nextCard();
+    };
+    $ionicGesture.on('swipeup', remove, element);
+
+    // FUTURE swipedown to review card stack
 
     $scope.hint = function () {
         // TODO add mc and auto mind hints using settings.hintPercent
@@ -62,8 +67,8 @@ angular.module('app')
     };
 
     var isRight = function (response) {
-            return response[0];
-        };
+        return response[0];
+    };
     $scope.response = function (index) {
         var q = Card.question;
         var items = Card.responseItems;
@@ -130,8 +135,8 @@ angular.module('app')
 // http://creative-punch.net/2014/04/preserve-html-text-output-angularjs/
 // FIXME May generate Error: [$sce:itype] Attempted to trust a non-string value in a
 //   content requiring a string: Context: html
-.filter('unsafe', function($sce) {
-    return function(val) {
+.filter('unsafe', function ($sce) {
+    return function (val) {
         return $sce.trustAsHtml(val);
     };
 })
@@ -140,7 +145,10 @@ angular.module('app')
     var Card = this;
 
     var makeItem = function (response) {
-        return { text: response[1], style: 'no-response' };
+        return {
+            text: response[1],
+            style: 'no-response'
+        };
     };
     this.setup = function (activeCardIndex) {
         Deck.data.activeCardIndex = activeCardIndex;
@@ -157,7 +165,10 @@ angular.module('app')
         Card.hintIndex = Card.question.hints ? 0 : undefined;
         if (Card.question.type === 'true-false') {
             // Rewrite true-false as multiple-choice
-            Card.question.responses = [[false, 'True'], [false, 'False']];
+            Card.question.responses = [
+                [false, 'True'],
+                [false, 'False']
+            ];
             Card.question.responses[Card.question.answer ? 0 : 1][0] = true;
             Card.question.type = 'multiple-choice';
         } else if (Card.question.type === 'mind' && !Card.question.answer) {
@@ -183,7 +194,9 @@ angular.module('app')
                 }
             }
             var numResponses = 5;
-            responses = _.sample(responses, numResponses - 1).concat([[true, q.answer]]);
+            responses = _.sample(responses, numResponses - 1).concat([
+                [true, q.answer]
+            ]);
             Card.question.responses = responses;
             Card.question.type = 'multiple-choice';
         }
@@ -209,10 +222,13 @@ angular.module('app')
 
     this.nextCard = function () {
         if (Deck.data.activeCardIndex === Deck.data.active.length - 1) {
-            Card.setup(0);
+            Deck.data.done = true;
             $state.go('tabs.deck');
         } else {
             Card.setup(Deck.data.activeCardIndex + 1);
+            if (Deck.data.outcomes[Deck.data.activeCardIndex] === 'removed') {
+                this.nextCard();
+            }
             $state.go('tabs.card');
         }
     };
@@ -226,5 +242,4 @@ angular.module('app')
             $state.go('tabs.card');
         }
     };
-})
-;
+});

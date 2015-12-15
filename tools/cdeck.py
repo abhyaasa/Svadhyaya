@@ -65,6 +65,8 @@ If no answer or distractors, then it is a sequence question, whose mind answer
 is the next question. Otherwise, if one or more distractors, then multiple-choice question. If one answer and no distractors, then if answer is True, False, T or F
 (case insensitive), then true/false question, and otherwise mind answer question.
 
+HTML (raw or from markdown) is processed by replacing <em> tags with <span class="em">
+and adding the img tag src prefix indicated by the optional media argument.
 
 SPECIAL TAGS
 
@@ -136,6 +138,7 @@ def html_escape(text):
     return "".join(html_escape_table.get(c, c) for c in text)
 
 number_cre = re.compile(r'.\d+|\d+.\d*|\d+')
+media_prefix_cre = re.compile(r'<img [^>]*src="')
 isnumber = number_cre.match
 from_tags = set('.iast .harvard-kyoto .itrans .velthuis .slp1 .devanagari'.split())
 special_apptime_tags = '.cs .ci .ma .html'.split()
@@ -149,9 +152,14 @@ def isapptime(tag):
 def tag_filter(tags):
     return list(filter(isapptime, tags))
 
-def post_markdown(text):
+def process_html(html, media_prefix):
     # markdown generates <em>, which is not interpreted by browser
-    return text.replace('<em>', '<span class="em">').replace('</em>', '</span>')
+    html = html.replace('<em>', '<span class="em">').replace('</em>', '</span>')
+    if media_prefix: # prefix media path to img src
+        def prefixer(mo):
+            return mo.group(0) + media_prefix + '/'
+        html = re.sub(r'<img [^>]*src="', prefixer, html)
+    return html
 
 def main(args):
     """Command line invocation with argparse args."""
@@ -175,12 +183,12 @@ def main(args):
     def do_text(text, translit=False):
         text = unescape(text)
         if markdown_mode:
-            text = str(post_markdown(markdown(text)))
+            text = markdown(text)
         if translit:
             return (translate(text, trans_from, args.trans_to),
                     translate(text, trans_from, 'devanagari'))
         elif qtags.intersection(['.html', '.md']):
-            return text
+            return str(process_html(text, args.media))
         else:
             return html_escape(text)
 
@@ -340,6 +348,8 @@ def get_args():
                    help='json format file, default stdout')
     p.add_argument('--trans_to', type=str, default='iast',
                    help='transliteration translation output form (default itrans)')
+    p.add_argument('-m', '--media', type=str, default='',
+                   help='prefix added to html img src, default none')
     p.add_argument('-t', '--test', action='store_true',
                    help='run with test variable value as input')
     p.add_argument('--test_input', action='store_true',
@@ -380,8 +390,8 @@ three
 ;;b =B
 """
 
-test = u""";.text;some text
-;;t/f =t"""
+# "gulp cmd -a cdtest" runs 'cd tools; cdeck.py -t -m "prefix"'
+test = u""";.md;![Alt text](to/img.jpg "Optional title")"""
 
 if __name__ == "__main__":
     main(get_args())

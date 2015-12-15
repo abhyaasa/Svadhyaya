@@ -53,27 +53,27 @@ gulp.task('install', ['git-check'], function () {
 });
 
 gulp.task('git-check', 'Complain if git not installed.',
-  function (done) { // run by ionic
-    if (!sh.which('git')) {
-        console.log('  ' + gutil.colors.red('Git is not installed.') +
-            '\n  Git, the version control system, is required to download Ionic.' +
-            '\n  Download git here: ' +
-            gutil.colors.cyan('http://git-scm.com/downloads') + '.' +
-            '\n  Once git is installed, run \'' +
-            gutil.colors.cyan('gulp install') + '\' again.');
-        process.exit(1);
-    }
-    done();
-});
+    function (done) { // run by ionic
+        if (!sh.which('git')) {
+            console.log('  ' + gutil.colors.red('Git is not installed.') +
+                '\n  Git, the version control system, is required to download Ionic.' +
+                '\n  Download git here: ' +
+                gutil.colors.cyan('http://git-scm.com/downloads') + '.' +
+                '\n  Once git is installed, run \'' +
+                gutil.colors.cyan('gulp install') + '\' again.');
+            process.exit(1);
+        }
+        done();
+    });
 
 // For Ionic >= 1.2 http://www.typescriptlang.org
 
-gulp.task('compile', 'Typescript compilation', function() {
+gulp.task('compile', 'Typescript compilation', function () {
     gulp.src(paths.src)
-    .pipe(typescript({
-        emitError: false
-    }))
-    .pipe(gulp.dest('www/js/'));
+        .pipe(typescript({
+            emitError: false
+        }))
+        .pipe(gulp.dest('www/js/'));
 });
 
 // The above is from the ionic starter execpt as indicated by 'added' comments.
@@ -181,16 +181,17 @@ gulp.task('dgeni', 'Generate jsdoc documentation.', function () {
 });
 
 var commands = {
-    default: 'cd data/test/cdecks; update.sh deck1'
+    default: 'cd data/test/cdecks; update.sh deck1',
+    cdtest: 'cd tools; cdeck.py -t -m "prefix"'
 };
 
-gulp.task('cmd', '[alias] Execute shell command named alias (default "default")',
-  function () {
-    var alias = argv._[1] ? argv._[1] : 'default';
-    var cmd = commands[alias];
-    console.log('cmd', cmd);
-    sh.exec(cmd);
-});
+gulp.task('cmd', '[-a alias] Execute shell command named alias (default "default")',
+    function () {
+        var alias = argv.a ? argv.a : 'default';
+        var cmd = commands[alias];
+        console.log('cmd', cmd);
+        sh.exec(cmd);
+    });
 
 // ------------------ Testing tasks follow -------------------------------------
 // utest and karma tasks adapted from https://www.npmjs.com/package/gulp-karma,

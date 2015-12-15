@@ -4,6 +4,10 @@ angular.module('app')
 
 .controller('DeckController', function ($scope, Deck) {
     $scope.Deck = Deck;
+
+    $scope.getCount = function (key) {
+        return key in Deck.count ? Deck.count[key] : 0;
+    };
     // TODO manage filter controls
 })
 
@@ -43,11 +47,25 @@ angular.module('app')
                 history: _.map(Deck.questions, function () { return []; }),
                 filter: copy(initialFilterSettings),
                 active: filter(Deck.questions), // indices of active quesitons
-                activeCardIndex: undefined // current card ref. into active index list
+                activeCardIndex: undefined, // current card ref. into active index list
+                done: false
             };
             Deck.data.outcomes = new Array(Deck.data.active.length);
             $state.go('tabs.card');
         });
+    };
+
+    this.restart = function (restoreRemoved) {
+        if (restoreRemoved) {
+            Deck.data.outcomes = new Array(Deck.data.active.length);
+        } else {
+            Deck.data.outcomes = _.map(Deck.data.outcomes, function (outcome) {
+                return outcome === 'removed' ? 'removed' : undefined;
+            });
+        }
+        Deck.data.activeCardIndex = 0;
+        Deck.data.done = false;
+        $state.go('tabs.card');
     };
 
     var multiset = function (array) {
@@ -64,14 +82,12 @@ angular.module('app')
     var isUndefined = function(value) {
         return value === undefined;
     };
-    this.setCount = function () {
+    this.enterTab = function () {
+        // TODO deck restart
         if (Deck.data) {
             Deck.count = multiset(Deck.data.outcomes);
             Deck.count.remaining = _.filter(Deck.data.outcomes, isUndefined).length;
         }
-    };
-    this.getCount = function (key) {
-        return key in Deck.count ? Deck.count[key] : 0;
     };
 })
 ;

@@ -9,13 +9,13 @@ import json
 import argparse
 
 EPILOG = """
-The index is a list of names of files in the directory, excluding the index file itself, if in the directory, and file names beginning with ".".
+The index is a list of names of .json files in the directory, excluding the index file itself, if in the directory.
 """
 
 def main(args):
     # use os.path.isfile or os.path.isdir to avoid directories
     files = [filename for filename in os.listdir(args.directory)
-             if not filename.startswith('.')]
+             if filename.endswith('.json')]
     if args.output == '-':
         writer = sys.stdout
     else:
