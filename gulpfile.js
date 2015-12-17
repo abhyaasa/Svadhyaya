@@ -1,16 +1,13 @@
 'use strict';
 
-var gulp = require('gulp-help')(require('gulp'));
-var gutil = require('gulp-util');
-var bower = require('bower');
-var concat = require('gulp-concat');
-var sass = require('gulp-sass');
-var minifyCss = require('gulp-minify-css');
-var rename = require('gulp-rename');
-var sh = require('shelljs');
-var typescript = require('gulp-tsc');
+// Configuration constants
 
-var argv = require('minimist')(process.argv.slice(2)); // added
+var cmdAliases = {
+    cd: 'cd data/test/cdecks; update.sh deck1',
+    si: 'gulp is -i',
+    ei: 'gulp; ionic emulate ios',
+    cdt: 'cd tools; cdeck.py -t -m "prefix"'
+};
 
 var paths = {
     sass: ['./scss/**/*.scss'],
@@ -24,6 +21,26 @@ var paths = {
 };
 paths.appScripts = paths.indexScripts.concat(
     ['./www/js/app.js', './www/**/*spec.js']);
+
+var configJsonFile = 'www/data/config.json';
+
+var ionicBrowser = ' --browser /Applications/Google\\ Chrome\\ Canary.app';
+
+
+var gulp = require('gulp-help')(require('gulp'));
+var gutil = require('gulp-util');
+var bower = require('bower');
+var sass = require('gulp-sass');
+var minifyCss = require('gulp-minify-css');
+var rename = require('gulp-rename');
+var sh = require('shelljs');
+// var typescript = require('gulp-tsc');
+// var concat = require('gulp-concat');
+
+var argv = require('minimist')(process.argv.slice(2)); // added
+
+
+// Tasks from the ionic starter
 
 gulp.task('default', ['sass', 'index', 'config']); // added index and config
 
@@ -66,19 +83,17 @@ gulp.task('git-check', 'Complain if git not installed.',
         done();
     });
 
+
+// Tasks specific to this project
+
 // For Ionic >= 1.2 http://www.typescriptlang.org
-
-gulp.task('compile', 'Typescript compilation', function () {
-    gulp.src(paths.src)
-        .pipe(typescript({
-            emitError: false
-        }))
-        .pipe(gulp.dest('www/js/'));
-});
-
-// The above is from the ionic starter execpt as indicated by 'added' comments.
-// -----------------------------------------------------------------------------
-// The following is specific to this project.
+// gulp.task('compile', 'Typescript compilation', function () {
+//     gulp.src(paths.src)
+//         .pipe(typescript({
+//             emitError: false
+//         }))
+//         .pipe(gulp.dest('www/js/'));
+// });
 
 gulp.task('index', 'Inject script and css elements into www/index.html',
     // after http://digitaldrummerj.me/gulp-inject/
@@ -94,8 +109,6 @@ gulp.task('index', 'Inject script and css elements into www/index.html',
                 }))
             .pipe(gulp.dest('./www'));
     });
-
-var configJsonFile = 'www/data/config.json';
 
 gulp.task('config',
     'Transfer some config data from config.xml to www/data/config.json.',
@@ -132,8 +145,6 @@ gulp.task('flavor',
             sh.exec('ln -s -f data/flavors' + argv.name + '/resources .');
         }
     });
-
-var ionicBrowser = ' --browser /Applications/Google\\ Chrome\\ Canary.app';
 
 gulp.task('is',
     '[-a|-i|-l] for ionic serve for android, ios, or (default) both', ['default'],
@@ -180,16 +191,9 @@ gulp.task('dgeni', 'Generate jsdoc documentation.', function () {
     }
 });
 
-var commands = {
-    default: 'cd data/test/cdecks; update.sh deck1',
-    i: 'gulp is -i',
-    cdtest: 'cd tools; cdeck.py -t -m "prefix"'
-};
-
-gulp.task('cmd', '[-a alias] Execute shell command named alias (default "default")',
+gulp.task('cmd', '-a alias  Execute shell command in aliases dictionary',
     function () {
-        var alias = argv.a ? argv.a : 'default';
-        var cmd = commands[alias];
+        var cmd = cmdAliases[argv.a];
         console.log('cmd', cmd);
         sh.exec(cmd);
     });
