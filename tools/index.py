@@ -9,7 +9,7 @@ import json
 import argparse
 
 EPILOG = """
-The index is a list of names of .json files in the directory, excluding the index file itself, if in the directory.
+The index is a list of names of .json files in the directory, excluding the index file itself (if it is in the directory).
 """
 
 def main(args):

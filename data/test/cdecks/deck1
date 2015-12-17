@@ -3,7 +3,7 @@
 ;/.devanagari
 ;.cs;case sensitive =Cs
 ;.ci;case insensitive =Ci
-;.md;image ![Alt text](to/img.jpg "Optional title")
+;.md;image ![Buddy](buddyShelter.jpg "Buddy at shelter")
 ;.iast,.tr;pranava =om
 ;.html;<strong>bold html markup</strong>
 ;.md;markdown *emphasis* **bold** =**bold answer**

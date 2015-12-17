@@ -2,43 +2,49 @@
 
 angular.module('app')
 
-.controller('CardController', function ($scope, $log, _, Deck, Card, $ionicGesture) {
+.controller('CardController', function ($scope, $state, $log, $ionicGesture, _,
+  Deck, Card) {
 
     $scope.done = false;
     $scope.Card = Card;
     $scope.Deck = Deck;
     $scope.$on('$ionicView.enter', function () {
-        if (!Card.question) {
+        if (!Deck.data) { // Deck.data undefined by source auto-reload
+            $state.go('tabs.library');
+        } else if (!Deck.data.activeCardIndex) {
             Card.setup(0);
         }
     });
 
-    var element = angular.element(document.querySelector('#content'));
-    var finish = function () {
-        if (!$scope.done) {
-            Card.outcome('skipped');
-        }
-        $scope.done = false;
-    };
+    var gestureSetup = function () {
+        var element = angular.element(document.querySelector('#content'));
+        var finish = function () {
+            if (!$scope.done) {
+                Card.outcome('skipped');
+            }
+            $scope.done = false;
+        };
 
-    var next = function () {
-        finish();
-        Card.nextCard();
-    };
-    $ionicGesture.on('swipeleft', next, element);
+        var next = function () {
+            finish();
+            Card.nextCard();
+        };
+        $ionicGesture.on('swipeleft', next, element);
 
-    var previous = function () {
-        finish();
-        Card.previousCard();
-    };
-    $ionicGesture.on('swiperight', previous, element);
+        var previous = function () {
+            finish();
+            Card.previousCard();
+        };
+        $ionicGesture.on('swiperight', previous, element);
 
-    var remove = function () {
-        $scope.done = false;
-        Card.outcome('removed');
-        Card.nextCard();
+        var remove = function () {
+            $scope.done = false;
+            Card.outcome('removed');
+            Card.nextCard();
+        };
+        $ionicGesture.on('swipeup', remove, element);
     };
-    $ionicGesture.on('swipeup', remove, element);
+    gestureSetup();
 
     // FUTURE swipedown to review card stack
 
@@ -126,31 +132,30 @@ angular.module('app')
         }
         $scope.done = true;
         $log.debug('Done items', JSON.stringify(items));
-        // FIXME score and nextcard
     };
 })
 
 .controller('CardHelpController', function () {})
 
-// http://creative-punch.net/2014/04/preserve-html-text-output-angularjs/
-// FIXME May generate Error: [$sce:itype] Attempted to trust a non-string value in a
-//   content requiring a string: Context: html
-.filter('unsafe', function ($sce) {
-    return function (val) {
-        return $sce.trustAsHtml(val);
+.filter('unsafe', function ($sce, _, settings) {
+    return function (value) {
+        if (_.isArray(value)) {
+            value = value[settings.devanagari ? 1 : 0];
+        }
+        return $sce.trustAsHtml(value);
     };
 })
 
 .service('Card', function ($sce, $log, $state, Deck, settings, _) {
     var Card = this;
 
-    var makeItem = function (response) {
-        return {
-            text: response[1],
-            style: 'no-response'
-        };
-    };
     this.setup = function (activeCardIndex) {
+        var makeItem = function (response) {
+            return {
+                text: response[1],
+                style: 'no-response'
+            };
+        };
         Deck.data.activeCardIndex = activeCardIndex;
         Card.question = Deck.questions[Deck.data.active[activeCardIndex]];
         Card.isMA = _.contains(Card.question.tags, '.ma');
@@ -159,9 +164,6 @@ angular.module('app')
             _.contains(Card.question.tags, '.ci'));
         Card.text = Card.question.text;
         var responses = Card.question.responses;
-        if (_.isArray(Card.text)) {
-            Card.text = Card.text[settings.devanagari ? 1 : 0];
-        }
         Card.hintIndex = Card.question.hints ? 0 : undefined;
         if (Card.question.type === 'true-false') {
             // Rewrite true-false as multiple-choice

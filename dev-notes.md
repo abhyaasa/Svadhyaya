@@ -140,13 +140,15 @@ In build mode:
 
 - the angular compiler is told not to include debug information, such as dom state links
 
-## Flavors
+## Flavors and data directory structure
 
-You test and build with the current **flavor** of your choice. Change the flavor    with `gulp flavor --name NAME`. The distribution comes with support for the `test` flavor, but that may not be the current flavor of distribution branches.
+You test and build with the current **flavor** of your choice. Change the flavor with `gulp flavor --name NAME`. The distribution comes with support for the `test` flavor, but that may not be the current flavor of distribution branches.
 
 There must be a subdirectory of `www/data/flavors` for every flavor in use, with structure similar to the test flavor.
 
 `./resources` link points to `./data/flavors/<current flavor>/resources/` of the current flavor for to keep the `ionic resources` command happy.
+
+There is a `data/FLAVOR` and `www/data/FLAVOR` directory for each `FLAVOR`. The former has a `cdecks` subdirectory and the latter `library` and `media` subdirectories. If a deck contains media file references, those files are in a subdirectory of the `media` directory named after the deck.
 
 ## Tools
 
@@ -156,11 +158,12 @@ Run `gulp help` for annotated list of gulp project management tasks.
 
 Python and bash scripts are in the `tools` directory.
 
-### Bash scripts
+### Shell scripts
 
-- Run `psclean.sh` to remove stray processes that may be created by ionic development. If the message "An uncaught exception occurred and has been reported to Ionic" is seen, try running this script and confirm with the `ps` output that there are no stray processes. Kill them manually if need be.
-- Run `resources.sh` after icon or splash screen images in resources directory are changed.
-- `term.sh` is used by `gulp itest`.
+- `g` is a shortcut for invoking other scripts via `gulp cmd`.
+- `tools/psclean.sh` removes stray processes that may be created by ionic development. If the message "An uncaught exception occurred and has been reported to Ionic" is seen, try running this script and confirm with the `ps` output that there are no stray processes. Kill them manually if need be.
+- `tools/resources.sh` is run after icon or splash screen images in resources directory are changed.
+- `tools/term.sh` is used by `gulp itest`.
 
 ### Python scripts
 

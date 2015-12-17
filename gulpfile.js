@@ -182,6 +182,7 @@ gulp.task('dgeni', 'Generate jsdoc documentation.', function () {
 
 var commands = {
     default: 'cd data/test/cdecks; update.sh deck1',
+    i: 'gulp is -i',
     cdtest: 'cd tools; cdeck.py -t -m "prefix"'
 };
 
