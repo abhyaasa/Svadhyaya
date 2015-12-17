@@ -156,6 +156,8 @@ Run `gulp help` for annotated list of gulp project management tasks.
 
 `gulp index` generates `./www/index.html` from `./index.html`, so edit only the latter. This avoids superfluous version control changes, as script injection order is unpredictable.
 
+The `g` script runs shortcuts in the gulp `cmdAliases` directory. For example, to initiate the most common debugging run, execute `g i`. This runs `gulp cmd i`, which runs `gulp is i`, which runs the default gulp test build tasks and then `ionic serve -c -t ios --browser /Applications/Google\ Chrome\ Canary.app`.
+
 Python and bash scripts are in the `tools` directory.
 
 ### Shell scripts
@@ -164,6 +166,7 @@ Python and bash scripts are in the `tools` directory.
 - `tools/psclean.sh` removes stray processes that may be created by ionic development. If the message "An uncaught exception occurred and has been reported to Ionic" is seen, try running this script and confirm with the `ps` output that there are no stray processes. Kill them manually if need be.
 - `tools/resources.sh` is run after icon or splash screen images in resources directory are changed.
 - `tools/term.sh` is used by `gulp itest`.
+- `tools/upload.sh` uploads the app for testing with the **ionic view** app. App id can later be found in the `ionic.project` file: send when inviting app preview users.
 
 ### Python scripts
 
@@ -182,3 +185,35 @@ TODO: flesh out this documentation
 - `hideTabs`: false until tabs bar configured after library index loaded
 - `debug`: true when `mode` is `'debug'`
 - `help`: points to help controller of current context
+
+## Updating
+
+In project directory:
+```
+$ npm update -g cordova ionic
+$ ionic platform update ios
+$ ionic platform update android
+$ bower update
+$ npm update
+$ brew update
+```
+
+In `npm update`, unmet dependency warnings can probably be ignored. If problems, try
+
+  sudo npm uninstall -g ionic && sudo npm install ionic
+
+If `brew update` fails:
+```
+$ cd `brew --prefix`
+# can skip next if remote origin already exists
+$ git remote add origin https://github.com/mxcl/homebrew.git
+$ git fetch origin
+$ git reset --hard origin/master
+$ brew update
+```
+
+Ionic version update: download new ionic image and replace `www/lib` with image version.
+
+Node update: http://theholmesoffice.com/node-js-fundamentals-how-to-upgrade-the-node-js-version/
+
+Atom update: Preferences (Settings, cmd-,) > Updates > Update All
