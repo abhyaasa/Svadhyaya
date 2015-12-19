@@ -149,6 +149,8 @@ angular.module('app')
 .service('Card', function ($sce, $log, $state, Deck, settings, _) {
     var Card = this;
 
+    this.submittedAnswer = undefined;
+
     this.setup = function (activeCardIndex) {
         var makeItem = function (response) {
             return {
@@ -163,6 +165,9 @@ angular.module('app')
         Card.answerClass = 'answer';
         Card.isInput = (_.contains(Card.question.tags, '.cs') ||
             _.contains(Card.question.tags, '.ci'));
+        if (Card.isInput) {
+            Card.submittedAnswer = undefined;
+        }
         Card.text = Card.question.text;
         var responses = Card.question.responses;
         Card.hintIndex = Card.question.hints ? 0 : undefined;

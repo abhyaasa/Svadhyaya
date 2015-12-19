@@ -28,11 +28,11 @@
             Show answer
           </button>
 
-          <div ng-show="Card.isInput && !done" class="list">
-            <form ng-submit="submitAnswer(submittedAnswer)" name="inputForm">
+          <div ng-show="Card.isInput && !done " class="list">
+            <form ng-submit="submitAnswer(Card.submittedAnswer)" name="inputForm">
               <div class="item item-input-inset">
                 <label class="item-input-wrapper">
-                  <input type="text" placeholder="Enter answer" ng-model="submittedAnswer" required>
+                  <input type="text" placeholder="Enter answer" ng-model="Card.submittedAnswer" required>
                   </input>
                 </label>
                 <button class="button button-small" ng-disabled="inputForm.$invalid">
