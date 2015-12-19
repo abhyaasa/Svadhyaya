@@ -38,7 +38,7 @@ angular.module('app')
             return indices;
         };
         $log.debug('Deck setup', JSON.stringify(deckName));
-        getData('flavors/' + $rootScope.config.flavor + '/library/' + deckName.full)
+        getData('flavor/' + '/library/' + deckName.full)
         .then(function (promise) {
             Deck.questions = promise.data;
             Deck.data = {

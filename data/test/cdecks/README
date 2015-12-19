@@ -2,5 +2,4 @@ This directory contains test deck files in compact format.
 
 Run the update script with the name of any new or modified compact deck file.
 
-New files must be added to the www/data/flavors/test/decks/index.json list, which the
-update script does automatically.
+New files must be added to the index.json list, which the update script does automatically.

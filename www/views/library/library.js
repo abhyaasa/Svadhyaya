@@ -6,7 +6,7 @@ angular.module('app')
   $log, mode, getData, Deck, Card, _) {
     // PUBLISH remove all $log.debug calls
     $log.debug('LibraryController', JSON.stringify(configPromise.data));
-    var indexFile = 'flavors/' + configPromise.data.flavor + '/library/index.json';
+    var indexFile = 'flavor/' + '/library/index.json';
     var allDeckNames;
 
     $scope.selectDeck = function(deckName) {

@@ -144,11 +144,9 @@ In build mode:
 
 You test and build with the current **flavor** of your choice. Change the flavor with `gulp flavor --name NAME`. The distribution comes with support for the `test` flavor, but that may not be the current flavor of distribution branches.
 
-There must be a subdirectory of `www/data/flavors` for every flavor in use, with structure similar to the test flavor.
+`./resources` link points to `flavors/<current flavor>/resources/` to keep the `ionic resources` command happy.
 
-`./resources` link points to `./data/flavors/<current flavor>/resources/` of the current flavor for to keep the `ionic resources` command happy.
-
-There is a `data/FLAVOR` and `www/data/FLAVOR` directory for each `FLAVOR`. The former has a `cdecks` subdirectory and the latter `library` and `media` subdirectories. If a deck contains media file references, those files are in a subdirectory of the `media` directory named after the deck.
+There is a `data/FLAVOR` and `flavors/FLAVOR` directory for each `FLAVOR`. The former has a `cdecks` subdirectory and the latter `library` and `media` subdirectories, and may have additional data driving custom behavior. If a deck contains media file references, those files are in a subdirectory of the `media` directory named after the deck.
 
 ## Tools
 

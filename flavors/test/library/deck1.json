@@ -32,7 +32,7 @@
   "tags": [
    ".html"
   ], 
-  "text": "<p>image <img alt=\"Buddy\" src=\"data/flavors/test/media/deck1/buddyShelter.jpg\" title=\"Buddy at shelter\" /></p>", 
+  "text": "<p>image <img alt=\"Buddy\" src=\"data/flavor/media/deck1/buddyShelter.jpg\" title=\"Buddy at shelter\" /></p>", 
   "type": "mind"
  }, 
  {

@@ -135,7 +135,7 @@ gulp.task('config',
     });
 
 gulp.task('flavor',
-    '--name FLAVOR argument required: inject FLAVOR into ' + configJsonFile +
+    '--name FLAVOR : inject FLAVOR into ' + configJsonFile +
     ' and link ./resources to data/flavors/FLAVOR/resources',
     function () {
         var fs = require('fs');
@@ -145,12 +145,12 @@ gulp.task('flavor',
             var configJson = JSON.parse(fs.readFileSync(configJsonFile).toString());
             configJson.flavor = argv.name;
             fs.writeFileSync(configJsonFile, JSON.stringify(configJson, null, 2));
-            sh.exec('ln -s -f data/flavors' + argv.name + '/resources .');
+            sh.exec('ln -s -f flavors/' + argv.name + '/resources .');
         }
     });
 
 gulp.task('is',
-    '[-a|-i|-l] for ionic serve for android, ios, or (default) both', ['default'],
+    '[-a|-i|-l] : ionic serve for android, ios, or (default) both', ['default'],
     function () {
         var platform = argv.a ? '-t android' + ionicBrowser :
             argv.i ? '-t ios' + ionicBrowser :
@@ -159,7 +159,7 @@ gulp.task('is',
         sh.exec(command);
     });
 
-gulp.task('build', '-a for Android, default iOS', ['pre-build'], function () {
+gulp.task('build', '[-a] for Android, default iOS', ['pre-build'], function () {
     // BUILD finish this: see https://github.com/leob/ionic-quickstarter
     sh.exec('ionic build ' + (argv.a ? 'android' : 'ios'));
 });
@@ -194,7 +194,7 @@ gulp.task('dgeni', 'Generate jsdoc documentation.', function () {
     }
 });
 
-gulp.task('cmd', '-a alias  Execute shell command in aliases dictionary',
+gulp.task('cmd', '-a ALIAS : Execute shell command named ALIAS in aliases dictionary',
     function () {
         var cmd = cmdAliases[argv.a];
         console.log('cmd', cmd);
