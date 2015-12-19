@@ -166,7 +166,7 @@ Python and bash scripts are in the `tools` directory.
 - `tools/psclean.sh` removes stray processes that may be created by ionic development. If the message "An uncaught exception occurred and has been reported to Ionic" is seen, try running this script and confirm with the `ps` output that there are no stray processes. Kill them manually if need be.
 - `tools/resources.sh` is run after icon or splash screen images in resources directory are changed.
 - `tools/term.sh` is used by `gulp itest`.
-- `tools/upload.sh` uploads the app for testing with the **ionic view** app. App id can later be found in the `ionic.project` file: send when inviting app preview users.
+- `tools/upload.sh` uploads the app for testing with the **ionic view** app.
 
 ### Python scripts
 

@@ -157,6 +157,7 @@ angular.module('app')
             };
         };
         Deck.data.activeCardIndex = activeCardIndex;
+        Deck.save();
         Card.question = Deck.questions[Deck.data.active[activeCardIndex]];
         Card.isMA = _.contains(Card.question.tags, '.ma');
         Card.answerClass = 'answer';
@@ -218,19 +219,20 @@ angular.module('app')
         if (outcome === 'wrong') {
             Card.answerClass = 'wrong-response';
         }
-        Deck.data.outcomes[Deck.data.activeCardIndex] = outcome;
-        Deck.data.history[Card.question.id].push(outcome);
+        Deck.outcome(Card.question.id, outcome);
     };
 
     this.nextCard = function () {
         if (Deck.data.activeCardIndex === Deck.data.active.length - 1) {
             Deck.data.done = true;
+            Deck.save();
             $state.go('tabs.deck');
         } else {
             Card.setup(Deck.data.activeCardIndex + 1);
             if (Deck.data.outcomes[Deck.data.activeCardIndex] === 'removed') {
                 this.nextCard();
             }
+            Deck.save();
             $state.go('tabs.card');
         }
     };

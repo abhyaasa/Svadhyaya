@@ -56,19 +56,26 @@ angular.module('services', ['ionic'])
     this.set = function (key, value) {
         $window.localStorage[key] = value;
     };
+
     this.get = function (key, defaultValue) {
         return $window.localStorage[key] || defaultValue;
     };
+
     this.setObject = function (key, value) {
         $window.localStorage[key] = JSON.stringify(value);
     };
+
     this.getObject = function (key) {
         return JSON.parse($window.localStorage[key] || '{}');
     };
-    // for possible future use
-    // this.clear = function () {
-    //     window.localStorage.clear();
-    // };
+
+    this.remove = function (key) {
+        $window.localStorage.removeItem(key);
+    };
+
+    this.clear = function () {
+        $window.localStorage.clear();
+    };
 }])
 
 // TODO test media service: Adapted from

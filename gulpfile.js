@@ -5,10 +5,11 @@
 var cmdAliases = {
     cd: 'cd data/test/cdecks; update.sh deck1',
     ct: 'cd tools; cdeck.py -t -m "prefix"',
+    up: 'tools/upload.sh',
     si: 'gulp is -i',
     bi: 'gulp; ionic build ios',
     ei: 'gulp; ionic emulate ios --livereload --consolelogs --serverlogs',
-    ri: 'gulp; ionic run ios'
+    ri: 'gulp; ionic run ios --livereload --consolelogs --serverlogs --device'
 };
 
 var paths = {

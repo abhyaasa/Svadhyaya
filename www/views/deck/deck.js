@@ -13,7 +13,7 @@ angular.module('app')
 
 .controller('DeckHelpController', function () {})
 
-.service('Deck', function ($log, $state, $rootScope, settings, getData, _) {
+.service('Deck', function ($log, $state, $rootScope, settings, getData, LocalStorage, _) {
     var Deck = this;
     this.count = undefined; // maintained by this.setCount()
 
@@ -42,7 +42,7 @@ angular.module('app')
         .then(function (promise) {
             Deck.questions = promise.data;
             Deck.data = {
-                name: deckName,
+                deckName: deckName,
                 history: _.map(Deck.questions, function () { return []; }),
                 filter: copy(initialFilterSettings),
                 active: filter(Deck.questions), // indices of active quesitons
@@ -50,8 +50,15 @@ angular.module('app')
                 done: false
             };
             Deck.data.outcomes = new Array(Deck.data.active.length);
+            Deck.save();
             $state.go('tabs.card');
         });
+    };
+
+    this.outcome = function (qid, outcome) {
+        Deck.data.outcomes[Deck.data.activeCardIndex] = outcome;
+        Deck.data.history[qid].push(outcome);
+        Deck.save();
     };
 
     this.restart = function (restoreRemoved) {
@@ -63,6 +70,7 @@ angular.module('app')
             });
         }
         Deck.data.activeCardIndex = undefined;
+        Deck.save();
         $state.go('tabs.card');
     };
 
@@ -85,6 +93,14 @@ angular.module('app')
             Deck.count = multiset(Deck.data.outcomes);
             Deck.count.remaining = _.filter(Deck.data.outcomes, isUndefined).length;
         }
+    };
+
+    this.save = function () {
+        LocalStorage.setObject(Deck.data.deckName.full, JSON.stringify(Deck.data));
+    };
+
+    this.restore = function (name) {
+        Deck.data = LocalStorage.getObject(name);
     };
 })
 ;

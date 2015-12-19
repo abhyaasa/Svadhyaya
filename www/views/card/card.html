@@ -28,7 +28,7 @@
             Show answer
           </button>
 
-          <div ng-show="Card.isInput" class="list">
+          <div ng-show="Card.isInput && !done" class="list">
             <form ng-submit="submitAnswer(submittedAnswer)" name="inputForm">
               <div class="item item-input-inset">
                 <label class="item-input-wrapper">

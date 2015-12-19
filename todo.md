@@ -5,10 +5,12 @@ There are lots of things to do. Some are recorded as Atom todo-show (ctrl-shift-
 
 A partial list of additional todo items follows, in approximately chronological and/or  decreasing priority order, with ? flagging questionable items.
 
-- ios emulator testing
 - ios device testing
+- ios ionic view
+- configuration time, rather than runtime, flavor choice
+- deck state save
+- deck state copy, rename, reorder, etc
 - ionic 1.2 <label -> <ion-label
-- create readme features list
 - abhyaasa app and project name
 - add sound directive
 - show scrollbar when full text not visible
