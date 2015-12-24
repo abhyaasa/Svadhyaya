@@ -66,6 +66,10 @@ angular.module('app', ['ionic', 'services'])
     })
     .state('tabs.library', {
         url: '/library',
+        resolve: {
+            indexPromise: function () {
+                return getDataProvider.$get()('flavor/library/index.json');
+            }},
         views: {
             'library-tab': {
                 templateUrl: 'views/library/library.html',

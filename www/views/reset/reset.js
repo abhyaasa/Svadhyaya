@@ -10,7 +10,8 @@ angular.module('app')
     $scope.options = [
         { text: 'Reset current deck', value: 'deck', warning: 'deck'},
         { text: 'Reset all decks', value: 'all decks', warning: 'deck' },
-        { text: 'Reset settings to defaults', value: 'settings' }
+        { text: 'Reset settings to defaults', value: 'settings' },
+        { text: 'Reset all user data', value: 'all data', warning: 'deck' }
     ];
     $scope.selected = function(item) {
         $scope.selection = item.value;
@@ -23,8 +24,11 @@ angular.module('app')
         } else if ($scope.selection === 'deck') {
             LocalStorage.remove(Deck.data.deckName.full);
         } else if ($scope.selection === 'all decks') {
+            // FIXME iterate over decks
+            LocalStorage.remove(Deck.data.deckName.full);
+        } else if ($scope.selection === 'all data') {
             LocalStorage.clear();
-            saveSettings();
+            restoreSettings();
         }
         $state.go('tabs.settings');
     };

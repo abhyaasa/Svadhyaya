@@ -7,7 +7,6 @@ A partial list of additional todo items follows, in approximately chronological 
 
 - ios device testing
 - ios ionic view
-- configuration time, rather than runtime, flavor choice
 - deck state save
 - deck state copy, rename, reorder, etc
 - ionic 1.2 <label -> <ion-label
@@ -33,5 +32,6 @@ A partial list of additional todo items follows, in approximately chronological 
 - flesh out jsdoc documentation and improve dgeni formatting
 - consider adding other features, as in notes/features.txt
 - Chrome developer > angularjs > hints
+- PUBLISH remove $log.debug calls
 - make injected functions minifiable, e.g. function (a, b){} => ['a', 'b', function (a, b){}, use ng-strict-di: AngularJS Web Application Development Cookbook p 281
 - publish app
