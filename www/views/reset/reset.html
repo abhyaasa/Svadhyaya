@@ -1,7 +1,7 @@
 <ion-view>
     <ion-content padding="true" class="has-header">
         <div class="list">
-            <ion-radio ng-repeat="item in options" ng-value="item.value" ng-model="selection" ng-change="selected(item)">
+            <ion-radio ng-repeat="item in options" ng-show="item.show" ng-value="item.value" ng-model="selection" ng-change="selected(item)">
                 {{ item.text }}
             </ion-radio>
         </div>

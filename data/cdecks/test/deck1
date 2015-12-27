@@ -1,9 +1,3 @@
-;.devanagari
-;.tq;श्रद्धावाँल्ल =f
-;/.devanagari
-;.cs;case sensitive =Cs
-;.ci;case insensitive =Ci
-;.md;image ![Buddy](buddyShelter.jpg "Buddy at shelter")
 ;.iast,.tr;pranava =om
 ;.html;<strong>bold html markup</strong>
 ;.md;markdown *emphasis* **bold** =**bold answer**

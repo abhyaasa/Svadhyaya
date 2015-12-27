@@ -21,44 +21,76 @@ angular.module('app')
     }
     // TODO implement search, Ionic in action 6.3, p 140
     // try AngularJS cookbook p 64 http://jsfiddle.net/msfrisbie/ghsa3nym/
-    angular.extend($scope, {
-        model: {searchText: ''}, // used in itest
-        search: function () {
-            $scope.deckList = _.filter(allDeckNames, function(deckName) {
-                var name = deckName.display.toLowerCase;
-                return name.indexOf($scope.model.searchText.toLowerCase) !== -1;
-            });
-        },
-        clearSearch: function () {
-            $scope.deckList = allDeckNames;
-            $scope.model.searchText = '';
-        }
-    });
+    // angular.extend($scope, {
+    //     model: {searchText: ''}, // used in itest
+    //     search: function () {
+    //         $scope.deckList = _.filter(allDeckNames, function(deckName) {
+    //             var name = deckName.display.toLowerCase;
+    //             return name.indexOf($scope.model.searchText.toLowerCase) !== -1;
+    //         });
+    //     },
+    //     clearSearch: function () {
+    //         $scope.deckList = allDeckNames;
+    //         $scope.model.searchText = '';
+    //     }
+    // });
 })
 
 .controller('LibraryHelpController', function () {})
-
-.service('Library', function ($log, getData, LocalStorage, _) {
-    var openDecks = LocalStorage.getObject('openDecks');
-    if (openDecks === undefined) {
+// FIXME open decks not displaying
+.service('Library', function ($log, $state, getData, LocalStorage, _) {
+    // list of open deck display names
+    var openDecks = LocalStorage.getObject('*openDecks*');
+    if (openDecks.length === undefined) {
         openDecks = [];
-        LocalStorage.setObject('openDecks', []);
     }
+    $log.debug('openDecks', openDecks);
 
-    var fileNames;
+    var fileDecks;
     this.provideIndex = function (indexPromise) {
-        fileNames = indexPromise.data;
-        $log.debug('fileNames', fileNames);
+        var indexNames = indexPromise.data;
+        $log.debug('indexNames', indexNames);
+        fileDecks =_.map(indexNames, function (name) {
+            return {
+                file: name,
+                // discard suffix and replace _ characters with spaces
+                display: name.match(/.*(?=\.)/)[0].replace(/_/g, ' '),
+                open: false
+            };
+        });
     };
 
     this.getDeckNames = function () {
-        return _.map(fileNames, function (name) {
-            return {
-                full: name,
-                // discard suffix and replace _ characters with spaces
-                display: name.match(/.*(?=\.)/)[0].replace(/_/g, ' ')
-            };
+        var openFileNames = _.pluck(openDecks, 'file');
+        var closedFileDecks = _.reject(fileDecks, function (fn) {
+            return _.contains(openFileNames, fn.file);
         });
+        return {
+            open: _.sortBy(openDecks, 'display'),
+            closed: _.sortBy(closedFileDecks, 'display')
+        };
+    };
+
+    this.saveDeck = function (deckName, data) {
+        if (!_.contains(openDecks, deckName.display)) {
+            openDecks.push(deckName.display);
+            LocalStorage.setObject('*openDecks*', openDecks);
+        }
+        LocalStorage.setObject(deckName.display, data);
+    };
+
+    this.resetDeck = function (deckName) {
+        openDecks = _.without(openDecks, deckName.display);
+        LocalStorage.setObject('*openDecks*', openDecks);
+        LocalStorage.remove(deckName.display);
+    };
+
+    this.resetAllDecks = function () {
+        _.forEach(openDecks, function (deckName) {
+            LocalStorage.remove(deckName.display);
+        });
+        openDecks = [];
+        LocalStorage.setObject('*openDecks*', openDecks);
     };
 })
 ;

@@ -13,7 +13,8 @@ angular.module('app')
 
 .controller('DeckHelpController', function () {})
 
-.service('Deck', function ($log, $state, $rootScope, settings, getData, LocalStorage, _) {
+.service('Deck', function ($log, $state, $rootScope, settings, getData, Library, _,
+  LocalStorage) {
     var Deck = this;
     this.count = undefined; // maintained by this.setCount()
 
@@ -38,21 +39,35 @@ angular.module('app')
             return indices;
         };
         $log.debug('Deck setup', JSON.stringify(deckName));
-        getData('flavor/' + '/library/' + deckName.full)
+        getData('flavor/library/' + deckName.file)
         .then(function (promise) {
+            Deck.name = deckName;
             Deck.questions = promise.data;
-            Deck.data = {
-                deckName: deckName,
-                history: _.map(Deck.questions, function () { return []; }),
-                filter: copy(initialFilterSettings),
-                active: filter(Deck.questions), // indices of active quesitons
-                activeCardIndex: undefined, // current card ref. into active index list
-                done: false
-            };
-            Deck.data.outcomes = new Array(Deck.data.active.length);
-            Deck.save();
-            $state.go('tabs.card');
+            if (deckName.open) {
+                Deck.data = LocalStorage.getObject(deckName.display);
+            } else {
+                Deck.data = {
+                    history: _.map(Deck.questions, function () { return []; }),
+                    filter: copy(initialFilterSettings),
+                    reverse: false, // TODO reverse Q&A
+                    active: filter(Deck.questions), // indices of active quesitons
+                    activeCardIndex: undefined, // current card active index list pointer
+                    done: false
+                };
+                Deck.data.outcomes = new Array(Deck.data.active.length);
+                Deck.save();
+                $state.go('tabs.card');
+            }
         });
+    };
+
+    this.reset = function () {
+        Deck.data = undefined;
+        Library.resetDeck(Deck.name);
+    };
+
+    this.save = function () {
+        Library.saveDeck(Deck.name, Deck.data);
     };
 
     this.outcome = function (qid, outcome) {
@@ -93,14 +108,6 @@ angular.module('app')
             Deck.count = multiset(Deck.data.outcomes);
             Deck.count.remaining = _.filter(Deck.data.outcomes, isUndefined).length;
         }
-    };
-
-    this.save = function () {
-        LocalStorage.setObject(Deck.data.deckName.full, JSON.stringify(Deck.data));
-    };
-
-    this.restore = function (name) {
-        Deck.data = LocalStorage.getObject(name);
     };
 })
 ;

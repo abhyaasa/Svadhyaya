@@ -183,7 +183,7 @@ angular.module('app')
             // Sequence question
             var answerIndex = Card.question.id + 1;
             if (answerIndex === Deck.questions.length) {
-                $state.go('tab.deck'); // card is last in sequence at end of deck
+                $state.go('tabs.deck'); // card is last in sequence at end of deck
             } else {
                 Card.question.answer = Deck.questions[answerIndex].text;
             }

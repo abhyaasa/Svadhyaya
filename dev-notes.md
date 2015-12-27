@@ -144,9 +144,11 @@ In build mode:
 
 You test and build with the current **flavor** of your choice. Change the flavor with `gulp flavor --name NAME`. The distribution comes with support for the `test` flavor, but that may not be the current flavor of distribution branches.
 
-`./resources` link points to `flavors/<current flavor>/resources/` to keep the `ionic resources` command happy.
+For each `FLAVOR` there is a `data/flavors/FLAVOR` directory with `library`, `media`, and `resources` subdirectories. If the flavor uses cdecks, there is also a `data/cdecks/FLAVOR` directory . If a deck contains media file references, those files are in a subdirectory of the `media` directory named after the deck.
 
-There is a `data/FLAVOR` and `flavors/FLAVOR` directory for each `FLAVOR`. The former has a `cdecks` subdirectory and the latter `library` and `media` subdirectories, and may have additional data driving custom behavior. If a deck contains media file references, those files are in a subdirectory of the `media` directory named after the deck.
+`library` directories contain `DECK_NAME.json` files, where `DECK_NAME` is the name of the deck with underscores in place of spaces, and an `index.json` file containing a list of the deck file names.
+
+`./resources` link points to `data/flavors/<current flavor>/resources/` to keep the `ionic resources` command happy so it can transform splash and icon image files.
 
 ## Tools
 
@@ -160,7 +162,7 @@ Python and bash scripts are in the `tools` directory.
 
 ### Shell scripts
 
-- `g` is a shortcut for invoking other scripts via `gulp cmd`.
+- `g ALIAS` is a shortcut for invoking via `gulp cmd` the script associated with `ALIAS` in the `cmdAliases` dictionary defined early in `gulpfile.js`.
 - `tools/psclean.sh` removes stray processes that may be created by ionic development. If the message "An uncaught exception occurred and has been reported to Ionic" is seen, try running this script and confirm with the `ps` output that there are no stray processes. Kill them manually if need be.
 - `tools/resources.sh` is run after icon or splash screen images in resources directory are changed.
 - `tools/term.sh` is used by `gulp itest`.

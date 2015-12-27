@@ -14,7 +14,12 @@
                     TODO Search didn't work: ng-repeat="deckName in deckList | filter:search" with input ng-model="search.root" above
                 </x>
             </x>
-            <ion-item ng-repeat="deckName in deckList" ng-click="selectDeck(deckName)">
+            <p>Open</p>
+            <ion-item ng-repeat="deckName in deckList.open" ng-click="selectDeck(deckName)">
+                {{ deckName.display }}
+            </ion-item>
+            <p>Closed</p>
+            <ion-item ng-repeat="deckName in deckList.closed" ng-click="selectDeck(deckName)">
                 {{ deckName.display }}
             </ion-item>
         </ion-list>

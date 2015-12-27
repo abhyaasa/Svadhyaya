@@ -14,7 +14,7 @@ angular.module('app')
     return function () {
         var s = {};
         _.extendOwn(s, settings);
-        LocalStorage.setObject('settings', s);
+        LocalStorage.setObject('*settings*', s);
         $log.debug('SAVED SETTINGS');
     };
 })
@@ -30,7 +30,7 @@ angular.module('app')
     return function (reset) {
         _.extendOwn(settings, defaultSettings);
         if (!reset) {
-            var s = LocalStorage.getObject('settings');
+            var s = LocalStorage.getObject('*settings*');
             if (s !== undefined) {
                 _.extendOwn(settings, s);
             }
