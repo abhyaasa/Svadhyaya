@@ -41,12 +41,12 @@ angular.module('app')
         $log.debug('Deck setup', JSON.stringify(deckName));
         getData('flavor/library/' + deckName.file)
         .then(function (promise) {
-            Deck.name = deckName;
             Deck.questions = promise.data;
             if (deckName.open) {
                 Deck.data = LocalStorage.getObject(deckName.display);
             } else {
                 Deck.data = {
+                    name: deckName,
                     history: _.map(Deck.questions, function () { return []; }),
                     filter: copy(initialFilterSettings),
                     reverse: false, // TODO reverse Q&A
@@ -63,11 +63,11 @@ angular.module('app')
 
     this.reset = function () {
         Deck.data = undefined;
-        Library.resetDeck(Deck.name);
+        Library.resetDeck(Deck.data.name);
     };
 
     this.save = function () {
-        Library.saveDeck(Deck.name, Deck.data);
+        Library.saveDeck(Deck.data.name, Deck.data);
     };
 
     this.outcome = function (qid, outcome) {

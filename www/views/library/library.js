@@ -4,13 +4,16 @@ angular.module('app')
 
 .controller('LibraryController', function ($rootScope, $scope, $state, $log, _, mode,
   Library, Deck, indexPromise) {
-    $scope.selectDeck = function(deckName) {
+    $scope.selectClosedDeck = function(deckName) {
         Deck.setup(deckName);
     };
 
+    $scope.selectOpenDeck = function (displayNanme) {
+        
+    };
+
     Library.provideIndex(indexPromise);
-    var allDeckNames = Library.getDeckNames();
-    $scope.deckList = allDeckNames; // TODO filtering here
+    $scope.deckList = Library.deckNames; // TODO filtering here
 
     if ($scope.deckList.length === 1 && mode !== 'debug') {
         $rootScope.config.hideLibrary = true;
@@ -39,7 +42,8 @@ angular.module('app')
 .controller('LibraryHelpController', function () {})
 // FIXME open decks not displaying
 .service('Library', function ($log, $state, getData, LocalStorage, _) {
-    // list of open deck display names
+    var Library = this;
+
     var openDecks = LocalStorage.getObject('*openDecks*');
     if (openDecks.length === undefined) {
         openDecks = [];
@@ -58,25 +62,25 @@ angular.module('app')
                 open: false
             };
         });
+        updateDeckNames();
     };
 
-    this.getDeckNames = function () {
-        var openFileNames = _.pluck(openDecks, 'file');
-        var closedFileDecks = _.reject(fileDecks, function (fn) {
-            return _.contains(openFileNames, fn.file);
-        });
-        return {
-            open: _.sortBy(openDecks, 'display'),
-            closed: _.sortBy(closedFileDecks, 'display')
+    var updateDeckNames = function () {
+        var isOpen = function (fd) {
+            return _.contains(openDecks, fd.display);
+        };
+        Library.deckNames = {
+            open: openDecks.sort(),
+            closed: _.reject(fileDecks, isOpen).sort()
         };
     };
 
-    this.saveDeck = function (deckName, data) {
-        if (!_.contains(openDecks, deckName.display)) {
-            openDecks.push(deckName.display);
+    this.saveDeck = function (displayName, data) {
+        if (!_.contains(openDecks, displayName)) {
+            openDecks.push(displayName);
             LocalStorage.setObject('*openDecks*', openDecks);
         }
-        LocalStorage.setObject(deckName.display, data);
+        LocalStorage.setObject(displayName, data);
     };
 
     this.resetDeck = function (deckName) {

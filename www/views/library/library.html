@@ -15,11 +15,11 @@
                 </x>
             </x>
             <p>Open</p>
-            <ion-item ng-repeat="deckName in deckList.open" ng-click="selectDeck(deckName)">
-                {{ deckName.display }}
+            <ion-item ng-repeat="displayName in deckList.open" ng-click="selectOpenDeck(deckName)">
+                {{ displayName }}
             </ion-item>
             <p>Closed</p>
-            <ion-item ng-repeat="deckName in deckList.closed" ng-click="selectDeck(deckName)">
+            <ion-item ng-repeat="deckName in deckList.closed" ng-click="selectClosedDeck(deckName)">
                 {{ deckName.display }}
             </ion-item>
         </ion-list>

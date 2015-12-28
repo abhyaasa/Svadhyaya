@@ -186,6 +186,12 @@ TODO: flesh out this documentation
 - `debug`: true when `mode` is `'debug'`
 - `help`: points to help controller of current context
 
+## `localStorage` key map
+
+`*settings*`: `settings` service dictionary
+`*openDecks*`: array of open deck display names
+OPEN_DECK_DISPLAY_NAME: decks's data dictionary
+
 ## Updating
 
 In project directory:
