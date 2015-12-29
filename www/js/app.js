@@ -76,7 +76,8 @@ angular.module('app', ['ionic', 'services'])
                 controller: 'LibraryController'
             }
         },
-        onEnter: function ($rootScope, $state) {
+        onEnter: function ($rootScope, $state, Library) {
+            Library.updateDeckLists();
             $rootScope.help = function () { $state.go('tabs.library-help'); };
         }
     })

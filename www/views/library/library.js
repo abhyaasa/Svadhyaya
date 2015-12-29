@@ -5,20 +5,24 @@ angular.module('app')
 .controller('LibraryController', function ($rootScope, $scope, $state, $log, _, mode,
   Library, Deck, indexPromise) {
     $scope.selectClosedDeck = function(deckName) {
-        Deck.setup(deckName);
+        Deck.setupClosedDeck(deckName);
     };
 
-    $scope.selectOpenDeck = function (displayNanme) {
-        
+    $scope.selectOpenDeck = function (displayName) {
+        Deck.setupOpenDeck(displayName);
     };
 
     Library.provideIndex(indexPromise);
-    $scope.deckList = Library.deckNames; // TODO filtering here
+    $scope.deckLists = Library.deckLists; // TODO filtering here
 
-    if ($scope.deckList.length === 1 && mode !== 'debug') {
+    if (Library.numDecks() === 1 && mode !== 'debug') {
         $rootScope.config.hideLibrary = true;
         $rootScope.hideTabs = false;
-        Deck.setup($scope.deckList[0]);
+        if (Library.decklists.open.length > 1) {
+            Deck.setupOpenDeck($scope.deckLists.open[0]);
+        } else {
+            Deck.setupClosedDeck($scope.Decklists.closed[0]);
+        }
     } else {
         $rootScope.hideTabs = false;
     }
@@ -48,7 +52,20 @@ angular.module('app')
     if (openDecks.length === undefined) {
         openDecks = [];
     }
-    $log.debug('openDecks', openDecks);
+    $log.debug('openDecks', JSON.stringify(openDecks));
+
+    this.deckLists = { open: undefined, closed: undefined };
+    this.updateDeckLists = function () {
+        var isOpen = function (fd) {
+            return _.contains(openDecks, fd.display);
+        };
+        Library.deckLists.open = openDecks.sort();
+        Library.deckLists.closed = _.reject(fileDecks, isOpen).sort();
+        $log.debug('deckLists', JSON.stringify(Library.deckLists));
+    };
+    this.numDecks = function () {
+        return Library.deckLists.open.length + Library.deckLists.closed.length;
+    };
 
     var fileDecks;
     this.provideIndex = function (indexPromise) {
@@ -58,21 +75,10 @@ angular.module('app')
             return {
                 file: name,
                 // discard suffix and replace _ characters with spaces
-                display: name.match(/.*(?=\.)/)[0].replace(/_/g, ' '),
-                open: false
+                display: name.match(/.*(?=\.)/)[0].replace(/_/g, ' ')
             };
         });
-        updateDeckNames();
-    };
-
-    var updateDeckNames = function () {
-        var isOpen = function (fd) {
-            return _.contains(openDecks, fd.display);
-        };
-        Library.deckNames = {
-            open: openDecks.sort(),
-            closed: _.reject(fileDecks, isOpen).sort()
-        };
+        Library.updateDeckLists();
     };
 
     this.saveDeck = function (displayName, data) {

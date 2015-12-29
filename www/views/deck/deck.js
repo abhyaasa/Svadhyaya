@@ -18,7 +18,13 @@ angular.module('app')
     var Deck = this;
     this.count = undefined; // maintained by this.setCount()
 
-    this.setup = function (deckName) {
+    var setupQuestions = function (fileName) {
+        return getData('flavor/library/' + fileName).then(function (promise) {
+            Deck.questions = promise.data;
+        });
+    };
+
+    this.setupClosedDeck = function (deckName) {
         var initialFilterSettings = {
             max: 50,
             min: 50,
@@ -39,35 +45,38 @@ angular.module('app')
             return indices;
         };
         $log.debug('Deck setup', JSON.stringify(deckName));
-        getData('flavor/library/' + deckName.file)
-        .then(function (promise) {
-            Deck.questions = promise.data;
-            if (deckName.open) {
-                Deck.data = LocalStorage.getObject(deckName.display);
-            } else {
-                Deck.data = {
-                    name: deckName,
-                    history: _.map(Deck.questions, function () { return []; }),
-                    filter: copy(initialFilterSettings),
-                    reverse: false, // TODO reverse Q&A
-                    active: filter(Deck.questions), // indices of active quesitons
-                    activeCardIndex: undefined, // current card active index list pointer
-                    done: false
-                };
-                Deck.data.outcomes = new Array(Deck.data.active.length);
-                Deck.save();
-                $state.go('tabs.card');
-            }
+        setupQuestions(deckName.file).then(function () {
+            Deck.data = {
+                name: deckName,
+                history: _.map(Deck.questions, function () { return []; }),
+                filter: copy(initialFilterSettings),
+                reverse: false, // TODO reverse Q&A
+                active: filter(Deck.questions), // indices of active quesitons
+                activeCardIndex: undefined, // current card active index list pointer
+                done: false
+            };
+            Deck.data.outcomes = new Array(Deck.data.active.length);
+            Deck.save();
+            $state.go('tabs.card');
+        });
+    };
+
+    this.setupOpenDeck = function (displayName) {
+        Deck.data = LocalStorage.getObject(displayName);
+        setupQuestions(Deck.data.name.file).then(function () {
+            $state.go('tabs.card');
         });
     };
 
     this.reset = function () {
-        Deck.data = undefined;
-        Library.resetDeck(Deck.data.name);
+        if (Deck.data) {
+            Library.resetDeck(Deck.data.name);
+            Deck.data = undefined;
+        }
     };
 
     this.save = function () {
-        Library.saveDeck(Deck.data.name, Deck.data);
+        Library.saveDeck(Deck.data.name.display, Deck.data);
     };
 
     this.outcome = function (qid, outcome) {
