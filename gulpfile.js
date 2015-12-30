@@ -166,7 +166,7 @@ gulp.task('build', '[-a] for Android, default iOS', ['pre-build'], function () {
 });
 
 gulp.task('pre-build', ['default'], function () {
-    // TODO fill out pre-build
+    // PUBLISH fill out pre-build
 });
 
 gulp.task('jshint', 'Run jshint on all (non-lib) script files', function () {

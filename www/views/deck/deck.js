@@ -16,6 +16,7 @@ angular.module('app')
 .service('Deck', function ($log, $state, $rootScope, settings, getData, Library, _,
   LocalStorage) {
     var Deck = this;
+    this.reverseQandA = false;
     this.count = undefined; // maintained by this.setCount()
 
     var setupQuestions = function (fileName) {

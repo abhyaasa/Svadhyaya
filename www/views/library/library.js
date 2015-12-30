@@ -44,7 +44,7 @@ angular.module('app')
 })
 
 .controller('LibraryHelpController', function () {})
-// FIXME open decks not displaying
+
 .service('Library', function ($log, $state, getData, LocalStorage, _) {
     var Library = this;
 

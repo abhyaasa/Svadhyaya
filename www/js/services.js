@@ -90,6 +90,9 @@ angular.module('services', ['ionic'])
 // Alternatives: https://www.npmjs.com/package/cordova-plugin-nativeaudio or
 // http://goldfirestudios.com/blog/104/howler.js-Modern-Web-Audio-Javascript-Library
 // nativeAudio problem with volume control
+// https://blog.nraboy.com/2014/11/playing-audio-android-ios-ionicframework-app/
+// http://www.gajotres.net/playing-native-audio-using-ionic-framework-and-cordova/
+// https://github.com/arielfaur/ionic-audio
 .factory('MediaSrv', function ($q, $ionicPlatform, $window, $log) {
     function loadMedia(src, onError, onStatus, onStop) {
         var defer = $q.defer();

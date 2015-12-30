@@ -7,7 +7,6 @@ A partial list of additional todo items follows, in approximately chronological 
 
 - ios device testing
 - ios ionic view
-- deck state save
 - deck state copy, rename, reorder, etc
 - ionic 1.2 <label -> <ion-label
 - abhyaasa app and project name

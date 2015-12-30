@@ -15,7 +15,7 @@ This app is early in development, with plenty to do. See
 
 ## Environment
 
-TODO: document setup for development environment
+REVIEW document setup for development environment
 
 Development tools
 
@@ -176,7 +176,7 @@ Python 2.6+ (maybe earlier) is needed to run `.py` scripts. Use `-h` argument fo
 
 `gulp dengi` generates jsdoc documentation in the `doc/build/` directory.
 
-TODO: flesh out this documentation
+REVIEW flesh out this documentation
 
 ## `$rootScope` variables
 
