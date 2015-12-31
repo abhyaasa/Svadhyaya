@@ -26,10 +26,12 @@
           </tr>
         </table>
       </div>
-      <ion-list ng-show="Deck.data.activeCardIndex">
+      <ion-list>
         <ion-toggle toggle-class="toggle-positive" ng-model="Deck.reverseQandA">
           Reverse Q &amp; A
         </ion-toggle>
+      </ion-list>
+      <ion-list ng-show="Deck.data.activeCardIndex">
         <ion-item ng-click="Deck.restart(false)">
           Restart
         </ion-item>

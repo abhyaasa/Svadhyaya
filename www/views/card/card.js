@@ -13,6 +13,8 @@ angular.module('app')
             $state.go('tabs.library');
         } else if (!Deck.data.activeCardIndex) {
             Card.setup(0);
+        } else if (!Card.question) {
+            Card.setup(Deck.data.activeCardIndex);
         }
     });
 
@@ -217,6 +219,26 @@ angular.module('app')
         }
         Card.haveHint = Card.question.hints !== undefined;
         Card.hint = null;
+        Card.answer = Card.question.answer;
+        if (Deck.reverseQandA) {
+            Card.haveHint = false;
+            var answer = Card.text;
+            if (Card.question.type === 'mind' && Card.question.answer) {
+                Card.text = Card.answer;
+                Card.answer = answer;
+            } else if (Card.question.type === 'multiple-choice') {
+                var rightAnswers = _.filter(responses, function (pair) {
+                    return pair[0];
+                });
+                if (rightAnswers) {
+                    var text = _.sample(rightAnswers)[1];
+                    if (!_.contains(['True', 'False'], text)) {
+                        Card.text = text;
+                        Card.answer = answer;
+                    }
+                }
+            }
+        }
         $log.debug('Card.setup', JSON.stringify(Card));
     };
 

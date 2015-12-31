@@ -43,7 +43,7 @@
           </div>
 
           <div ng-show="Deck.data.activeCardIndex" ng-class="Card.answerClass">
-            <p ng-show="done" ng-bind-html="Card.question.answer | unsafe"></p>
+            <p ng-show="done" ng-bind-html="Card.answer | unsafe"></p>
             <div ng-hide="Card.isInput" class="button-bar">
               <button class="button button-stable button-block" ng-click="setOutcome('right')">
                 Right
