@@ -7,9 +7,11 @@ A partial list of additional todo items follows, in approximately chronological 
 
 - ios device testing
 - ios ionic view
+- devanagari and transliteration
+- devanagari q, transliteration a
 - deck state copy, rename, reorder, etc
 - ionic 1.2 <label -> <ion-label
-- abhyaasa app and project name
+- vasudeva-chaynes/Abhyaasa and vasudeva-chaynes/Svadhaya fix
 - add sound directive
 - show scrollbar when full text not visible
 - deck filtering to subtab

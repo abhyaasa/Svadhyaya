@@ -3,7 +3,7 @@ Notes for Developers
 
 ## Collaboration
 
-To open discussion of collaboration possibilities, please email <svadhyaya.app@gmail.com>.
+To open discussion of collaboration possibilities, please email <abhyaasa108@gmail.com>.
 
 ## Tasks
 
@@ -11,7 +11,7 @@ This app is early in development, with plenty to do. See
 
 - `todo.md` file
 - tags listed in `.todo` througout source files
-- GitHub [Issues](https://github.com/vasudeva-chaynes/Svadhyaya/issues) list
+- GitHub [Issues](https://github.com/vasudeva-chaynes/Abhyaasa/issues) list
 
 ## Environment
 

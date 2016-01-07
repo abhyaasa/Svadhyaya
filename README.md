@@ -1,13 +1,11 @@
-Svadhyaya
+Abhyaasa
 =========
 
 ## SGS Datta Deepam Flash Card Application
 
-*Svadhyaya* is a Sanskrit term for spiritual study. Its deep meaning is self-study, ultimately leading to knowledge of the divine through union with Divinity itself. More commonly Svadhyaya means study of scripture (spiritually uplifting reading) and self  reflection.
+[SGS Datta Deepam](http://www.sgsdattadeepam.org) is devoted to the study of Vedic Dharma: "SGS Datta Deepam is an online gurukulam envisioned by HisHoliness Sri Ganapathy Sachchidananda Swamiji which unravels the boundless wisdom and truth in our Scriptures and brings to light the glory of Sanatana Dharma."
 
-[SGS Datta Deepam](http://www.sgsdattadeepam.org) is devoted to Svadhyaya of Vedic Dharma: "SGS Datta Deepam is an online gurukulam envisioned by HisHoliness Sri Ganapathy Sachchidananda Swamiji which unravels the boundless wisdom and truth in our Scriptures and brings to light the glory of Sanatana Dharma."
-
-This "flashcard" app is designed to supports this site with an expanded range of flashcard "decks" (quetion databases). It is also suitable for a wide range of study through user-created flashcard decks.
+*Abhyaasa* is a Sanskrit term for practice, repetition, and study. It may refer to spiritual disciplines such as meditation, as well as traditional academic studies, as may be assisted by use of flash cards. This "flashcard" app is designed to supports SGS Datta Deepam with an expanding set of flashcard *decks* (quetion databases). It is also suitable for a wide range of study through user-created flashcard decks and derivative apps.
 
 A partial list of supported features:
 
@@ -23,13 +21,13 @@ A partial list of supported features:
 
 ## Support
 
-Early users are invited to email support requests and suggestions to <svadhyaya.app@gmail.com>. Also feel free to contribute to this app's GitHub [Issues](https://github.com/vasudeva-chaynes/Svadhyaya/issues) list and [Wiki](https://github.com/vasudeva-chaynes/Svadhyaya/wiki).
+Early users are invited to email support requests and suggestions to <abhyaasa108@gmail.com>. Also feel free to contribute to this app's GitHub [Issues](https://github.com/vasudeva-chaynes/Abhyaasa/issues) list and [Wiki](https://github.com/vasudeva-chaynes/Abhyaasa/wiki).
 
 ## Preview
 
 You may test development releases on iOS (iPhone or iPad) and Android device using the **Ionic View** app. Visit the [Ionic View](http://view.ionic.io) site for app download.
 
-Open the app and create an account. When logged in, tap the eye icon at upper left and enter the app id sent on request by the developer, or found in the app's `ionic.project` file. The *Svadhyaya* app may take a few minutes to download to the viewing app. When that is finished, tap on it. If a new development version has been released, select *SYNC TO LATEST* and then *CLEAR APP DATA*. Then select *VIEW APP* and begin using it.
+Open the app and create an account. When logged in, tap the eye icon at upper left and enter the app id sent on request by the developer, or found in the app's `ionic.project` file. The *Abhyaasa* app may take a few minutes to download to the viewing app. When that is finished, tap on it. If a new development version has been released, select *SYNC TO LATEST* and then *CLEAR APP DATA*. Then select *VIEW APP* and begin using it.
 
 ## Developers
 

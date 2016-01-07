@@ -1,5 +1,5 @@
 {
-  "name": "Svadhyaya",
+  "name": "Abhyaasa",
   "version": "0.0.1",
   "description": "Flash card app for SGS Datta Deepam and personal use",
   "dependencies": {
@@ -39,7 +39,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/vasudeva-chaynes/Svadhyaya"
+    "url": "https://github.com/vasudeva-chaynes/Abhyaasa"
   },
   "cordovaPlugins": [
     "cordova-plugin-console",

@@ -2,7 +2,7 @@
 # -*- coding: utf-8
 # Code Copyright (c) Christopher T. Haynes under the MIT License.
 
-"""Svadhyaya cdeck preprocessor: compact deck text to json."""
+"""cdeck preprocessor: compact deck text to json."""
 
 import sys
 import json
